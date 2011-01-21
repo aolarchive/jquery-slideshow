@@ -28,6 +28,13 @@ var defaultOptions = {
 
 	};
 
+$.getDynamicImageSrc = function(photoSrc, photoWidth, photoHeight, quality) {
+    if (!quality)
+        quality = 60;
+        
+    return "http://o.aolcdn.com/dims-global/dims3/GLOB/resize/" + photoWidth + "x" + photoHeight + "/quality/" + quality + "/"+ photoSrc;
+}
+
 $.aolPhotoGallery = function( customOptions, elem ){
 	// Initialize the gallery.
 	if ( elem ) {
@@ -99,7 +106,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 						photoDescription = photo.photoDescription,
 						photoSrc = photo.photoSrc,
 						
-						$photo = $("<img src=\"" + core.getDynamicImageSrc( photoSrc, photoWidth, photoHeight ) + "\" />");
+						$photo = $("<img src=\"" + $.getDynamicImageSrc( photoSrc, photoWidth, photoHeight ) + "\" />");
 					
 					return $photo;
 				},
