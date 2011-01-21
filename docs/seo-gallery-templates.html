@@ -1,0 +1,91 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>SEO Gallery Templates</title>
+</head>
+<body>
+
+<h1>Photo Galleries Page</h1>
+<p>List all galleries on the site for maximum crawlability of available photo galleries on the site. Paginate results. Offer featured galleries towards the top. Use jQuery Sonar to load images in on demand. Only display pagination if it is needed.</p>
+
+<dl><dt>URL</dt>
+	<dd>http://yourdomain.com/photos/</i></dd>
+<dt>Title</dt>
+	<dd>%SiteName% Photo Galleries</dd>
+	<dt>&nbsp;</dt>
+</dl>
+
+
+<p>Markup:</p>
+<pre>
+&lt;h1&gt;%SiteName% Photo Galleries&lt;/h1&gt;
+&lt;div class=&quot;aol-gallery module&quot;&gt;
+&lt;ul class=&quot;galleries&quot;&gt;<br>   &lt;li&gt;&lt;a href=&quot;/photos/%GallerySlug%/&quot;&gt;&lt;img src=&quot;x.gif&quot; data-src=&quot;[[DIMS:%SITE-AolGallery-GalleryThumbnailWidth:%SITE-AolGallery-GalleryThumbnailHeight]]%GalleryFullImage%&quot; /&gt;%GalleryTitle%&lt;/a&gt;&lt;/li&gt;
+   &lt;li&gt;&lt;a href=&quot;/photos/%GallerySlug%/&quot;&gt;&lt;img src=&quot;x.gif&quot; data-src=&quot;[[DIMS:%SITE-AolGallery-GalleryThumbnailWidth:%SITE-AolGallery-GalleryThumbnailHeight]]%GalleryFullImage%&quot; /&gt;%GalleryTitle%&lt;/a&gt;&lt;/li&gt;
+	...<br>&lt;/ul&gt;
+&lt;p class=&quot;controls&quot;&gt;
+	&lt;a class=&quot;previous&quot; href=&quot;/photos%PrevMediaID%&quot;&gt;Previous Page&lt;/a&gt; | &lt;a class=&quot;next&quot; href=&quot;/photos%NextMediaID%&quot;&gt;Next Page&lt;/a&gt;
+&lt;/p&gt;
+&lt;/div&gt;</pre>
+<h1>Photo Gallery Page</h1>
+<p>Display a single photo gallery as the only thing on the page, or embedded in a post.</p>
+<dl><dt>URL</dt>
+	<dd>http://yourdomain.com/photos/%GallerySlug%/</i></dd>
+<dt>Title</dt>
+	<dd>%GalleryTitle% Photo Gallery</dd>
+</dl>
+<p>General Markup:</p>
+<ul>
+    <li><a href="%MediaURL%">%MediaName%</a></li>
+    <li>%MediaName%</li>
+    <li>%MediaName%</li>
+</ul>
+<p>Markup:</p>
+<pre>
+&lt;h1&gt;%SiteName% Photo Galleries&lt;/h1&gt;
+&lt;div class=&quot;aol-gallery module&quot;&gt;
+&lt;ul class=&quot;photos&quot;&gt;<br>   &lt;li&gt;&lt;a href=&quot;/photo/%MediaID%/&quot;&gt;&lt;img src=&quot;x.gif&quot; data-src=&quot;[[DIMS:%SITE-AolGallery-GalleryThumbnailWidth:%SITE-AolGallery-GalleryThumbnailHeight]]%GalleryFullImage%&quot; /&gt;%GalleryTitle%&lt;/a&gt;&lt;/li&gt;
+   &lt;li&gt;&lt;a href=&quot;/photos/%GallerySlug%/&quot;&gt;&lt;img src=&quot;x.gif&quot; data-src=&quot;[[DIMS:%SITE-AolGallery-GalleryThumbnailWidth:%SITE-AolGallery-GalleryThumbnailHeight]]%GalleryFullImage%&quot; /&gt;%GalleryTitle%&lt;/a&gt;&lt;/li&gt;
+	...<br>&lt;/ul&gt;
+&lt;p class=&quot;controls&quot;&gt;
+	&lt;a class=&quot;previous&quot; href=&quot;/photos%PrevMediaID%&quot;&gt;Previous Page&lt;/a&gt; | &lt;a class=&quot;next&quot; href=&quot;/photos%NextMediaID%&quot;&gt;Next Page&lt;/a&gt;
+&lt;/p&gt;
+&lt;/div&gt;</pre>
+
+<h1>Photo Page</h1>
+<p>Display a single photo and caption as a description underneath.</p>
+<dl><dt>URL</dt>
+	<dd>http://yourdomain.com/photo/%MediaID%/<br>
+	    Note: We should get %MediaSlug% if possible based on its Name.
+	</dd>
+<dt>Title</dt>
+	<dd>%SiteName% Photo Galleries</dd>
+</dl>
+
+
+<h1>Tag Reference</h1>
+<ul>
+    <li>%CurrentImageNum%</li>
+    <li>%GalleryFullImage%</li>
+    <li>%GalleryNumImages%</li>
+    <li>%GallerySlug%</li>
+    <li>%GalleryThumbnail%</li>
+    <li>%GalleryTime-[(D)]%</li>
+    <li>%GalleryTime-[(M)]%</li>
+    <li>%GalleryTitle%</li>
+    <li>%GalleryURL%</li>
+    <li>%MediaCredit%</li>
+    <li>%MediaDate%</li>
+    <li>%MediaDescription%</li>
+    <li>%MediaID%</li>
+    <li>%MediaLink%</li>
+    <li>%MediaSrc%</li>
+    <li>%MediaSrcThumbnail%</li>
+    <li>%MediaTitle%</li>
+    <li>%MediaURL%</li>
+    <li>%NumImages%    </li>
+    <li>%PagingHTML%</li>
+</ul>
+</body>
+</html>
