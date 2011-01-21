@@ -28,11 +28,19 @@ var defaultOptions = {
 
 	};
 
-$.getDynamicImageSrc = function(photoSrc, photoWidth, photoHeight, quality) {
-    if (!quality)
-        quality = 60;
+$.getDynamicImageSrc = function(photoSrc, photoWidth, photoHeight, options) {
+    var quality = 60,
+        dimensions = photoWidth + "x" + photoWidth,
+        action = (options.action || "resize"),
+        modifiers = "/quality/" + (options.quality || quality);
+
+    if (action == "crop")
+        dimensions += "+" + (options.crop.x || 0) + "+" + (options.crop.y || 0);
+    
+    if (typeof options.format != "undefined")
+        modifiers += "/format/" + options.format
         
-    return "http://o.aolcdn.com/dims-global/dims3/GLOB/resize/" + photoWidth + "x" + photoHeight + "/quality/" + quality + "/"+ photoSrc;
+    return "http://o.aolcdn.com/dims-global/dims3/GLOB/" + action + "/" + dimensions + modifiers + "/"+ photoSrc;
 }
 
 $.aolPhotoGallery = function( customOptions, elem ){
