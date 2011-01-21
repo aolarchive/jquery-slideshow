@@ -28,17 +28,33 @@ var defaultOptions = {
 
 	};
 
-$.getDynamicImageSrc = function(photoSrc, photoWidth, photoHeight, options) {
-    var quality = 60,
-        dimensions = photoWidth + "x" + photoWidth,
-        action = (options.action || "resize"),
-        modifiers = "/quality/" + (options.quality || quality);
-
-    if (action == "crop")
-        dimensions += "+" + (options.crop.x || 0) + "+" + (options.crop.y || 0);
+$.getDynamicImageSrc = function(photoSrc, photoWidth, photoHeight, thumbnail, settings) {
+    var options,
+        dimensions,
+        action,
+        modifiers;
     
-    if (typeof options.format != "undefined")
-        modifiers += "/format/" + options.format
+    if (typeof thumbnail == "object") {
+        settings = thumbnail;
+    }
+        
+    $.extend(options = {}, {
+        action : 'resize',
+        format : null,
+        quality : 60,
+    }, settings);
+        
+    dimensions = photoWidth + "x" + photoWidth;
+    action = (thumbnail && typeof thumbnail != "object") ? "thumbnail" : options.action;
+    modifiers = "/quality/" + options.quality;
+
+    if (options.crop) {
+        dimensions += "+" + (options.crop.x || 0) + "+" + (options.crop.y || 0);
+    }
+    
+    if (options.format) {
+        modifiers += "/format/" + options.format;
+    }
         
     return "http://o.aolcdn.com/dims-global/dims3/GLOB/" + action + "/" + dimensions + modifiers + "/"+ photoSrc;
 }
