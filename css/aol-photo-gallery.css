@@ -1,0 +1,116 @@
+
+.aol-photo-gallery {
+	font-size: 15px;
+	position: relative;
+	line-height: 24px;
+	overflow: hidden;
+}
+.aol-photo-gallery ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+.aol-photo-gallery li {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+.aol-photo-gallery > h2 {
+	margin-bottom: 7px;
+	font-size: 22px;
+}
+.aol-photo-gallery > .description,
+.aol-photo-gallery > h2 {
+	margin-right: 175px;
+}
+.aol-photo-gallery > .description > p {
+	line-height: 22px;
+	margin-top: 8px;
+	margin-bottom: 7px;
+}
+.aol-photo-gallery > .photos {
+	position: relative;
+	background: #d5efff url(aol-loader.gif) no-repeat center center;
+	overflow: hidden;
+	clear:both;
+}
+.aol-photo-gallery > .photos > li {
+	position: absolute;
+	visibility: hidden;
+	cursor: pointer;
+}
+.aol-photo-gallery > .captions {
+	overflow: hidden;
+}
+.aol-photo-gallery > .captions > li {
+	position: absolute;
+	visibility: hidden;
+}
+.aol-photo-gallery > .captions > li > h3 {
+	font-size: 18px;
+	line-height: 20px;
+	margin: 0;
+	padding: 0;
+	padding-top: 8px;
+	padding-bottom: 7px;
+}
+.aol-photo-gallery > .captions > li > p {
+	margin-top: 0;
+	line-height: 22px;
+}
+.aol-photo-gallery > .show-thumbnails {
+	float: right;
+	cursor: pointer;
+	background-color: #6fc4fa;
+	padding: 8px 20px 7px;
+	line-height: 20px;
+	margin-top: -35px;
+}
+.aol-photo-gallery > .show-thumbnails:hover {
+	background-color: #b6e3ff;
+}
+.aol-photo-gallery > .thumbnails {
+	padding-left: 5px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	overflow: hidden;
+	clear: both;
+/*	position: absolute; Remove, do this automatically based on toggle setting. */
+	top: 0;
+	background-color: #d5efff;
+}
+.aol-photo-gallery > .thumbnails > li {
+	float: left;
+	cursor: pointer;
+	margin: 5px;
+}
+.aol-photo-gallery > .status {
+	line-height: 20px;
+	float: right;
+	padding: 8px 10px 7px;
+}
+.aol-photo-gallery > .controls {
+	float: right;
+	position: relative;
+	z-index: 5
+}
+.aol-photo-gallery > .controls > li {
+	background-color: #6fc4fa;
+	padding: 8px 15px 7px;
+	line-height: 20px;
+	cursor: pointer;
+	float: left;
+}
+.aol-photo-gallery > .controls > li:hover {
+	background-color: #b6e3ff;
+}
+.aol-photo-gallery > .sponsor {
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 175px;
+	height: 50px;
+	overflow: hidden;
+	text-indent: -99em;
+}
