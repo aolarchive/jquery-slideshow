@@ -29,33 +29,36 @@
 	margin-top: 8px;
 	margin-bottom: 7px;
 }
-.aol-photo-gallery > .photos {
-	position: relative;
-	background: #d5efff url(aol-loader.gif) no-repeat center center;
-	overflow: hidden;
-	clear:both;
+.aol-photo-gallery > .gallery {
+	background-color: #d5efff;
+	clear: both;
 }
-.aol-photo-gallery > .photos > li {
+.aol-photo-gallery > .gallery > .photos {
+	position: relative;
+	overflow: hidden;
+	margin: 0 auto;
+}
+.aol-photo-gallery > .gallery > .photos > li {
+	background: transparent url(aol-loader.gif) no-repeat center center;
 	position: absolute;
 	visibility: hidden;
 	cursor: pointer;
 }
-.aol-photo-gallery > .captions {
-	overflow: hidden;
+.aol-photo-gallery .captions {
+/*	overflow: hidden; */
+	position: relative;
 }
-.aol-photo-gallery > .captions > li {
+.aol-photo-gallery .captions > li {
 	position: absolute;
 	visibility: hidden;
 }
-.aol-photo-gallery > .captions > li > h3 {
+.aol-photo-gallery .captions > li > h3 {
 	font-size: 18px;
 	line-height: 20px;
 	margin: 0;
-	padding: 0;
-	padding-top: 8px;
-	padding-bottom: 7px;
+	padding: 8px 0 7px;
 }
-.aol-photo-gallery > .captions > li > p {
+.aol-photo-gallery .captions > li > p {
 	margin-top: 0;
 	line-height: 22px;
 }
@@ -84,6 +87,7 @@
 	float: left;
 	cursor: pointer;
 	margin: 5px;
+	background: transparent url(aol-loader-small.gif) no-repeat center center;
 }
 .aol-photo-gallery > .status {
 	line-height: 20px;
@@ -113,4 +117,18 @@
 	height: 50px;
 	overflow: hidden;
 	text-indent: -99em;
+}
+
+.aol-photo-gallery-portrait > .gallery {
+	padding-right: 280px;
+	position: relative;
+}
+.aol-photo-gallery-portrait > .gallery > .captions {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 250px;
+	height: 500px;
+	padding-right: 25px;
+	padding-top: 25px;
 }
