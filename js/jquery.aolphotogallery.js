@@ -9,6 +9,8 @@
 	* Autodetect the width of the column, and adjust the image size.
 	* Make default thumbnail view with toggle.
 	* Portrait galleries: http://www.stylelist.com/2011/01/24/look-of-the-day-emily-blunt/
+	* Keep track of dimensions of the gallery as a whole.
+	* Create a function that handles inside/outside and before/after based on settings.
 	
 */
 (function($, location){
@@ -16,9 +18,12 @@
 var defaultOptions = {
 		
 	//	customClass: "aol-photo-gallery-portrait",
+		customClass: "aol-photo-gallery-carousel",
+		carousel: 1,
+		carouselSiblings: 2,
 		
-		photoWidth: 300, //"auto",
-		photoHeight: 200, //"auto",
+		photoWidth: 450, //"auto",
+		photoHeight: 325, //"auto",
 		
 		thumbnailWidth: 74,
 		thumbnailHeight: 74,
@@ -29,6 +34,7 @@ var defaultOptions = {
 		activeIndex: 1,
 		
 		refreshAd: 0,
+		refreshDivId: "",
 		refreshCount: 3,
 		
 		showThumbnails: 0,
@@ -36,9 +42,11 @@ var defaultOptions = {
 		showDescription: 1,
 		showControls: 1,
 		controlsAfter: 1,
+		controlsInside: 1,
 		showStatus: 1,
 		
 		toggleThumbnails: 1,
+		toggleThumbnailsAfter: 1,
 		
 		showCaptions: 1,
 		captionsAfter: 1,
@@ -67,37 +75,6 @@ var defaultOptions = {
 	// Standard naming convention for deep linked photos.
 	deepLinkHashName = "photo";
 
-$.getDynamicImageSrc = function(photoSrc, photoWidth, photoHeight, thumbnail, settings) {
-    var options,
-        dimensions,
-        action,
-        modifiers;
-    
-    if (typeof thumbnail === "object") {
-        settings = thumbnail;
-    }
-        
-    $.extend(options = {}, {
-        action : 'resize',
-        format : null,
-        quality : 60
-    }, settings);
-        
-    dimensions = photoWidth + "x" + photoHeight;
-    action = (thumbnail && typeof thumbnail !== "object") ? "thumbnail" : options.action;
-    modifiers = "/quality/" + options.quality;
-
-    if (options.crop) {
-        dimensions += "+" + (options.crop.x || 0) + "+" + (options.crop.y || 0);
-    }
-    
-    if (options.format) {
-        modifiers += "/format/" + options.format;
-    }
-        
-    return "http://o.aolcdn.com/dims-global/dims3/GLOB/" + action + "/" + dimensions + modifiers + "/"+ photoSrc;
-};
-
 $.aolPhotoGallery = function( customOptions, elem ){
 	// Initialize the gallery.
 	if ( elem ) {
@@ -121,6 +98,11 @@ $.aolPhotoGallery = function( customOptions, elem ){
 			thumbnailWidth =  options.thumbnailWidth,
 			thumbnailHeight = options.thumbnailHeight,
 			
+			isCarousel = options.carousel,
+			// Used to understand how many slides to be sure to load up front.
+			carouselSiblings = options.carouselSiblings, 
+			carouselPosition,
+			
 			// Object we use to store if photo has been cached.
 			photoCached = {},
 			
@@ -138,6 +120,16 @@ $.aolPhotoGallery = function( customOptions, elem ){
 			$sponsor,
 			
 			core = {
+				
+				// For a given index and length, return the true index.
+				getIndex: function( index, length ){
+					length = totalPhotos;
+					var trueIndex = index < length ? index : index % length;
+					if (trueIndex < 0 ) { 
+						trueIndex = length + trueIndex; 
+					}
+					return trueIndex;
+				},
 				
 				init: function(){
 					
@@ -157,16 +149,26 @@ $.aolPhotoGallery = function( customOptions, elem ){
 	//					width: photoWidth + "px"
 	//				});
 					
-					$slideContainer.css({
-						height: photoHeight + "px",
-						width: photoWidth + "px"
-					});
-					
-					$slides.css({
-						width: photoWidth + "px",
-						height: photoHeight + "px",
-						lineHeight: photoHeight + "px"
-					});
+					if ( isCarousel ) {
+							
+						$slideContainer.css({
+							height: photoHeight + "px"
+						});
+						
+					} else {
+						
+						$slideContainer.css({
+							height: photoHeight + "px",
+							width: photoWidth + "px"
+						});
+						
+						$slides.css({
+							width: photoWidth + "px",
+							height: photoHeight + "px",
+							lineHeight: photoHeight + "px"
+						});
+						
+					}
 					
 					totalPhotos = $anchors.length;
 					
@@ -227,57 +229,139 @@ $.aolPhotoGallery = function( customOptions, elem ){
 					$aolPhotoGallery.replaceWith( $aolPhotoGalleryClone );
 				},
 				
-				preloadPhoto: function(i){
+				preloadPhoto: function( index ){
 					
-					var $slide = $slides.eq(i),
-						dataSrc = $slide.data("src");
+					var photo = photos[ index ],
+						photoSrc = photo.photoSrc,
+						dynamicPhotoSrc = $.getDynamicImageSrc( photoSrc, photoWidth, photoHeight ),
+						$slide = $slides.eq( index ),
+						image;
 					
-					if ( dataSrc ) {
-						$slide.css("backgroundImage", "url(" + $.getDynamicImageSrc( photos[i].photoSrc, photoWidth, photoHeight ) + ")");
-						$slide.removeData("src");
+					if ( ! $slide.data("image-loaded." + namespace) ) {
+						
+						// Preload this image and be sure its siblings are loaded.
+						if ( isCarousel ) {
+							
+							// Images are tricky because we need to know the width
+							// to pull off a carousel.  We must first download the 
+							// image, figure out the width, and set its parent.
+							image = new Image();
+							image.src = dynamicPhotoSrc;
+							image.onload = function(){
+								
+								var slideContainerWidth = $slideContainer.width();
+
+								$slide.css({
+									backgroundImage: "url(" + dynamicPhotoSrc + ")",
+									width: image.width + "px",
+									height: image.height + "px",
+									visibility: "visible"
+								});
+								
+								// Update the slide container's width.
+								$slideContainer.width( slideContainerWidth + $slide.outerWidth() );
+								
+								// Update the position of the active index if needed.
+								core.updateCarousel();
+							};
+
+							
+						} else {
+							// Set up background images on slides. This is nice because we don't have to 
+							// mess with <img>, which downloads automatically where as CSS will only
+							// download when visible.
+							$slide.css("backgroundImage", "url(" + dynamicPhotoSrc + ")");
+	
+						}
+						
+						$slide.data("image-loaded." + namespace, 1);
 					}
 					
 				},
+				
+				updateCarousel: function(){
+					
+					var $slide = $slides.eq( activeIndex ),
+						galleryWidth = $gallery.width(),
+						activePosition = -$slide.position().left; // Look into caching this.
+					
+					if ( activePosition !== carouselPosition ) {
+						console.log("Updating carousel position to: " + activePosition);
+						$slideContainer.css( "left", activePosition + "px" );
+						carouselPosition = activePosition;
+					}											
+				},
 
 				buildGallery: function(){
-
-					$slides.css({
-						opacity: 0
-					});
 					
-					// Set up the active photo.
-					$slides.eq( activeIndex ).css({
-						zIndex: 1,
-						opacity: 1,
-						visibility: "visible"
-					});
+					var currentIndex,
+						lastIndex,
+						$nodeBack,
+						$nodeNext;
 					
-					// Set up background images on slides. This is nice because we don't have to 
-					// mess with <img>, which downloads automatically where as CSS will only
-					// download when visible.
-					$slides.each(function(i){
-
-						var photo = photos[i],
-							photoSrc = photo.photoSrc,
-							dynamicPhotoSrc = $.getDynamicImageSrc( photoSrc, photoWidth, photoHeight ),
-							$slide = $slides.eq(i);
-						
-						if ( i === activeIndex ) {
-							$slide.css("backgroundImage", "url(" + dynamicPhotoSrc + ")");
-						} else {
-							// this.style.background = "url(" + dynamicPhotoSrc + ") no-repeat center center";
-							$slide.data( "src", dynamicPhotoSrc );
+					if ( isCarousel ) {
+					
+						// For the active index and its siblings, we'll need
+						// to load the image as well.
+						currentIndex = activeIndex - carouselSiblings;
+						lastIndex = activeIndex + carouselSiblings;
+						while ( currentIndex <= lastIndex ) {
+							core.preloadPhoto( getIndex( currentIndex ) );
+							currentIndex++;
+						} 
+					
+						// Based on the position of the active index, ensure 
+						// siblings exist in the DOM to the left and to 
+						// the right of the active.
+						$nodeBack = $nodeNext = $slides.eq( activeIndex );
+						for ( var i = 0; i < carouselSiblings; i++ ) {
+							
+							$nodeBack = $nodeBack.prev();
+							$nodeNext = $nodeNext.next();
+							
+							// If we don't have the previous one, we need to grab
+							// the last node and put it in the beginning.
+							if ( ! $nodeBack.length ) {
+								$slideContainer.prepend( $slides.eq( getIndex( activeIndex - i - 1 ) ) );
+							}
+							// If we don't have the next one, we need to grab
+							// the first node and put it at the end.
+							if ( ! $nodeNext.length ) {
+								$slideContainer.append( $slides.eq( getIndex( activeIndex + i + 1 ) ) );
+							}
 						}
 
-					});
+					// Preload the active index.					
+					} else {
+						
+						$slides.css({
+							opacity: 0
+						});
+						
+						// Set up the active photo.
+						$slides.eq( activeIndex ).css({
+							zIndex: 1,
+							opacity: 1,
+							visibility: "visible"
+						});
+						
+						core.preloadPhoto( activeIndex );
+					}
+					
 					
 					// Remove the anchor links, we no longer need them.
-					$anchors.remove();
+					// On second thought, leave them in for screen readers.
+					// $anchors.remove();
 					
 					// Wrap the photos for design hooks.
 					$slideContainer.wrap( "<div class=\"gallery\"></div>" );
 					
 					$gallery = ui.$gallery = $slideContainer.parent();
+					
+					// In the carousel, the gallery height is fixed.
+					if ( options.carousel ) {
+						$gallery.height( photoHeight );
+					}
 									
 					// If we need to show thumbnails by default and 
 					// hide the gallery, do so now. 
@@ -332,21 +416,25 @@ $.aolPhotoGallery = function( customOptions, elem ){
 							
 							backIndex = activeIndex === 0 ? totalPhotos - 1 : activeIndex - 1,
 							nextIndex = activeIndex === totalPhotos - 1 ? 0 : activeIndex + 1;
-							
-						// Handle transition.
-						$oldSlide.css({
-							zIndex: 0 
-						}).animate({
-							opacity: 0
-						}, 250);
 						
-						$activeSlide.css({ 
-							visibility: "visible",
-							zIndex: 1 
-						}).animate({
-							opacity: 1
-						}, 250);	
-
+						if ( options.carousel ) {
+							// Handle carousel transition.
+						
+						} else {
+							// Handle fade transition.
+							$oldSlide.css({
+								zIndex: 0 
+							}).animate({
+								opacity: 0
+							}, 250);
+							
+							$activeSlide.css({ 
+								visibility: "visible",
+								zIndex: 1 
+							}).animate({
+								opacity: 1
+							}, 250);	
+						}
 						
 						// Preload the previous image if needed.	
 						core.preloadPhoto( backIndex );
@@ -428,8 +516,6 @@ $.aolPhotoGallery = function( customOptions, elem ){
 					setTimeout(function(){
 						$captionContainer.height( $captions.eq( activeIndex ).height() );
 					}, 0);
-					
-
 					
 					core.bindCaptions();
 					
@@ -568,10 +654,18 @@ $.aolPhotoGallery = function( customOptions, elem ){
 					
 					$controls = ui.$controls = $("<ul class=\"controls\"><li class=\"back\"><b>Back</b></li><li class=\"next\"><b>Next</b></li></ul>");
 					
-					if ( options.controlsAfter ) {
-						$gallery.after( $controls );
+					if ( options.controlsInside ) {
+						if ( options.controlsAfter ) {
+							$gallery.append( $controls );
+						} else {
+							$gallery.prepend( $controls );
+						}	
 					} else {
-						$gallery.before( $controls );
+						if ( options.controlsAfter ) {
+							$gallery.after( $controls );
+						} else {
+							$gallery.before( $controls );
+						}	
 					}
 					
 					core.bindControls();
@@ -836,7 +930,11 @@ $.aolPhotoGallery = function( customOptions, elem ){
 						$showThumbnails.css("visibility", "visible");
 					}
 					
-					$gallery.before( $showThumbnails );
+					if ( options.toggleThumbnailsAfter ) {
+						$gallery.after( $showThumbnails );
+					} else {
+						$gallery.before( $showThumbnails );	
+					}
 					
 					core.bindShowThumbnails();
 				},
@@ -875,13 +973,13 @@ $.aolPhotoGallery = function( customOptions, elem ){
 				
 			},
 			
+			// Localize core functions for performance.
+			getIndex = core.getIndex,
+			
 			initRefreshAd = function(){
-
-				function refreshAd(){
-					// Code for refreshing ads here.
-				}
 				
-				var adMagicNumbers = options.refreshAd.split(),
+				var // adMagicNumbers = options.refreshAd.split(),
+					refreshDivId = options.refreshDivId,
 					refreshStatus = 0,
 					refreshCount = options.refreshCount;
 				
@@ -894,20 +992,27 @@ $.aolPhotoGallery = function( customOptions, elem ){
 				if ( refreshCount < refreshMinimum ) {
 					refreshCount = refreshMinimum;
 				}
+				
+				if ( refreshDivId ) {
+					// Listen for status updates to count photo clicks.
+					$aolPhotoGalleryClone.bind("status-update." + namespace, function(){
+					// Code for refreshing ads here.
 
-				// Listen for status updates to count photo clicks.
-				$aolPhotoGalleryClone.bind("status-update." + namespace, function(){
-					
-					// Increment our status counter.
-					refreshStatus++;
-					
-					// If we are at the limit, time to refresh and reset.
-					if ( refreshStatus === refreshCount ) {
-						refreshAd();
-						refreshStatus = 0;
-					}
-					
-				});
+						// Increment our status counter.
+						refreshStatus++;
+
+						// If we are at the limit, time to refresh and reset.
+						if ( refreshStatus === refreshCount ) {
+							
+							if ( window.adsReloadAd ) {
+								adsReloadAd( refreshDivId )
+								refreshStatus = 0;
+							}
+							// Artz: Consider throwing an error here.
+						}
+						
+					});
+				}
 				
 			}, 
 			
@@ -939,11 +1044,11 @@ $.aolPhotoGallery = function( customOptions, elem ){
 			},
 			
 			init = function(){
-				
-				if ( options.refreshAd ) {
+
+				if ( options.refreshDivId ) {
 					initRefreshAd( options );
 				}
-				
+
 				initDeepLinking();
 			};
 		
@@ -970,3 +1075,47 @@ $.fn.aolPhotoGallery = function( customOptions ){
 }
 	
 })(jQuery, location);
+
+(function($){
+	
+	$.mmTrack = function( customOptions ) {
+		
+	}
+	
+})(jQuery);
+
+(function($){
+	
+$.getDynamicImageSrc = function( photoSrc, photoWidth, photoHeight, thumbnail, settings ) {
+	
+	var options,
+		dimensions,
+		action,
+		modifiers;
+	
+	if ( typeof thumbnail === "object" ) {
+		settings = thumbnail;
+	}
+		
+	$.extend( options = {}, {
+		action : 'resize',
+		format : null,
+		quality : 60
+	}, settings);
+		
+	dimensions = photoWidth + "x" + photoHeight;
+	action = (thumbnail && typeof thumbnail !== "object") ? "thumbnail" : options.action;
+	modifiers = "/quality/" + options.quality;
+
+	if (options.crop) {
+		dimensions += "+" + (options.crop.x || 0) + "+" + (options.crop.y || 0);
+	}
+	
+	if (options.format) {
+		modifiers += "/format/" + options.format;
+	}
+		
+	return "http://o.aolcdn.com/dims-global/dims3/GLOB/" + action + "/" + dimensions + modifiers + "/" + photoSrc;
+};
+
+})(jQuery);
