@@ -255,21 +255,26 @@ $.aolPhotoGallery = function( customOptions, elem ){
 							image.src = dynamicPhotoSrc;
 							image.onload = function(){
 								
-								var slideContainerWidth = $slideContainer.width();
-
-								$slide.css({
-									backgroundImage: "url(" + dynamicPhotoSrc + ")",
-									width: image.width + "px",
-				//					height: image.height + "px", // We want images to center, so we keep this full height.
-									height: photoHeight + "px",
-									visibility: "visible"
+								// Once an image loads, be sure to do this 
+								// after all animations have finished.
+								$slideContainer.queue(function(next){
+									var slideContainerWidth = $slideContainer.width();
+	
+									$slide.css({
+										backgroundImage: "url(" + dynamicPhotoSrc + ")",
+										width: image.width + "px",
+					//					height: image.height + "px", // We want images to center, so we keep this full height.
+										height: photoHeight + "px",
+										visibility: "visible"
+									});
+									
+									// Update the slide container's width.
+									$slideContainer.width( slideContainerWidth + $slide.outerWidth() );
+	
+									// Update the position of the active index if needed.
+									core.updateCarouselPosition();
+									next();
 								});
-								
-								// Update the slide container's width.
-								$slideContainer.width( slideContainerWidth + $slide.outerWidth() );
-
-								// Update the position of the active index if needed.
-								core.updateCarouselPosition();
 								
 							};
 
@@ -315,7 +320,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 					// After all animations are done, and before
 					// any others start, we do this.
 					$slideContainer.queue(function( next ){
-						console.log("Updating order and stuff.");
+
 						// Based on the position of the active index, ensure 
 						// siblings exist in the DOM to the left and to 
 						// the right of the active.
@@ -975,7 +980,6 @@ $.aolPhotoGallery = function( customOptions, elem ){
 						
 						$aolPhotoGalleryClone.bind("thumbnail-click." + namespace, function(){
 							
-//							console.log( $gallery.width() );
 							$thumbnailContainer.css({
 								"position": "absolute"
 							}).animate({
