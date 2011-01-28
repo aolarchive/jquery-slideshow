@@ -20,7 +20,7 @@ var defaultOptions = {
 	//	customClass: "aol-photo-gallery-portrait",
 		customClass: "aol-photo-gallery-carousel",
 		carousel: 1,
-		carouselSiblings: 1,
+		carouselSiblings: 2,
 		
 		speed: 250,
 		
@@ -47,7 +47,7 @@ var defaultOptions = {
 		controlsInside: 1,
 		showStatus: 1,
 		
-		toggleThumbnails: 1,
+		toggleThumbnails: 0,
 		toggleThumbnailsAfter: 1,
 		
 		showCaptions: 1,
