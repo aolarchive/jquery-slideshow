@@ -305,37 +305,46 @@ $.aolPhotoGallery = function( customOptions, elem ){
 
 					var	$nodeBack,
 						$nodeNext;
-						
+					
+					// Before we do anything, we should animate to ensure it's smooth.
+					core.updateCarouselPosition( oldIndex );
+					
+					// Next we should start fetching any new photos.
 					core.preloadCarouselPhotos( activeIndex );
 					
-					// Based on the position of the active index, ensure 
-					// siblings exist in the DOM to the left and to 
-					// the right of the active.
-	
-					$nodeBack = $nodeNext = $slides.eq( activeIndex );
-					for ( var i = 0; i < carouselSiblings; i++ ) {
-						
-						$nodeBack = $nodeBack.prev();
-						$nodeNext = $nodeNext.next();
-						
-						// If we don't have the previous one, we need to grab
-						// the last node and put it in the beginning.
-						if ( ! $nodeBack.length ) {
-							$slideContainer.prepend( $slides.eq( getIndex( activeIndex - i - 1 ) ) );
+					// After all animations are done, and before
+					// any others start, we do this.
+					$slideContainer.queue(function( next ){
+						console.log("Updating order and stuff.");
+						// Based on the position of the active index, ensure 
+						// siblings exist in the DOM to the left and to 
+						// the right of the active.
+						$nodeBack = $nodeNext = $slides.eq( activeIndex );
+						for ( var i = 0; i < carouselSiblings; i++ ) {
+							
+							$nodeBack = $nodeBack.prev();
+							$nodeNext = $nodeNext.next();
+							
+							// If we don't have the previous one, we need to grab
+							// the last node and put it in the beginning.
+							if ( ! $nodeBack.length ) {
+								$slideContainer.prepend( $slides.eq( getIndex( activeIndex - i - 1 ) ) );
+							}
+							// If we don't have the next one, we need to grab
+							// the first node and put it at the end.
+							if ( ! $nodeNext.length ) {
+								$slideContainer.append( $slides.eq( getIndex( activeIndex + i + 1 ) ) );
+							}
 						}
-						// If we don't have the next one, we need to grab
-						// the first node and put it at the end.
-						if ( ! $nodeNext.length ) {
-							$slideContainer.append( $slides.eq( getIndex( activeIndex + i + 1 ) ) );
-						}
-					}
-				
-					core.updateCarouselPosition( oldIndex );
+						core.updateCarouselPosition();
+						next();
+					});
+					
 				},
 				
 				// Think about moving this back into preloadImage.
 				updateCarouselPosition: function( oldIndex ){
-					
+
 						// Look into caching some of these widths.
 					var $slide = $slides.eq( activeIndex ),
 						galleryWidth = $gallery.width(),
@@ -673,7 +682,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 						
 							setTimeout(function(){
 								statusRateLimit = 0;
-							}, speed + 50 );
+							}, speed );
 						}
 					});
 					
