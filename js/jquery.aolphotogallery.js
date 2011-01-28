@@ -242,36 +242,35 @@ $.aolPhotoGallery = function( customOptions, elem ){
 						image;
 					
 					if ( ! $slide.data("image-loaded." + namespace) ) {
-						
+
 						// Preload this image and be sure its siblings are loaded.
 						if ( isCarousel ) {
 							
-							$slideContainer.queue(function( next ){
-								// Images are tricky because we need to know the width
-								// to pull off a carousel.  We must first download the 
-								// image, figure out the width, and set its parent.
-								image = new Image();
-								image.src = dynamicPhotoSrc;
-								image.onload = function(){
-									
-									var slideContainerWidth = $slideContainer.width();
-	
-									$slide.css({
-										backgroundImage: "url(" + dynamicPhotoSrc + ")",
-										width: image.width + "px",
-					//					height: image.height + "px", // We want images to center, so we keep this full height.
-										height: photoHeight + "px",
-										visibility: "visible"
-									});
-									
-									// Update the slide container's width.
-									$slideContainer.width( slideContainerWidth + $slide.outerWidth() );
+							// Images are tricky because we need to know the width
+							// to pull off a carousel.  We must first download the 
+							// image, figure out the width, and set its parent.
+							image = new Image();
+							image.src = dynamicPhotoSrc;
+							image.onload = function(){
+								
+								var slideContainerWidth = $slideContainer.width();
 
-									// Update the position of the active index if needed.
-									core.updateCarouselPosition();
-										next();								
-								};
-							});
+								$slide.css({
+									backgroundImage: "url(" + dynamicPhotoSrc + ")",
+									width: image.width + "px",
+				//					height: image.height + "px", // We want images to center, so we keep this full height.
+									height: photoHeight + "px",
+									visibility: "visible"
+								});
+								
+								// Update the slide container's width.
+								$slideContainer.width( slideContainerWidth + $slide.outerWidth() );
+
+								// Update the position of the active index if needed.
+								core.updateCarouselPosition();
+								
+							};
+
 
 							
 						} else {
@@ -287,25 +286,30 @@ $.aolPhotoGallery = function( customOptions, elem ){
 					
 				},
 				
-				updateCarousel: function( oldIndex ){
-
-					var currentIndex,
-						lastIndex,
-						$nodeBack,
-						$nodeNext;
+				preloadCarouselPhotos: function( index ) {
+					
+					var currentIndex = index - carouselSiblings,
+						lastIndex = index + carouselSiblings;
 						
 					// For the active index and its siblings, we'll need
 					// to load the image as well.
-					currentIndex = activeIndex - carouselSiblings;
-					lastIndex = activeIndex + carouselSiblings;
 					while ( currentIndex <= lastIndex ) {
 						core.preloadPhoto( getIndex( currentIndex ) );
 						currentIndex++;
 					} 
+				},
 				
+				updateCarousel: function( oldIndex ){
+
+					var	$nodeBack,
+						$nodeNext;
+						
+					core.preloadCarouselPhotos( activeIndex );
+					
 					// Based on the position of the active index, ensure 
 					// siblings exist in the DOM to the left and to 
 					// the right of the active.
+	
 					$nodeBack = $nodeNext = $slides.eq( activeIndex );
 					for ( var i = 0; i < carouselSiblings; i++ ) {
 						
@@ -323,7 +327,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 							$slideContainer.append( $slides.eq( getIndex( activeIndex + i + 1 ) ) );
 						}
 					}
-					
+				
 					core.updateCarouselPosition( oldIndex );
 				},
 				
@@ -431,12 +435,20 @@ $.aolPhotoGallery = function( customOptions, elem ){
 
 					$aolPhotoGalleryClone.bind("back-mouseover." + namespace, function( event, data ){
 						var backIndex = activeIndex === 0 ? totalPhotos - 1 : activeIndex - 1;
-						core.preloadPhoto( backIndex );
+						if ( isCarousel ) {
+							core.preloadCarouselPhotos( backIndex);
+						} else {
+							core.preloadPhoto( backIndex );
+						}
 					});
 					
 					$aolPhotoGalleryClone.bind("next-mouseover." + namespace, function( event, data ){
 						var nextIndex = activeIndex === totalPhotos - 1 ? 0 : activeIndex + 1;
-						core.preloadPhoto( nextIndex );
+						if ( isCarousel ) {
+							core.preloadCarouselPhotos( nextIndex );
+						} else {
+							core.preloadPhoto( nextIndex );
+						}
 					});
 					
 					$aolPhotoGalleryClone.bind("status-update." + namespace, function(event, data){
@@ -449,7 +461,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 							
 							backIndex = activeIndex === 0 ? totalPhotos - 1 : activeIndex - 1,
 							nextIndex = activeIndex === totalPhotos - 1 ? 0 : activeIndex + 1;			
-	console.log("updating status from old: " + oldIndex + " to " + activeIndex );						
+
 						if ( options.carousel ) {
 							
 							// Handle carousel transition.
