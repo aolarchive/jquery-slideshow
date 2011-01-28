@@ -102,6 +102,8 @@ $.aolPhotoGallery = function( customOptions, elem ){
 			thumbnailWidth =  options.thumbnailWidth,
 			thumbnailHeight = options.thumbnailHeight,
 			
+			statusRateLimit = 0,
+			
 			isCarousel = options.carousel,
 			// Used to understand how many slides to be sure to load up front.
 			carouselSiblings = options.carouselSiblings, 
@@ -462,7 +464,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 							backIndex = activeIndex === 0 ? totalPhotos - 1 : activeIndex - 1,
 							nextIndex = activeIndex === totalPhotos - 1 ? 0 : activeIndex + 1;			
 
-						if ( options.carousel ) {
+						if ( isCarousel ) {
 							
 							// Handle carousel transition.
 							core.updateCarousel( oldIndex );
@@ -660,25 +662,36 @@ $.aolPhotoGallery = function( customOptions, elem ){
 					});
 					
 					$aolPhotoGalleryClone.bind("back-click." + namespace, function( event, data ){
-						
-						var oldIndex = activeIndex;
+						if ( ! statusRateLimit ) {
+							statusRateLimit = 1;
+							var oldIndex = activeIndex;
+								
+							activeIndex = activeIndex === 0 ? totalPhotos - 1 : activeIndex - 1;
 							
-						activeIndex = activeIndex === 0 ? totalPhotos - 1 : activeIndex - 1;
+							$status.html( ( activeIndex + 1 ) + " of " + totalPhotos )
+								.trigger("status-update." + namespace, [{ oldIndex: oldIndex, activeIndex: activeIndex }]);
 						
-						$status.html( ( activeIndex + 1 ) + " of " + totalPhotos )
-							.trigger("status-update." + namespace, [{ oldIndex: oldIndex, activeIndex: activeIndex }]);
-
+							setTimeout(function(){
+								statusRateLimit = 0;
+							}, speed + 50 );
+						}
 					});
 					
 					$aolPhotoGalleryClone.bind("next-click." + namespace, function(){
-						
-						var oldIndex = activeIndex;
+						if ( ! statusRateLimit ) {
+							statusRateLimit = 1;
+								
+							var oldIndex = activeIndex;
+								
+							activeIndex = activeIndex === totalPhotos - 1 ? 0 : activeIndex + 1;
 							
-						activeIndex = activeIndex === totalPhotos - 1 ? 0 : activeIndex + 1;
+							$status.html( ( activeIndex + 1 ) + " of " + totalPhotos )
+								.trigger("status-update." + namespace, [{ oldIndex: oldIndex, activeIndex: activeIndex }]);
 						
-						$status.html( ( activeIndex + 1 ) + " of " + totalPhotos )
-							.trigger("status-update." + namespace, [{ oldIndex: oldIndex, activeIndex: activeIndex }]);
-							
+							setTimeout(function(){
+								statusRateLimit = 0;
+							}, speed );
+						}	
 					});
 					
 					// If the toggle feature is present, add those bindings.
