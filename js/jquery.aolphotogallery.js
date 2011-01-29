@@ -579,7 +579,9 @@ $.aolPhotoGallery = function( customOptions, elem ){
 									
 					// Need to make this tweak in the next UI thread.
 					setTimeout(function(){
-						$captionContainer.height( $captions.eq( activeIndex ).height() );
+						$captionContainer.height( $captions.eq( activeIndex ).height() )
+                            .width( $captionContainer.width() );
+                        
 					}, 0);
 					
 					core.bindCaptions();
@@ -805,7 +807,8 @@ $.aolPhotoGallery = function( customOptions, elem ){
 					} else {
 
 						for (; i < l; i++) {
-							thumbnailHTML.push("<li data-src=\"" + $.getDynamicImageSrc( photos[i].photoSrc, thumbnailWidth, thumbnailHeight, 1 ) + "\" style=\"width: " + thumbnailWidth + "px; height: " + thumbnailHeight + "px; display: " + ( ( i >= thumbnailCount) ? "none" : "block" )  + "; opacity: .7;\" data-index=\"" + i + "\"></li>");
+                            // Nate: Added filter style for opacity in IE6/7
+							thumbnailHTML.push("<li data-src=\"" + $.getDynamicImageSrc( photos[i].photoSrc, thumbnailWidth, thumbnailHeight, 1 ) + "\" style=\"width: " + thumbnailWidth + "px; height: " + thumbnailHeight + "px; display: " + ( ( i >= thumbnailCount) ? "none" : "block" )  + "; opacity: .7; filter: alpha(opacity = 70);\" data-index=\"" + i + "\"></li>");
 						}
 
 					}

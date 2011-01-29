@@ -49,6 +49,7 @@
 }
 .aol-photo-gallery .captions {
 /*	overflow: hidden; */
+    clear: right; /* Bump captions below controls and status */
 	position: relative;
 }
 .aol-photo-gallery .captions > li {
@@ -114,6 +115,7 @@
 	background-color: #b6e3ff;
 }
 .aol-photo-gallery > .sponsor {
+    border: 1px solid red;
 	position: absolute;
 	right: 0;
 	top: 0;
