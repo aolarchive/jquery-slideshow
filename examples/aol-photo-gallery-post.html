@@ -97,6 +97,26 @@ adSetAdURL('/_uac/adpage.html');
       <li><a title="Gotta get back, back to the past.&nbsp;" href="/photos/my-favorite-things/3590972/" data-photo-src="http://www.blogcdn.com/platform.aol.com/media/2010/11/samuraijack.jpg"  data-date="">Samurai Jack</a><!--Gotta get back, back to the past.&nbsp;--></li>
     </ul>
   </div>
+
+  <br />
+  <br />
+  <br />
+  <br />
+  <strong>Gallery 4:</strong><br />
+  <br />
+  <p><b>GalleryID: 107877</b></p>
+  <div class="aol-photo-gallery">
+    <h2><b>My favorite things</b></h2>
+	<div class="description">These are a few of them.</div>
+    <ul class="photos">
+      <li><a title="&nbsp;One of history's greatest motorcycles" href="/photos/my-favorite-things/3590965/" data-photo-src="http://www.blogcdn.com/platform.aol.com/media/2010/11/4424014732a43c3470f.jpg"  data-date="">BMW /5</a><!-- &nbsp;One of history's greatest motorcycles</li> -->
+      <li><a title="Genndy Tartakovsky is a genius.&nbsp;" href="/photos/my-favorite-things/3590967/" data-photo-src="http://www.blogcdn.com/platform.aol.com/media/2010/11/dexterslaboratorywallpaper800.jpg"  data-date="">Dexter's Laboratory</a><!--Genndy Tartakovsky is a genius.&nbsp; --></li>
+      <li><a title="&nbsp;" href="/photos/my-favorite-things/3590968/" data-photo-src="http://www.blogcdn.com/platform.aol.com/media/2010/11/dragonball-z.jpg"  data-date="">Dragonball Z</a><!--&nbsp; --></li>
+      <li><a title="Hikaru is possessed by the ghost of an ancient Japanese go master.&nbsp;" href="/photos/my-favorite-things/3590969/" data-photo-src="http://www.blogcdn.com/platform.aol.com/media/2010/11/hikaru-no-go-wallpaper.jpg"  data-date="">Hikaru no Go</a><!--Hikaru is possessed by the ghost of an ancient Japanese go master.&nbsp;--></li>
+      <li><a title="Gotta get back, back to the past.&nbsp;" href="/photos/my-favorite-things/3590972/" data-photo-src="http://www.blogcdn.com/platform.aol.com/media/2010/11/samuraijack.jpg"  data-date="">Samurai Jack</a><!--Gotta get back, back to the past.&nbsp;--></li>
+    </ul>
+  </div>
+
 </div>
 <div class="aside">
 <div id='ad300x250'></div>
@@ -110,7 +130,32 @@ adSetAdURL('/_uac/adpage.html');
 <script src="../js/jquery.aolphotogallery.js"></script>
 <script>
 //$("[name='aol-photo-gallery']").aolPhotoGallery();
-$(".aol-photo-gallery").aolPhotoGallery({
+$(".aol-photo-gallery:eq(0)").aolPhotoGallery({
+//	refreshAd: "123456789",
+	refreshDivId: "ad300x250",
+	sponsorName: "Sprint",
+	sponsorImage: "../css/sponsor.png",
+	sponsorUrl: "http://www.sprint.com"
+});
+
+$(".aol-photo-gallery:eq(1)").aolPhotoGallery({
+//	refreshAd: "123456789",
+	refreshDivId: "ad300x250",
+	sponsorName: "Sprint",
+	sponsorImage: "../css/sponsor.png",
+	sponsorUrl: "http://www.sprint.com"
+});
+
+$(".aol-photo-gallery:eq(2)").aolPhotoGallery({
+    carousel: 0,
+//	refreshAd: "123456789",
+	refreshDivId: "ad300x250",
+	sponsorName: "Sprint",
+	sponsorImage: "../css/sponsor.png",
+	sponsorUrl: "http://www.sprint.com"
+});
+
+$(".aol-photo-gallery:eq(3)").aolPhotoGallery({
 //	refreshAd: "123456789",
 	refreshDivId: "ad300x250",
 	sponsorName: "Sprint",
