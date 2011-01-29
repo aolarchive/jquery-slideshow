@@ -16,31 +16,32 @@
 	padding: 0;
 	border: 0;
 }
-.aol-photo-gallery > h2 {
+.aol-photo-gallery h2 {
 	margin: 0 0 7px;
     padding: 1em 0 0;
 	font-size: 22px;
 }
-.aol-photo-gallery > .description,
-.aol-photo-gallery > h2 {
+.aol-photo-gallery .description,
+.aol-photo-gallery h2 {
 	margin-right: 175px;
 }
-.aol-photo-gallery > .description > p {
+.aol-photo-gallery .description > p {
 	line-height: 22px;
 	margin-top: 8px;
 	margin-bottom: 7px;
 }
-.aol-photo-gallery > .gallery {
+.aol-photo-gallery .gallery {
 	position: relative;
 	background-color: #d5efff;
 	clear: both;
+    overflow: hidden;
 }
-.aol-photo-gallery > .gallery > .photos {
+.aol-photo-gallery .gallery .photos {
 	position: relative;
 	overflow: hidden;
 	margin: 0 auto;
 }
-.aol-photo-gallery > .gallery > .photos > li {
+.aol-photo-gallery .gallery .photos li {
 	background: transparent url(aol-loader.gif) no-repeat center center;
 	position: absolute;
 	visibility: hidden;
@@ -53,21 +54,21 @@
     clear: right; /* Bump captions below controls and status */
 	position: relative;
 }
-.aol-photo-gallery .captions > li {
+.aol-photo-gallery .captions li {
 	position: absolute;
 	visibility: hidden;
 }
-.aol-photo-gallery .captions > li > h3 {
+.aol-photo-gallery .captions li h3 {
 	font-size: 18px;
 	line-height: 20px;
 	margin: 0;
 	padding: 8px 0 7px;
 }
-.aol-photo-gallery .captions > li > p {
+.aol-photo-gallery .captions li p {
 	margin-top: 0;
 	line-height: 22px;
 }
-.aol-photo-gallery > .show-thumbnails {
+.aol-photo-gallery .show-thumbnails {
 	float: right;
 	cursor: pointer;
 	background-color: #6fc4fa;
@@ -76,10 +77,10 @@
 	position:relative;
 	z-index: 5;
 }
-.aol-photo-gallery > .show-thumbnails:hover {
+.aol-photo-gallery .show-thumbnails:hover {
 	background-color: #b6e3ff;
 }
-.aol-photo-gallery > .thumbnails {
+.aol-photo-gallery .thumbnails {
 	padding-left: 5px;
 	padding-top: 5px;
 	padding-bottom: 5px;
@@ -89,33 +90,33 @@
 	top: 0;
 	background-color: #d5efff;
 }
-.aol-photo-gallery > .thumbnails > li {
+.aol-photo-gallery .thumbnails li {
 	float: left;
 	cursor: pointer;
 	margin: 5px;
 	background: transparent url(aol-loader-small.gif) no-repeat center center;
 }
-.aol-photo-gallery > .status {
+.aol-photo-gallery .status {
 	line-height: 20px;
 	float: right;
 	padding: 8px 10px 7px;
 }
-.aol-photo-gallery > .controls {
+.aol-photo-gallery .controls {
 	float: right;
 	position: relative;
 	z-index: 5
 }
-.aol-photo-gallery > .controls > li {
+.aol-photo-gallery .controls li {
 	background-color: #6fc4fa;
 	padding: 8px 15px 7px;
 	line-height: 20px;
 	cursor: pointer;
 	float: left;
 }
-.aol-photo-gallery > .controls > li:hover {
+.aol-photo-gallery .controls li:hover {
 	background-color: #b6e3ff;
 }
-.aol-photo-gallery > .sponsor {
+.aol-photo-gallery .sponsor {
 	position: absolute;
 	right: 0;
 	top: 0;
@@ -126,11 +127,11 @@
 }
 
 /* Portrait Styles */
-.aol-photo-gallery-portrait > .gallery {
+.aol-photo-gallery-portrait .gallery {
 	padding-right: 280px;
 	position: relative;
 }
-.aol-photo-gallery-portrait > .gallery > .captions {
+.aol-photo-gallery-portrait .gallery .captions {
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -141,32 +142,50 @@
 }
 
 /* Carousel Styles */
-.aol-photo-gallery > .gallery > .controls {
+.aol-photo-gallery .gallery .controls {
 	float: right;
+    position: static;
 	z-index: 5
 }
-.aol-photo-gallery > .gallery > .controls > li {
+.aol-photo-gallery .gallery .controls li {
 	background-color: #6fc4fa;
 	padding: 8px 15px 7px;
 	line-height: 20px;
 	cursor: pointer;
 	position: absolute;
 }
-.aol-photo-gallery > .gallery > .controls > .back {
+.aol-photo-gallery .gallery .controls .back {
 	left: 0;
 	top: 135px;
+
+       -moz-border-radius: 0 5px 5px 0;
+    -webkit-border-radius: 0 5px 5px 0;
+            border-radius: 0 5px 5px 0;
+
+
+       -moz-box-shadow: 0 0 2px hsla(0, 0%, 0%, 0.5);
+    -webkit-box-shadow: 0 0 2px hsla(0, 0%, 0%, 0.5);
+            box-shadow: 0 0 2px hsla(0, 0%, 0%, 0.5);
 }
-.aol-photo-gallery > .gallery > .controls > .next {
+.aol-photo-gallery .gallery .controls .next {
 	right: 0;
 	top: 135px;
+
+       -moz-border-radius: 5px 0 0 5px;
+    -webkit-border-radius: 5px 0 0 5px;
+            border-radius: 5px 0 0 5px;
+
+       -moz-box-shadow: 0 0 2px hsla(0, 0%, 0%, 0.5);
+    -webkit-box-shadow: 0 0 2px hsla(0, 0%, 0%, 0.5);
+            box-shadow: 0 0 2px hsla(0, 0%, 0%, 0.5);
 }
-.aol-photo-gallery-carousel > .gallery > .photos {
+.aol-photo-gallery-carousel .gallery .photos {
 	position: absolute;
 	top: 0;
 	left: 0;
 	overflow: visible;
 }
-.aol-photo-gallery-carousel > .gallery > .photos > li {
+.aol-photo-gallery-carousel .gallery .photos li {
 	position: static;
 	float: left;
 }
