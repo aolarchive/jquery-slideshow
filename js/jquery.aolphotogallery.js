@@ -199,6 +199,10 @@ var defaultOptions = {
 		// Shows the credits inside this UI element.
 		creditInside: "$captions",
 		
+		// Initializes Comscore, Data Layer and Omniture tracking.
+		// Note: This should be handled automatically in the future.
+		initTracking: 1,
+		
 		// Prepends if falsy or appends if truthy to 
 		// the "creditInside" container.
 		creditAfter: 0,
@@ -239,6 +243,10 @@ var defaultOptions = {
 	// We use this for naming our advertisement <div>
 	adDivId = 0,
 	adDivName = defaultOptions.namespace + "-ad",
+	
+	// The standard tracking area for what constitutes a page view.
+	trackingArea = 1024 * 768,
+	trackingRatio = 0.5,
 	
 	// Standard naming convention for deep linked photos.
 	deepLinkHashName = "photo";
@@ -652,33 +660,33 @@ $.aolPhotoGallery = function( customOptions, elem ){
 						$fullscreenContainer = $fullscreen.find(".fullscreen"),
 						$fullscreenAd,
 						fullscreenAdId = adDivName + (adDivId + 1),
-						fullscreenOptions = options.fullscreenOptions;
-/*						
+						fullscreenOptions = options.fullscreenOptions,
+					
 						bodyElemWidth,
 						bodyElemHeight,
 						htmlElemWidth,
 						htmlElemHeight,
 						documentHeight,
 						documentWidth;
-*/				
+				
 					// Mousedown feels faster.
 					$aolPhotoGalleryClone.delegate(".show-fullscreen", "mousedown", function(){
-/*
+
 						bodyElemWidth = body.offsetWidth;
 						bodyElemHeight = body.offsetHeight;
 						htmlElemWidth = documentElem.offsetWidth;
 						htmlElemHeight = documentElem.offsetHeight;
 						documentHeight = document.height;
 						documentWidth = document.width;
-*/						
+						
 					
 						// Turn the lights out.
 						$fullscreen.css({
 							display: "block",
 //							width: ( bodyElemWidth > htmlElemWidth ? bodyElemWidth : htmlElemWidth ) + "px",
 //							height: ( bodyElemHeight > htmlElemHeight ? bodyElemHeight : htmlElemHeight ) + "px",
-							width: document.width + "px",
-							height: document.height + "px",
+							width: Math.max( bodyElemWidth, htmlElemWidth, documentWidth ) + "px",
+							height: Math.max( bodyElemHeight, htmlElemHeight, documentHeight ) + "px",
 							opacity: 0
 						}).animate({
 							opacity: 1
@@ -1597,10 +1605,31 @@ $.aolPhotoGallery = function( customOptions, elem ){
 				
 			},
 			
+			initTracking = function(){
+				
+				// Whenever there's a status update, let's fire a page view.
+				$aolPhotoGalleryClone.bind("status-update." + namespace, function(){
+					
+					var updateArea = $aolPhotoGalleryClone.width() * $aolPhotoGalleryClone.height(),
+						updateRatio = updateArea / trackingArea;
+						
+					// Check for Comscore page refresh requirements.
+					if ( updateArea > trackingRatio ) {
+						$.mmTrack();
+					}
+					
+				});
+				
+			},
+			
 			init = function(){
 
 				if ( options.refreshDivId ) {
 					initRefreshAd( options );
+				}
+				
+				if ( options.initTracking ) {
+					initTracking();
 				}
 
 				initDeepLinking();
@@ -1632,13 +1661,76 @@ $.fn.aolPhotoGallery = function( customOptions ){
 	
 })(jQuery, window, document, location);
 
-(function($){
+/*
+	Creates an mm_track URL, used for tracking page views to Comscore.
+*/
+(function( $, window, document, location ){
 	
-	$.mmTrack = function( customOptions ) {
+	var encode = encodeURIComponent,
+		omnitureObj,
+		omnitureAccount = "",
+		omnitureChannel = "",
+		omnitureProp1 = "",
+		omnitureProp2 = "",
+		omnitureEnabled = "",
+		
+		protocol = location.protocol,
+		host = location.hostname,
+		url = location.href,
+		urlClean,
+		
+		title = "?title=" + encode( document.title ),
+		
+		mmTrackIframe,
+		mmTrackIframeStyle;
+	
+	function populateOmniVars(){
+		if ( omnitureObj = window.s_265 ) {
+			omnitureEnabled = "&omni=1";
+			omnitureAccount = "&s_account=" + window.s_account;
+			omnitureChannel = "&s_channel=" + omnitureObj.channel;
+			omnitureProp1 = omnitureObj.prop1 + "/";
+			omnitureProp2 = omnitureObj.prop2 + "/";
+		}
+	}
+	
+	function initIframe(){
 		
 	}
 	
-})(jQuery);
+	$.mmTrack = function() {
+		
+		if ( ! omnitureObj ) {
+			populateOmniVars();
+		}
+		
+		if ( ! mmTrackIframe ) {
+			mmTrackIframe = document.createElement("iframe");
+			mmTrackIframeStyle = mmTrackIframe.style;
+			mmTrackIframe.id = "aol-mmtrack";
+		//	mmTrackIframeStyle.width = 0;
+		//	mmTrackIframeStyle.height = 0;
+			mmTrackIframeStyle.display = "none";
+			
+			$( document.body ).append( mmTrackIframe );
+		}		
+		
+		var mmTrackUrl = [ 
+			protocol, 
+			"//",
+			host,
+			"/mm_track/",
+			omnitureEnabled,
+			omnitureProp1,
+			omnitureProp2,
+			omnitureAccount,
+			omnitureChannel,
+			title].join("");
+		
+		mmTrackIframe.src = mmTrackUrl + "&ts=" + +new Date();
+	}
+	
+})( jQuery, window, document, location );
 
 (function($){
 	
