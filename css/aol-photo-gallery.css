@@ -1,3 +1,7 @@
+/*  Core CSS
+    Minimal styling for core photo gallery features 
+*/
+
 .aol-photo-gallery {
 	font-size: 15px;
 	position: relative;
@@ -285,3 +289,9 @@
 	filter: alpha(opacity=66); /* IE lt 8 */
 	-ms-filter: "alpha(opacity=66)"; /* IE 8 */
 }
+
+/*  Default Theme
+    A basic theme for AOL Photo Galleries. Feel free to customize or replace
+*/
+
+

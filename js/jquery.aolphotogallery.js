@@ -110,7 +110,7 @@ var defaultOptions = {
 			carousel: 1,
 			customClass: "aol-photo-gallery-carousel",
 			controlsInside: 1,
-			creditInside: "$slides",
+			creditInside: "$slides"
 		},
 		
 		fullscreenAdMN: "773630",
