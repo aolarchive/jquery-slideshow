@@ -42,7 +42,6 @@
 .aol-photo-gallery-fullscreen .button:hover,
 .aol-photo-gallery .gallery .controls .button:hover {
 	background-color: #b6e3ff;
-    background-color: hsla(203, 100%, 86%);
 }
 
 .aol-photo-gallery .button:first-child {
@@ -173,6 +172,19 @@
 	color: #000;
 }
 
+.aol-photo-gallery-fullscreen .status {
+    color: #333;
+}
+
+.aol-photo-gallery-fullscreen .captions {
+}
+
+.aol-photo-gallery-fullscreen ul.captions li h3 {
+    color: #999;
+    font-size: 24px;
+    font-weight: normal;
+}
+
 /* Portrait Styles */
 .aol-photo-gallery-portrait .gallery {
 	padding-right: 280px;
@@ -180,6 +192,7 @@
 
 .aol-photo-gallery-portrait .captions {
     color: #fff;
+    margin-top: 0;
 	right: 0;
 	top: 0;
 	width: 250px;
