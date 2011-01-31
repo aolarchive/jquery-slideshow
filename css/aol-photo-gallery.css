@@ -234,6 +234,11 @@
 	background: #fff;
 }
 
+.aol-photo-galleries li p a {
+	border: 0;
+	display: inline;
+}
+
 .aol-photo-galleries li img {
     display: block;
 }
