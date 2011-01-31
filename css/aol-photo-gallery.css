@@ -235,6 +235,28 @@
 }
 
 .aol-photo-galleries li img {
-	border: none;
+    display: block;
+}
+
+.featuredgalleries {
+    margin: 0 0 2em;
+    overflow: hidden;
+}
+
+.featuredgalleries .gallerythumbnailhome {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    float: left;
+    margin: 0 1em 1em 0;
+    overflow: hidden;
+    padding: 5px;
+
+    -moz-box-shadow: 2px 2px 0 #ddd, 4px 4px 0 #bbb;
+    -webkit-box-shadow: 2px 2px 0 #ddd, 4px 4px 0 #bbb;
+    box-shadow: 2px 2px 0 #ddd, 4px 4px 0 #bbb;
+}
+
+.featuredgalleries .gallerythumbnailhome img {
+    border: 1px solid #ccc;
     display: block;
 }
