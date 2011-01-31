@@ -253,6 +253,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 			$aolPhotoGalleryClone = $aolPhotoGallery.clone(), // Offline copy.
 			
 			documentElem = document.documentElement,
+			body = document.body,
 			
 			ui = options.ui,
 			data = options.data,
@@ -438,7 +439,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 						if ( options.sponsorImage ) {
 							core.buildSponsor();
 						}
-						
+
 						$aolPhotoGallery.replaceWith( $aolPhotoGalleryClone );
 					}
 				},
@@ -489,7 +490,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 							// to pull off a carousel.  We must first download the 
 							// image, figure out the width, and set its parent.
 							image = new Image();
-							image.src = dynamicPhotoSrc;
+							
 							image.onload = function(){
 								
 								// Once an image loads, be sure to do this 
@@ -512,11 +513,11 @@ $.aolPhotoGallery = function( customOptions, elem ){
 									core.updateCarouselPosition();
 									next();
 								});
-								
 							};
-
-
 							
+							// Set the src after event hooks for IE.
+							image.src = dynamicPhotoSrc;
+
 						} else {
 							// Set up background images on slides. This is nice because we don't have to 
 							// mess with <img>, which downloads automatically where as CSS will only
@@ -562,21 +563,27 @@ $.aolPhotoGallery = function( customOptions, elem ){
 						// Based on the position of the active index, ensure 
 						// siblings exist in the DOM to the left and to 
 						// the right of the active.
+
 						$nodeBack = $nodeNext = $slides.eq( activeIndex );
 						for ( var i = 0; i < carouselSiblings; i++ ) {
-							
+
 							$nodeBack = $nodeBack.prev();
 							$nodeNext = $nodeNext.next();
-							
+
 							// If we don't have the previous one, we need to grab
 							// the last node and put it in the beginning.
 							if ( ! $nodeBack.length ) {
+								
 								$slideContainer.prepend( $slides.eq( getIndex( activeIndex - i - 1 ) ) );
 							}
 							// If we don't have the next one, we need to grab
 							// the first node and put it at the end.
 							if ( ! $nodeNext.length ) {
+								
 								$slideContainer.append( $slides.eq( getIndex( activeIndex + i + 1 ) ) );
+								
+								// This is here simply to fix IE8.  Don't ask?
+								$slideContainer.attr("");
 							}
 						}
 						core.updateCarouselPosition();
@@ -633,7 +640,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 					});
 					
 					// Insert it after the <body>
-					$fullscreen.appendTo( documentElem );
+					$fullscreen.prependTo( body );
 					
 					core.bindFullscreen();
 					
@@ -645,16 +652,27 @@ $.aolPhotoGallery = function( customOptions, elem ){
 						$fullscreenContainer = $fullscreen.find(".fullscreen"),
 						$fullscreenAd,
 						fullscreenAdId = adDivName + (adDivId + 1),
-						fullscreenOptions = options.fullscreenOptions;
+						fullscreenOptions = options.fullscreenOptions,
+						
+						bodyElemWidth,
+						bodyElemHeight,
+						htmlElemWidth,
+						htmlElemHeight;
 					
 					// Mousedown feels faster.
 					$aolPhotoGalleryClone.delegate(".show-fullscreen", "mousedown", function(){
-											
+
+						bodyElemWidth = body.offsetWidth;
+						bodyElemHeight = body.offsetHeight;
+						htmlElemWidth = documentElem.offsetWidth;
+						htmlElemHeight = documentElem.offsetHeight;
+						
 						// Turn the lights out.
 						$fullscreen.css({
 							display: "block",
-							width: documentElem.offsetWidth + "px",
-							height: documentElem.offsetHeight + "px"
+							width: ( bodyElemWidth > htmlElemWidth ? bodyElemWidth : htmlElemWidth ) + "px",
+							height: ( bodyElemHeight > htmlElemHeight ? bodyElemHeight : htmlElemHeight ) + "px",
+							opacity: 0
 						}).animate({
 							opacity: 1
 						}, speed * 1.5)
@@ -680,12 +698,12 @@ $.aolPhotoGallery = function( customOptions, elem ){
 							
 							// Append the ad spot.
 							$fullscreenContainer.find("div.aside").append( $fullscreenAd );
-							
+
 							// Render the ad.
-							if ( window.htmlAdWH ) {
+							if ( window.htmlAdWH && options.fullscreenAdMN ) {
 								htmlAdWH( options.fullscreenAdMN, options.fullscreenAdWidth, options.fullscreenAdHeight, "ajax", fullscreenAdId );	
 							}
-							
+														
 							// Set up refresh for the ad.
 							fullscreenOptions.refreshDivId = fullscreenAdId;
 							fullscreenOptions.showFullscreen = 0;
@@ -698,6 +716,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 							$fullscreenPhotoGallery.aolPhotoGallery( fullscreenOptions );
 								
 						} else {
+							
 							// If we're already initialized, we need to ensure 
 							// to set to the current active index.
 							$aolPhotoGalleryClone.trigger("fullscreen-open." + namespace, [{ index: activeIndex }]);

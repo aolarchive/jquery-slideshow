@@ -9,6 +9,7 @@ CSS Stuff
 JavaScript Stuff
 
     * Get MMTrack tracking URL working.
+    * Disable IE transitions for captions, I think it takes longer.
 	* Convert my div buttons to anchor links, a bit more trackable, accessible, etc., unless we dare try buttons.
 	* Remove thumbnail opacity effect from the core code, or make it optional.
 	* Think we got this for the most part, but we should trace all relevant spots and use getIndex() function once.
