@@ -198,14 +198,12 @@
 	padding-right: 280px;
 	position: relative;
 }
-.aol-photo-gallery-portrait .gallery .captions {
+.aol-photo-gallery-portrait .captions {
 	position: absolute;
 	top: 0;
 	right: 0;
 	width: 250px;
 	height: 500px;
-	padding-right: 25px;
-	padding-top: 25px;
 }
 
 /* Carousel Styles */

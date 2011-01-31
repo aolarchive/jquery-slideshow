@@ -161,6 +161,9 @@ var defaultOptions = {
 		// Toggle to show the description of the gallery.
 		showDescription: 0,
 		
+		// In some cases we may want the description after.
+		descriptionAfter: 0,
+		
 		// Toggle to show the Next/Back buttons.
 		showControls: 1,
 		
