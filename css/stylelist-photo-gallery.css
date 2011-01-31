@@ -14,28 +14,7 @@
 
 .aol-photo-gallery .button, 
 .aol-photo-gallery-fullscreen .button {
-	background-color: #6fc4fa;
-    background-color: hsla(203, 93%, 71%); /* hsla equivalent for modern browsers */
-    background-image:
-        -webkit-gradient(
-            linear,
-            left bottom,
-            left top,
-            color-stop(0.0, hsla(0, 0%, 0%, 0)),
-            color-stop(0.6, hsla(0, 0%, 100%, 0.2))
-        );
-    background-image: 
-        -moz-linear-gradient(
-            center bottom,
-            hsla(0, 0%, 0%, 0) 0%,
-            hsla(0, 0%, 100%, 0.2) 60%,
-        );
-	font-size: 15px;
-	line-height: 20px;
-	padding: 8px 20px 7px;
-    text-shadow: 1px 1px 1px hsla(0, 0%, 100%, 0.5);
-
-    -webkit-transition: 0.2s background-color;
+    background-color: #fff;
 }
 
 .aol-photo-gallery .button:hover,
@@ -57,14 +36,20 @@
 
 .aol-photo-gallery .controls .back,
 .aol-photo-gallery .controls .next {
+    background-image: url(../examples/images/stylelist-sprite.png);
+    height: 59px;
     position: absolute;
+    text-indent: -9999px;
+    width: 27px;
 }
 
 .aol-photo-gallery .controls .back {
+    background-position: -52px 0;
     left: 0;
 }
 
 .aol-photo-gallery .controls .next {
+    background-position: -79px 0;
     right: 0;
 }
 
