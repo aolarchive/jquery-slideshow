@@ -76,6 +76,10 @@
 }
 .aol-photo-gallery .captions li p {
 }
+.aol-photo-gallery .captions .credit {
+	position: absolute;
+	top: -29px;
+}
 .aol-photo-gallery .show-thumbnails {
 	float: right;
 	cursor: pointer;

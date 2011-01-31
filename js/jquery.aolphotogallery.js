@@ -748,6 +748,21 @@ $.aolPhotoGallery = function( customOptions, elem ){
 						
 					});
 
+					// If the toggle feature is present, add those bindings.
+					if ( options.toggleThumbnails ) {
+						
+						$aolPhotoGalleryClone.bind("show-thumbnails." + namespace, function(){
+							$fullscreenButton.css("visibility", "hidden");
+						});
+						
+						$aolPhotoGalleryClone.bind("thumbnail-mousedown." + namespace, function(){
+							$fullscreenButton.css({
+								"display": "block",
+								"visibility": "visible"
+							});
+						});
+					}
+
 				},
 				
 				// This serves as a bridge between the fullscreen gallery
@@ -941,7 +956,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 							$slideContainer
 								.css("position", "relative")
 								.animate({
-									"left": -$gallery.width()
+									"left": -$gallery.outerWidth()
 								}, speed);
 						});
 						
@@ -1331,9 +1346,9 @@ $.aolPhotoGallery = function( customOptions, elem ){
 							
 								$thumbnailContainer.css({
 									position: "absolute",
-									left: $gallery.width(),
+									left: $aolPhotoGalleryClone.width(),
 									top: $slideContainer.position().top,
-									width: $gallery.width(),
+									width: $aolPhotoGalleryClone.width(),
 									// width: $slideContainer.width(),
 									height: thumbnailHeight
 								});
@@ -1428,7 +1443,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 							// Position the thumbnail container at top of the gallery.
 							$thumbnailContainer.css({
 								"top": $gallery.position().top,
-								"left": $gallery.width()
+								"left": $aolPhotoGalleryClone.width()
 							});
 
 							// Animate it to the left.
@@ -1443,7 +1458,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 							$thumbnailContainer.css({
 								"position": "absolute"
 							}).animate({
-								"left": $gallery.width()
+								"left": $aolPhotoGalleryClone.width()
 							}, speed).queue(function( next ){
 								$aolPhotoGalleryClone.height( "auto" );
 								next();
