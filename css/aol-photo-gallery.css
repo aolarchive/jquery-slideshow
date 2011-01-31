@@ -220,15 +220,15 @@
 }
 
 .aol-photo-galleries li a {
-	border: 2px solid black;
+	border: 2px solid #333;
 	display: block;
 }
 
 .aol-photo-galleries li span {
 	position: relative;
 	top: 5px;
-	left: 7px;
-	border: 2px solid black;
+	left: 6px;
+	border: 2px solid #333;
 	display: block;
 	padding: 5px;
 	background: #fff;
