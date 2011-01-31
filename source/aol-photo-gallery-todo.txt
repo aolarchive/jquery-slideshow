@@ -1,0 +1,21 @@
+
+CSS Stuff
+
+    * Clean out the core theme.
+    * Make the core work in IE6.
+    * Start a very basic "Default" theme, demonstrating how to override.
+    * Make an example disabling the default theme and skinning one with "Stylelist".
+
+JavaScript Stuff
+
+    * Get MMTrack tracking URL working.
+	* Convert my div buttons to anchor links, a bit more trackable, accessible, etc., unless we dare try buttons.
+	* Remove thumbnail opacity effect from the core code, or make it optional.
+	* Think we got this for the most part, but we should trace all relevant spots and use getIndex() function once.
+	* Make paginated thumbnail view.
+	* Make a portrait gallery default theme: http://www.stylelist.com/2011/01/24/look-of-the-day-emily-blunt/
+	* Create a common function that handles inside/outside and before/after based on settings and possibly a custom $ui variable.
+
+Documentation Notes
+
+	* For ad refresh to work, be sure adPage is set up properly (reference aol-advertising module).
