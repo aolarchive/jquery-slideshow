@@ -652,26 +652,33 @@ $.aolPhotoGallery = function( customOptions, elem ){
 						$fullscreenContainer = $fullscreen.find(".fullscreen"),
 						$fullscreenAd,
 						fullscreenAdId = adDivName + (adDivId + 1),
-						fullscreenOptions = options.fullscreenOptions,
-						
+						fullscreenOptions = options.fullscreenOptions;
+/*						
 						bodyElemWidth,
 						bodyElemHeight,
 						htmlElemWidth,
-						htmlElemHeight;
-					
+						htmlElemHeight,
+						documentHeight,
+						documentWidth;
+*/				
 					// Mousedown feels faster.
 					$aolPhotoGalleryClone.delegate(".show-fullscreen", "mousedown", function(){
-
+/*
 						bodyElemWidth = body.offsetWidth;
 						bodyElemHeight = body.offsetHeight;
 						htmlElemWidth = documentElem.offsetWidth;
 						htmlElemHeight = documentElem.offsetHeight;
-						
+						documentHeight = document.height;
+						documentWidth = document.width;
+*/						
+					
 						// Turn the lights out.
 						$fullscreen.css({
 							display: "block",
-							width: ( bodyElemWidth > htmlElemWidth ? bodyElemWidth : htmlElemWidth ) + "px",
-							height: ( bodyElemHeight > htmlElemHeight ? bodyElemHeight : htmlElemHeight ) + "px",
+//							width: ( bodyElemWidth > htmlElemWidth ? bodyElemWidth : htmlElemWidth ) + "px",
+//							height: ( bodyElemHeight > htmlElemHeight ? bodyElemHeight : htmlElemHeight ) + "px",
+							width: document.width + "px",
+							height: document.height + "px",
 							opacity: 0
 						}).animate({
 							opacity: 1
@@ -681,7 +688,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 						// won't be able to scroll unless we are very good about
 						// designing an auto-height experience.
 						$fullscreenContainer.css({
-							top: documentElem.scrollTop
+							top: documentElem.scrollTop || window.pageYOffset || body.scrollTop || 0
 						});
 						
 						// If we didn't initialize full screen yet, 
