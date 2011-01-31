@@ -202,6 +202,7 @@
 	float:left;
 }
 
+/* Galleries */
 .aol-photo-galleries ul {
 	padding: 0;
 	display: table;
@@ -235,4 +236,5 @@
 
 .aol-photo-galleries li img {
 	border: none;
+    display: block;
 }
