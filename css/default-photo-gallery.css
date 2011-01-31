@@ -14,8 +14,8 @@
 
 .aol-photo-gallery .button, 
 .aol-photo-gallery-fullscreen .button {
-	background-color: #6fc4fa;
-    background-color: hsla(203, 93%, 71%); /* hsla equivalent for modern browsers */
+	background: #6fc4fa;
+    background: hsla(203, 93%, 71%); /* hsla equivalent for modern browsers */
     background-image:
         -webkit-gradient(
             linear,
@@ -71,8 +71,8 @@
 }
 
 .aol-photo-gallery .gallery {
-    background-color: #000;
-    background-color: hsla(0, 0%, 0%, 1);
+    background: #000;
+    background: hsla(0, 0%, 0%, 1);
     margin: 0 0 1em;
 }
 
@@ -180,7 +180,6 @@
 
 .aol-photo-gallery-portrait .captions {
     color: #fff;
-    color: hsla(0, 0%, 100%, 0.8);
 	right: 0;
 	top: 0;
 	width: 250px;
