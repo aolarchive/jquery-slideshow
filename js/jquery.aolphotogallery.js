@@ -25,7 +25,6 @@
 var defaultOptions = {
 		
 	//	customClass: "aol-photo-gallery-portrait",
-<<<<<<< .mine
 	
 		// This allows developers to add addtional 
 		// class names to the container <div>, useful
@@ -85,7 +84,7 @@ var defaultOptions = {
 		// needed for prefetch logic and understanding
 		// when to pop the last slide to the front,
 		// and vice versa.
-=======
+
     //  customClass: "aol-photo-gallery-carousel",
 	//	carousel: 1,
 		carouselSiblings: 2,
