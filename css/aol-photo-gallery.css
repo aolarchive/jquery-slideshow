@@ -23,9 +23,6 @@
 	z-index: 5;
 	display: inline-block;
 }
-
-.aol-photo-gallery h2 {
-}
 .aol-photo-gallery h2 a {
 	text-decoration: none;
 	color: inherit;
@@ -104,9 +101,7 @@
 	float: left;
 }
 .aol-photo-gallery .sponsor {
-	position: absolute;
-	overflow: hidden;
-	text-indent: -99em;
+	float: right;
 }
 .aol-photo-gallery .show-fullscreen {
 	float: right;

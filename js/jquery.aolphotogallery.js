@@ -12,11 +12,22 @@
 	* Keep track of dimensions of the gallery as a whole.
 	* Create a function that handles inside/outside and before/after based on settings.
 	* Convert to mousedowns for next/back/thumbnail clicks, feels faster.
-	* Remove thumbnail opacity effect from the core code, make it optional.
+	* LINE 889: Remove thumbnail opacity effect from the core code, make it optional.
 	* Convert my div buttons to anchor links, a bit more trackable, accessible, etc., unless we dare try buttons.
 	* For ad refresh to work, be sure adPage is set up properly (reference aol-advertising module).
 	* To account for issues with status-reset, we may need to maintain an "oldIndex" global internally, similar to "activeIndex". 
 	* Think we got this for the most part, but we should trace all relevant spots and use getIndex() function once.
+	* <script type="text/javascript">
+
+GET SPONSORSHIP IN.
+
+<!--
+ adSetType('F');
+ htmlAdWH('93302143','215','35');
+ adSetType('');  
+//-->
+</script>
+</div><!-- 215x35 ad --> 
 	 
 	
 */
@@ -29,53 +40,39 @@ var defaultOptions = {
 		// This allows developers to add addtional 
 		// class names to the container <div>, useful
 		// for making override styles.
-//		customClass: "aol-photo-gallery-carousel",
-		
 		theme: "default",
-/*		
-		theme: {
-			"default": {
-				"fade": { // aol-photo-gallery-fade
-					carousel: 0,
-					showThumbnails: 0,
-					toggleThumbnails: 0
-				},
-				
-				"carousel": { // aol-photo-gallery-carousel
-					carousel: 1
-				},
-				
-				"portrait": { // aol-photo-gallery-portrait
-					
-				},
-				
-				"launch": { // aol-photo-gallery-launch
-					
-				}
-			}
-		}, // aol-photo-gallery-default
-		
-		presets: {
-			
-			"fade": { // aol-photo-gallery-fade
-				carousel: 0,
-				showThumbnails: 0,
-				toggleThumbnails: 0
-			},
+
+		// This can be set to any of the presetOptions
+		// to quickly set some common configurations.
+		// This will also add a class with the below preset.
+		preset: "",
+		presetOptions: {
 			
 			"carousel": { // aol-photo-gallery-carousel
-				carousel: 1
+				carousel: 1,
+				controlsInside: 1,
+				toggleThumbnails: 0, // These don't work just yet.	
+				creditInside: "$slides"		
 			},
 			
 			"portrait": { // aol-photo-gallery-portrait
-				
+				captionsAfter: 0,
+				photoWidth: 325,
+				showFullscreen: 0,
+				toggleThumbnails: 0
 			},
 			
 			"launch": { // aol-photo-gallery-launch
-				
+				showControls: 0,
+				showDescription: 1,
+				descriptionAfter: 1,
+				template: {
+					fullscreen: "Launch Gallery"
+				},
+				toggleThumbnails: 0
 			}
 		},
-*/
+
 		// Turns the gallery into a carousel module
 		// where there are slides on both sides.
 		carousel: 0,
@@ -84,9 +81,6 @@ var defaultOptions = {
 		// needed for prefetch logic and understanding
 		// when to pop the last slide to the front,
 		// and vice versa.
-
-    //  customClass: "aol-photo-gallery-carousel",
-	//	carousel: 1,
 		carouselSiblings: 2,
 		
 		// How long all transition animations take.
@@ -107,13 +101,11 @@ var defaultOptions = {
 		fullscreenOptions: {
 			photoWidth: 559,
 			photoHeight: 487,
-			carousel: 1,
-			customClass: "aol-photo-gallery-carousel",
-			controlsInside: 1,
-			creditInside: "$slides"
+			preset: "carousel"
 		},
-		
-		fullscreenAdMN: "773630",
+
+//		Is there a house 300x250 we can display?	
+//		fullscreenAdMN: "773630",
 		fullscreenAdWidth: 300,
 		fullscreenAdHeight: 250,
 		
@@ -130,17 +122,18 @@ var defaultOptions = {
 		// The active photo on initialization.
 		activeIndex: 1,
 		
-		// Flag indicating if we should refresh an 
-		// ad on the page.  Considering removing
-		// and only doing ad refresh in pop-up for now.
-		refreshAd: 0,
+		// If supplied, make a sponsorship advertisement.
+//		sponsorAdMN: "93302143",
+		sponsorAdWidth: 215,
+		sponsorAdHeight: 35,
 		
 		// The <div> containing the AJAX ad to refresh.
+		// This is tied to the gallery slides.
 		refreshDivId: "",
 		
 		// The refresh ratio, i.e. 3 means refresh the
 		// ad every 1 in 3 clicks.
-		refreshCount: 3,
+		refreshCount: 9,
 		
 		// This controls whether we show the thumbnails
 		// by default instead of the gallery view.
@@ -148,7 +141,7 @@ var defaultOptions = {
 		
 		// Enables the thumbnails toggle functionality,
 		// note, builds the "Show Thumbnails" button.
-		toggleThumbnails: 0,
+		toggleThumbnails: 1,
 		
 		// Inserts the "Show Thumbnails" button before 
 		// the gallery in the DOM if truthy, after
@@ -210,7 +203,11 @@ var defaultOptions = {
 		// Templates that developers can override.
 		template: {
 			status: "{{active}} of {{total}}",
-			credit: "Photo: {{credit}}"
+			credit: "Photo: {{credit}}",
+			fullscreen: "Fullscreen",
+			thumbnails: "Thumbnails",
+			next: "Next",
+			back: "Back"
 		},
 		
 		// Overrides for DOM elements, generally 
@@ -255,11 +252,20 @@ $.aolPhotoGallery = function( customOptions, elem ){
 	// Initialize the gallery.
 	if ( elem ) {
 		
-		var options = $.extend( true, {}, defaultOptions, customOptions ),
-		
-			$aolPhotoGallery = $(elem),
+		var $aolPhotoGallery = $(elem),
 			$aolPhotoGalleryClone = $aolPhotoGallery.clone(), // Offline copy.
 			
+			// Options that are passable on the 
+			// element as data attributes.
+			dataOptions = {
+				fullscreenAdMN: $aolPhotoGallery.data("fullscreen-mn"),
+				sponsorAdMN: $aolPhotoGallery.data("sponsor-mn")
+			},
+			
+			presetOptions = defaultOptions.presetOptions[ customOptions.preset ] || {},
+
+ 			options = $.extend( true, {}, defaultOptions, presetOptions, customOptions, dataOptions ),
+ 
 			documentElem = document.documentElement,
 			body = document.body,
 			
@@ -273,6 +279,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 			totalPhotos,
 			
 			speed = options.speed,
+			template = options.template,
 			
 			photoWidth = options.photoWidth,
 			photoHeight = options.photoHeight,
@@ -335,6 +342,10 @@ $.aolPhotoGallery = function( customOptions, elem ){
 					data.galleryName = $galleryName.text();
 					data.galleryDescription = $galleryDescription.html();
 					
+					if ( options.descriptionAfter ) {
+						$aolPhotoGalleryClone.append( $galleryDescription );
+					}
+					
 					$anchors = ui.$anchors = $aolPhotoGalleryClone.find( ui.anchors );
 					$slides = ui.$slides = $aolPhotoGalleryClone.find( ui.slides );
 					$slideContainer = ui.$slideContainer = $slides.parent();
@@ -383,8 +394,8 @@ $.aolPhotoGallery = function( customOptions, elem ){
 								// Save the details of this photo for later.	
 								photoName = $anchorElem.text(),
 								photoDescription = $anchorElem.attr("title"),
-								photoSrc = $anchorElem.attr("data-photo-src"),
-								photoCredit = $anchorElem.attr("data-credit");
+								photoSrc = $anchorElem.data("photo-src"),
+								photoCredit = $anchorElem.data("credit");
 							
 							photos.push({
 								photoName: photoName,
@@ -394,13 +405,12 @@ $.aolPhotoGallery = function( customOptions, elem ){
 							});
 							
 							// Assign an index to this anchor's parent element.
-							$anchorElem.parent().attr("data-index", i);
+							$anchorElem.parent().data("index", i);
 							
 						});
 						
-						// Deprecated already.
-						if ( options.customClass ) {
-							$aolPhotoGalleryClone.addClass( options.customClass );
+						if ( options.preset ) {
+							$aolPhotoGalleryClone.addClass( namespace + "-" + options.preset );
 						}
 						
 						if ( options.theme ) {
@@ -444,8 +454,8 @@ $.aolPhotoGallery = function( customOptions, elem ){
 							core.buildThumbnails();
 						}
 						
-						if ( options.sponsorImage ) {
-							core.buildSponsor();
+						if ( options.sponsorAdMN ) {
+							core.buildSponsorAd();
 						}
 
 						$aolPhotoGallery.replaceWith( $aolPhotoGalleryClone );
@@ -454,7 +464,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 				
 				buildCredits: function(){
 					// Credits just hang out in one of the other UI containers.
-					var creditTemplate = options.template.credit,
+					var creditTemplate = template.credit,
 						$creditParent = ui[ options.creditInside ],
 						photoCredit;
 					
@@ -631,7 +641,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 				
 				buildFullscreen: function(){	
 					
-					var fullscreenButtonHTML = "<div class=\"show-fullscreen button\"><b>Fullscreen</b></div>",
+					var fullscreenButtonHTML = "<div class=\"show-fullscreen button\"><b>" + template.fullscreen + "</b></div>",
 						fullscreenHTML = "<div class=\"aol-photo-gallery-fullscreen\"><div class=\"fullscreen\"><div class=\"close button\"><b>Close</b></div><div class=\"aside\"></div></div></div>";
 					
 					// Create the button.
@@ -659,7 +669,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 					var $fullscreenPhotoGallery,
 						$fullscreenContainer = $fullscreen.find(".fullscreen"),
 						$fullscreenAd,
-						fullscreenAdId = adDivName + (adDivId + 1),
+						fullscreenAdId = adDivName + (adDivId++),
 						fullscreenOptions = options.fullscreenOptions,
 					
 						bodyElemWidth,
@@ -707,20 +717,25 @@ $.aolPhotoGallery = function( customOptions, elem ){
 							
 							// Insert the photo gallery after the close button.
 							$fullscreenContainer.children().first().after( $fullscreenPhotoGallery );
-
-							// Build the ad spot.
-							$fullscreenAd = $( "<div id=\"" + fullscreenAdId + "\" class=\"advertisement\"></div>" );
 							
-							// Append the ad spot.
-							$fullscreenContainer.find("div.aside").append( $fullscreenAd );
-
-							// Render the ad.
-							if ( window.htmlAdWH && options.fullscreenAdMN ) {
-								htmlAdWH( options.fullscreenAdMN, options.fullscreenAdWidth, options.fullscreenAdHeight, "ajax", fullscreenAdId );	
+							// If we have a fullscreen ad magic number.
+							if ( options.fullscreenAdMN ) {
+								
+								// Build the ad spot.
+								$fullscreenAd = $( "<div id=\"" + fullscreenAdId + "\" class=\"advertisement\"></div>" );
+								
+								// Append the ad spot.
+								$fullscreenContainer.find("div.aside").append( $fullscreenAd );
+	
+								// Render the ad.
+								if ( window.htmlAdWH && options.fullscreenAdMN ) {
+									htmlAdWH( options.fullscreenAdMN, options.fullscreenAdWidth, options.fullscreenAdHeight, "ajax", fullscreenAdId );	
+								}
+															
+								// Set up refresh for the ad.
+								fullscreenOptions.refreshDivId = fullscreenAdId;
 							}
-														
-							// Set up refresh for the ad.
-							fullscreenOptions.refreshDivId = fullscreenAdId;
+
 							fullscreenOptions.showFullscreen = 0;
 							fullscreenOptions.activePhoto = activeIndex + 1;
 							fullscreenOptions.ui = {
@@ -828,7 +843,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 							opacity: 1,
 							visibility: "visible"
 						}).addClass("active");
-						
+
 						core.preloadPhoto( activeIndex );
 					}
 					
@@ -872,7 +887,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 								
 							var photo = this,
 								$photo = $(photo),
-								photoIndex = +$photo.attr("data-index");  // The + converts the string to a number.
+								photoIndex = +$photo.data("index");  // The + converts the string to a number.
 							
 							$photo.trigger("photo-mousedown." + namespace, [{ index: photoIndex }]);
 
@@ -1090,7 +1105,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 				
 				buildStatus: function(){
 					
-					var statusTemplate = options.template.status.replace("{{active}}", activeIndex + 1).replace("{{total}}", totalPhotos),
+					var statusTemplate = template.status.replace("{{active}}", activeIndex + 1).replace("{{total}}", totalPhotos),
 						statusHTML = "<div class=\"status\">" + statusTemplate + "</div>";
 						
 					$status = ui.$status = $( statusHTML );
@@ -1114,7 +1129,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 				
 				bindStatus: function(){
 					
-					var statusTemplate = options.template.status;
+					var statusTemplate = template.status;
 					
 					function getStatusTemplate(){
 						return statusTemplate.replace("{{active}}", activeIndex + 1).replace("{{total}}", totalPhotos);
@@ -1210,7 +1225,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 				
 				buildControls: function(){
 					
-					$controls = ui.$controls = $("<ul class=\"controls\"><li class=\"back button\"><b>Back</b></li><li class=\"next button\"><b>Next</b></li></ul>");
+					$controls = ui.$controls = $("<ul class=\"controls\"><li class=\"back button\"><b>" + template.back + "</b></li><li class=\"next button\"><b>" + template.next + "</b></li></ul>");
 					
 					if ( options.controlsInside ) {
 						if ( options.controlsAfter ) {
@@ -1376,7 +1391,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 						
 						var thumbnail = this,
 							$thumbnail = $(thumbnail),
-							thumbnailIndex = +$thumbnail.attr("data-index");  // The + converts the string to a number.
+							thumbnailIndex = +$thumbnail.data("index");  // The + converts the string to a number.
 
 						$thumbnail.trigger("thumbnail-mouseover." + namespace, [{ index: thumbnailIndex }]);
 						
@@ -1390,7 +1405,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 						
 						var thumbnail = this,
 							$thumbnail = $(thumbnail),
-							thumbnailIndex = +$thumbnail.attr("data-index");  // The + converts the string to a number.
+							thumbnailIndex = +$thumbnail.data("index");  // The + converts the string to a number.
 						
 						$thumbnail.trigger("thumbnail-mouseout." + namespace, [{ index: thumbnailIndex }]);
 						
@@ -1405,7 +1420,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 						
 						var thumbnail = this,
 							$thumbnail = $(thumbnail),
-							thumbnailIndex = +$thumbnail.attr("data-index");  // The + converts the string to a number.
+							thumbnailIndex = +$thumbnail.data("index");  // The + converts the string to a number.
 						
 						$thumbnail.trigger("thumbnail-mousedown." + namespace, [{ index: thumbnailIndex }]);
 						
@@ -1443,7 +1458,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 							// this toggle is mousedowned.
 							if ( ! $thumbnailContainer.data("thumbnails-loaded") ) {
 								$thumbnails.css("backgroundImage", function(i, value){
-									return "url(" + $thumbnails.eq(i).attr("data-src") + ")";
+									return "url(" + $thumbnails.eq(i).data("src") + ")";
 								});
 								$thumbnailContainer.data("thumbnails-loaded", 1);
 							}
@@ -1478,7 +1493,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 
 				buildShowThumbnails: function(){
 					
-					var showThumbnailsHTML = "<div class=\"show-thumbnails button\"><b>Show Thumbnails</b></div>";
+					var showThumbnailsHTML = "<div class=\"show-thumbnails button\"><b>" + template.thumbnails + "</b></div>";
 					
 					$showThumbnails = ui.$showThumbnails = $( showThumbnailsHTML );
 					
@@ -1513,20 +1528,23 @@ $.aolPhotoGallery = function( customOptions, elem ){
 					
 				},
 				
-				buildSponsor: function(){
+				buildSponsorAd: function(){
 					
-					var sponsorHTML = ["<a class=\"sponsor\" style=\"background: url(",
-							options.sponsorImage,
-							") no-repeat center center\" href=\"",
-							options.sponsorUrl,
-							"\">",
-							options.sponsorName,
-							"</a>"].join("");
-						
+					var sponsorAdId = adDivName + (adDivId++),
+						sponsorHTML = "<div id=\"" + sponsorAdId + "\" class=\"sponsor advertisement\"></div>";
+
 					$sponsor = ui.$sponsor = $( sponsorHTML );
 					
+					// Sponsorship goes at the top.
 					$aolPhotoGalleryClone.prepend( $sponsor );
-					
+
+					// Render the ad in the next UI thread, once everything is visible.
+					if ( window.htmlAdWH ) {
+						setTimeout(function(){
+							htmlAdWH( options.sponsorAdMN, options.sponsorAdWidth, options.sponsorAdHeight, "ajax", sponsorAdId );
+						}, 0);
+					}
+
 				}
 				
 			},
