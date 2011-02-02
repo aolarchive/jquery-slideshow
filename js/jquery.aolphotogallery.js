@@ -262,7 +262,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 				sponsorAdMN: $aolPhotoGallery.data("sponsor-mn")
 			},
 			
-			presetOptions = defaultOptions.presetOptions[ customOptions.preset ] || {},
+			presetOptions = $.extend( true, {}, defaultOptions.presetOptions, customOptions.presetOptions )[ customOptions.preset ] || {},
 
  			options = $.extend( true, {}, defaultOptions, presetOptions, customOptions, dataOptions ),
  
