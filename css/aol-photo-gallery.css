@@ -75,7 +75,7 @@
 }
 .aol-photo-gallery .captions .credit {
 	position: absolute;
-	top: -29px;
+	top: -20px;
 }
 .aol-photo-gallery .show-thumbnails {
 	float: right;
@@ -122,7 +122,8 @@
 	width: 100%;
 }
 .aol-photo-gallery-fullscreen .close {
-	float: right;
+	position: absolute;
+	right: 0;
 }
 .aol-photo-gallery-fullscreen h2 {
 }

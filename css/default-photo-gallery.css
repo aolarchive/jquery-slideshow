@@ -77,6 +77,9 @@
 
 .aol-photo-gallery .captions {
 }
+.aol-photo-gallery .captions .credit {
+	top: -29px;
+}
 
 .aol-photo-gallery .captions li h3 {
 	font-size: 18px;

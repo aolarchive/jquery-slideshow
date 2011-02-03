@@ -5,38 +5,22 @@
 	
 	To Do:
 	
-	* Set the gallery container width the width the user specifies.
+	* ACCESSIBILITY: Keyboard shortcuts for next (right arrow) and back (left arrow).
 	* Autodetect the width of the column, and adjust the image size.
 	* Make default thumbnail view with toggle.
-	* Portrait galleries: http://www.stylelist.com/2011/01/24/look-of-the-day-emily-blunt/
-	* Keep track of dimensions of the gallery as a whole.
 	* Create a function that handles inside/outside and before/after based on settings.
-	* Convert to mousedowns for next/back/thumbnail clicks, feels faster.
 	* LINE 889: Remove thumbnail opacity effect from the core code, make it optional.
 	* Convert my div buttons to anchor links, a bit more trackable, accessible, etc., unless we dare try buttons.
 	* For ad refresh to work, be sure adPage is set up properly (reference aol-advertising module).
-	* To account for issues with status-reset, we may need to maintain an "oldIndex" global internally, similar to "activeIndex". 
 	* Think we got this for the most part, but we should trace all relevant spots and use getIndex() function once.
-	* <script type="text/javascript">
-
-GET SPONSORSHIP IN.
-
-<!--
- adSetType('F');
- htmlAdWH('93302143','215','35');
- adSetType('');  
-//-->
-</script>
-</div><!-- 215x35 ad --> 
-	 
+	* Once we get Ad confirmation, we need to see if fullscreen can be semitransparent.
+	* Generate a close fullscreen button in full screen mode.
 	
 */
 (function($, window, document, location){
 
 var defaultOptions = {
-		
-	//	customClass: "aol-photo-gallery-portrait",
-	
+
 		// This allows developers to add addtional 
 		// class names to the container <div>, useful
 		// for making override styles.
@@ -59,11 +43,14 @@ var defaultOptions = {
 				captionsAfter: 0,
 				photoWidth: 325,
 				showFullscreen: 0,
-				toggleThumbnails: 0
+				toggleThumbnails: 0,
+				creditInside: "$slides"
 			},
 			
 			"launch": { // aol-photo-gallery-launch
 				showControls: 0,
+				showCaptions: 0,
+				showStatus: 0,
 				showDescription: 1,
 				descriptionAfter: 1,
 				template: {
@@ -101,13 +88,23 @@ var defaultOptions = {
 		fullscreenOptions: {
 			photoWidth: 559,
 			photoHeight: 487,
-			preset: "carousel"
+			preset: "carousel",
+			sponsorAdMN: ""
 		},
-
+		
+		// If supplied, make a sponsorship advertisement.
+//		sponsorAdMN: "93302143",
+		sponsorAdWidth: 215,
+		sponsorAdHeight: 35,
+		
 //		Is there a house 300x250 we can display?	
 //		fullscreenAdMN: "773630",
 		fullscreenAdWidth: 300,
 		fullscreenAdHeight: 250,
+		
+//		fullscreenSponsorAdMN: "",
+		fullscreenSponsorAdWidth: 215,
+		fullscreenSponsorAdHeight: 35,
 		
 		// How many thumbs to display, we don't quite
 		// do anything with this yet, may be useful
@@ -121,12 +118,7 @@ var defaultOptions = {
 		
 		// The active photo on initialization.
 		activeIndex: 1,
-		
-		// If supplied, make a sponsorship advertisement.
-//		sponsorAdMN: "93302143",
-		sponsorAdWidth: 215,
-		sponsorAdHeight: 35,
-		
+				
 		// The <div> containing the AJAX ad to refresh.
 		// This is tied to the gallery slides.
 		refreshDivId: "",
@@ -249,22 +241,27 @@ var defaultOptions = {
 	deepLinkHashName = "photo";
 
 $.aolPhotoGallery = function( customOptions, elem ){
+	
 	// Initialize the gallery.
 	if ( elem ) {
 		
-		var $aolPhotoGallery = $(elem),
+		var $aolPhotoGallery = ( elem.nodeName === "A" ) ? $(elem).closest("div.aol-photo-gallery").eq(0) : $(elem),
+			
 			$aolPhotoGalleryClone = $aolPhotoGallery.clone(), // Offline copy.
 			
 			// Options that are passable on the 
 			// element as data attributes.
 			dataOptions = {
-				fullscreenAdMN: $aolPhotoGallery.data("fullscreen-mn"),
-				sponsorAdMN: $aolPhotoGallery.data("sponsor-mn")
+				preset: $aolPhotoGallery.data("preset"),
+				fullscreenAdMN: $aolPhotoGallery.data("fullscreen-ad-mn"),
+				sponsorAdMN: $aolPhotoGallery.data("sponsor-ad-mn"),
+				fullscreenSponsorAdMN: $aolPhotoGallery.data("fullscreen-sponsor-ad-mn")
 			},
 			
-			presetOptions = $.extend( true, {}, defaultOptions.presetOptions, customOptions.presetOptions )[ customOptions.preset ] || {},
+			// Artz: We may not need this.
+			presetOptions = $.extend( true, {}, defaultOptions.presetOptions, customOptions.presetOptions )[ dataOptions.preset || customOptions.preset ] || {},
 
- 			options = $.extend( true, {}, defaultOptions, presetOptions, customOptions, dataOptions ),
+			options = $.extend( true, {}, defaultOptions, presetOptions, customOptions, dataOptions ),
  
 			documentElem = document.documentElement,
 			body = document.body,
@@ -292,16 +289,12 @@ $.aolPhotoGallery = function( customOptions, elem ){
 			// Used to understand how many slides to be sure to load up front.
 			carouselSiblings = options.carouselSiblings, 
 			
-			// Object we use to store if photo has been cached.
-			photoCached = {},
-			
 			$anchors,
 			$slides,
 			$slideContainer,
 			$captions,
 			$captionContainer,
 			$gallery,
-			$credit,
 			$fullscreen,
 			$fullscreenButton,
 			$status,
@@ -328,7 +321,6 @@ $.aolPhotoGallery = function( customOptions, elem ){
 				},
 				
 				init: function(){
-					
 					// Expose options for this instance externally.
 					$aolPhotoGalleryClone.data( "options", options );
 					
@@ -395,13 +387,15 @@ $.aolPhotoGallery = function( customOptions, elem ){
 								photoName = $anchorElem.text(),
 								photoDescription = $anchorElem.attr("title"),
 								photoSrc = $anchorElem.data("photo-src"),
-								photoCredit = $anchorElem.data("credit");
+								photoCredit = $anchorElem.data("credit"),
+								photoCreditURL = $anchorElem.data("credit-url");
 							
 							photos.push({
 								photoName: photoName,
 								photoDescription: photoDescription,
 								photoSrc: photoSrc,
-								photoCredit: photoCredit
+								photoCredit: photoCredit,
+								photoCreditURL: photoCreditURL
 							});
 							
 							// Assign an index to this anchor's parent element.
@@ -466,23 +460,27 @@ $.aolPhotoGallery = function( customOptions, elem ){
 					// Credits just hang out in one of the other UI containers.
 					var creditTemplate = template.credit,
 						$creditParent = ui[ options.creditInside ],
-						photoCredit;
-					
-					if ( options.creditAfter ) {
+						photoCredit,
+						photoCreditURL;
+						
+					if ( $creditParent ) { 
 						$creditParent.each(function(i){
 							photoCredit = photos[i].photoCredit;
 							if ( photoCredit ) {
-								$creditParent.eq(i).append("<div class=\"credit\"><i>" + creditTemplate.replace("{{credit}}", photoCredit ) + "</i></div>");
-							}
-						});
-					} else {
-						$creditParent.each(function(i){
-							photoCredit = photos[i].photoCredit;
-							if ( photoCredit ) {
-								$creditParent.eq(i).prepend("<div class=\"credit\"><i>" + creditTemplate.replace("{{credit}}", photoCredit) + "</i></div>");
+								photoCredit = creditTemplate.replace("{{credit}}", photos[i].photoCredit );
+								photoCreditURL = photos[i].photoCreditURL;
+								if ( photoCreditURL ) {
+									photoCredit = "<a href=\"" + photoCreditURL + "\">" + photoCredit + "</a>";
+								}
+								if ( options.creditAfter ) {
+									$creditParent.eq(i).append("<div class=\"credit\"><i>" + photoCredit + "</i></div>");
+								} else {
+									$creditParent.eq(i).prepend("<div class=\"credit\"><i>" + photoCredit + "</i></div>");
+								}
 							}
 						});
 					}
+
 				},
 				
 				preloadPhoto: function( index ){
@@ -566,7 +564,8 @@ $.aolPhotoGallery = function( customOptions, elem ){
 				updateCarousel: function( oldIndex ){
 
 					var	$nodeBack,
-						$nodeNext;
+						$nodeNext,
+						i = 0;
 					
 					// Before we do anything, we should animate to ensure it's smooth.
 					core.updateCarouselPosition( oldIndex );
@@ -583,7 +582,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 						// the right of the active.
 
 						$nodeBack = $nodeNext = $slides.eq( activeIndex );
-						for ( var i = 0; i < carouselSiblings; i++ ) {
+						for (; i < carouselSiblings; i++ ) {
 
 							$nodeBack = $nodeBack.prev();
 							$nodeNext = $nodeNext.next();
@@ -620,7 +619,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 						$oldSlide,
 						oldPosition;
 	
-					activePosition = ( galleryWidth - $slide.width() )/2 - $slide.position().left	
+					activePosition = ( galleryWidth - $slide.width() )/2 - $slide.position().left;	
 					
 					// If we are passed an old index, we want to first set the position 
 					// to the old one, and animate to the new one.
@@ -678,9 +677,13 @@ $.aolPhotoGallery = function( customOptions, elem ){
 						htmlElemHeight,
 						documentHeight,
 						documentWidth;
-				
-					// Mousedown feels faster.
+					
 					$aolPhotoGalleryClone.delegate(".show-fullscreen", "mousedown", function(){
+						$(this).trigger("show-fullscreen." + namespace);
+					});
+					
+					// Mousedown feels faster.
+					$aolPhotoGalleryClone.bind("show-fullscreen." + namespace, function(){
 
 						bodyElemWidth = body.offsetWidth;
 						bodyElemHeight = body.offsetHeight;
@@ -700,7 +703,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 							opacity: 0
 						}).animate({
 							opacity: 1
-						}, speed * 1.5)
+						}, speed * 1.5);
 						
 						// We could try doing position: fixed instead, but people
 						// won't be able to scroll unless we are very good about
@@ -824,6 +827,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 					
 					if ( isCarousel ) {
 					
+						// Artz: Does this remove the active ever? Probalby..jsut checking.
 						$slides.eq( activeIndex ).addClass("active");
 						
 						setTimeout(function(){
@@ -875,7 +879,12 @@ $.aolPhotoGallery = function( customOptions, elem ){
 					if ( ! isCarousel ) {
 						
 						$aolPhotoGalleryClone.delegate(".photos > li", "mousedown." + namespace, function(){
-							$(this).trigger("next-mousedown." + namespace);
+							var $elem = $(this);
+							if ( options.preset === "launch" ) {
+								$elem.trigger("show-fullscreen." + namespace);
+							} else {
+								$elem.trigger("next-mousedown." + namespace);
+							}
 						});
 						
 						$aolPhotoGalleryClone.delegate(".photos > li", "mouseover." + namespace, function(){
@@ -1541,7 +1550,10 @@ $.aolPhotoGallery = function( customOptions, elem ){
 					// Render the ad in the next UI thread, once everything is visible.
 					if ( window.htmlAdWH ) {
 						setTimeout(function(){
-							htmlAdWH( options.sponsorAdMN, options.sponsorAdWidth, options.sponsorAdHeight, "ajax", sponsorAdId );
+							// If we are in fullscreen, our sponsor ad needs to be the fullscreen sponsor ad MN.
+							var sponsorAdMN = ui.$parentGallery ? options.fullscreenSponsorAdMN : options.sponsorAdMN;
+
+							htmlAdWH( sponsorAdMN, options.sponsorAdWidth, options.sponsorAdHeight, "ajax", sponsorAdId );
 						}, 0);
 					}
 
@@ -1585,7 +1597,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 								// Set a timeout so that it doesn't interfere
 								// with our transition animation.
 								setTimeout(function(){
-									adsReloadAd( refreshDivId )
+									adsReloadAd( refreshDivId );
 								}, speed);
 							}
 							// Artz: Consider throwing an error here.
@@ -1624,20 +1636,28 @@ $.aolPhotoGallery = function( customOptions, elem ){
 			},
 			
 			initTracking = function(){
-				
-				// Whenever there's a status update, let's fire a page view.
-				$aolPhotoGalleryClone.bind("status-update." + namespace, function(){
-					
-					var updateArea = $aolPhotoGalleryClone.width() * $aolPhotoGalleryClone.height(),
-						updateRatio = updateArea / trackingArea;
+
+					// Whenever there's a status update, let's fire a page view.
+					$aolPhotoGalleryClone.bind("status-update." + namespace, function(){
 						
-					// Check for Comscore page refresh requirements.
-					if ( updateArea > trackingRatio ) {
-						$.mmTrack();
-					}
-					
-				});
-				
+						var updateArea = $aolPhotoGalleryClone.width() * $aolPhotoGalleryClone.height();
+		
+						// Check for Comscore page refresh requirements.
+						if ( updateArea > ( trackingArea * trackingRatio ) ) {
+							
+							// Refresh our tracking page after animations complete.
+							setTimeout(function(){
+								$.mmTrack();
+							}, speed);
+							
+						} else {
+							
+							if ( window.console ) {
+								console.info("jQuery.aolPhotoGallery: Gallery not large enough for Comscore PV tracking.");
+							}
+							
+						}	
+					});
 			},
 			
 			init = function(){
@@ -1669,13 +1689,14 @@ $.aolPhotoGallery = function( customOptions, elem ){
 
 $.fn.aolPhotoGallery = function( customOptions ){
 	
+	customOptions = customOptions || {};
 	// Since these point to the original DOM nodes, 
 	// we may want to reset the pointers.
 	return this.each(function(){
 		$.aolPhotoGallery( customOptions, this );
 	});
 	
-}
+};
 	
 })(jQuery, window, document, location);
 
@@ -1694,8 +1715,11 @@ $.fn.aolPhotoGallery = function( customOptions ){
 		
 		protocol = location.protocol,
 		host = location.hostname,
-		url = location.href,
-		urlClean,
+		
+// 		url = location.href, // Don't think we need this, yet.
+//		urlClean, // Don't think we need this, yet.
+
+		isSandbox = /\.sandbox\./.test(host), // Disable tracking in developer sandboxes.
 		
 		title = "?title=" + encode( document.title ),
 		
@@ -1707,46 +1731,49 @@ $.fn.aolPhotoGallery = function( customOptions ){
 			omnitureEnabled = "&omni=1";
 			omnitureAccount = "&s_account=" + window.s_account;
 			omnitureChannel = "&s_channel=" + omnitureObj.channel;
-			omnitureProp1 = omnitureObj.prop1 + "/";
-			omnitureProp2 = omnitureObj.prop2 + "/";
+			omnitureProp1 = omnitureObj.prop1 ? omnitureObj.prop1 + "/" : "";
+			omnitureProp2 = omnitureObj.prop2 ? omnitureObj.prop2 + "/" : "";
 		}
-	}
-	
-	function initIframe(){
-		
 	}
 	
 	$.mmTrack = function() {
-		
-		if ( ! omnitureObj ) {
-			populateOmniVars();
-		}
-		
-		if ( ! mmTrackIframe ) {
-			mmTrackIframe = document.createElement("iframe");
-			mmTrackIframeStyle = mmTrackIframe.style;
-			mmTrackIframe.id = "aol-mmtrack";
-		//	mmTrackIframeStyle.width = 0;
-		//	mmTrackIframeStyle.height = 0;
-			mmTrackIframeStyle.display = "none";
+		if ( isSandbox ) {
+			if ( window.console ) {
+				console.info("jQuery.mmTrack: Comscore tracking is disabled in sandbox.");
+			}
+		} else {
 			
-			$( document.body ).append( mmTrackIframe );
-		}		
-		
-		var mmTrackUrl = [ 
-			protocol, 
-			"//",
-			host,
-			"/mm_track/",
-			omnitureEnabled,
-			omnitureProp1,
-			omnitureProp2,
-			omnitureAccount,
-			omnitureChannel,
-			title].join("");
-		
-		mmTrackIframe.src = mmTrackUrl + "&ts=" + +new Date();
-	}
+			if ( ! omnitureObj ) {
+				populateOmniVars();
+			}
+			
+			if ( ! mmTrackIframe ) {
+				mmTrackIframe = document.createElement("iframe");
+				mmTrackIframeStyle = mmTrackIframe.style;
+				mmTrackIframe.id = "aol-mmtrack";
+			//	mmTrackIframeStyle.width = 0;
+			//	mmTrackIframeStyle.height = 0;
+				mmTrackIframeStyle.display = "none";
+				
+				$( document.body ).append( mmTrackIframe );
+			}		
+
+			var mmTrackUrl = [ 
+				protocol, 
+				"//",
+				host,
+				"/mm_track/",
+				omnitureProp1,
+				omnitureProp2,
+				title,
+				omnitureEnabled,
+				omnitureAccount,
+				omnitureChannel].join("");
+			
+			mmTrackIframe.src = mmTrackUrl + "&ts=" + +new Date();
+
+		}
+	};
 	
 })( jQuery, window, document, location );
 
