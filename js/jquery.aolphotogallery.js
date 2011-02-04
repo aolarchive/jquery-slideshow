@@ -685,14 +685,13 @@ $.aolPhotoGallery = function( customOptions, elem ){
 					// Mousedown feels faster.
 					$aolPhotoGalleryClone.bind("show-fullscreen." + namespace, function(){
 
-						bodyElemWidth = body.offsetWidth;
-						bodyElemHeight = body.offsetHeight;
-						htmlElemWidth = documentElem.offsetWidth;
-						htmlElemHeight = documentElem.offsetHeight;
-						documentHeight = document.height;
-						documentWidth = document.width;
-						
-					
+						bodyElemWidth = body.offsetWidth || 0;
+						bodyElemHeight = body.offsetHeight || 0;
+						htmlElemWidth = documentElem.offsetWidth || 0;
+						htmlElemHeight = documentElem.offsetHeight || 0;
+						documentHeight = document.height || 0;
+						documentWidth = document.width || 0;
+
 						// Turn the lights out.
 						$fullscreen.css({
 							display: "block",
