@@ -255,7 +255,8 @@ $.aolPhotoGallery = function( customOptions, elem ){
 				preset: $aolPhotoGallery.data("preset"),
 				fullscreenAdMN: $aolPhotoGallery.data("fullscreen-ad-mn"),
 				sponsorAdMN: $aolPhotoGallery.data("sponsor-ad-mn"),
-				fullscreenSponsorAdMN: $aolPhotoGallery.data("fullscreen-sponsor-ad-mn")
+				fullscreenSponsorAdMN: $aolPhotoGallery.data("fullscreen-sponsor-ad-mn"),
+				activePhoto: $aolPhotoGallery.data("active-photo")
 			},
 			
 			// Artz: We may not need this.
