@@ -89,6 +89,7 @@ var defaultOptions = {
 			photoWidth: 559,
 			photoHeight: 487,
 			preset: "carousel",
+			carouselSiblings: 3,
 			sponsorAdMN: ""
 		},
 		
@@ -191,6 +192,8 @@ var defaultOptions = {
 		// Prepends if falsy or appends if truthy to 
 		// the "creditInside" container.
 		creditAfter: 0,
+		
+		imageQuality: 85, // Artz: Add this in. Not used just yet.
 		
 		// Templates that developers can override.
 		template: {
@@ -1793,7 +1796,7 @@ $.getDynamicImageSrc = function( photoSrc, photoWidth, photoHeight, thumbnail, s
 	$.extend( options = {}, {
 		action : 'resize',
 		format : null,
-		quality : 60
+		quality : 85
 	}, settings);
 		
 	dimensions = photoWidth + "x" + photoHeight;
