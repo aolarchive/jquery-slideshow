@@ -118,7 +118,7 @@ var defaultOptions = {
 		thumbnailAfter: 1,
 		
 		// The active photo on initialization.
-		activeIndex: 1,
+		activePhoto: 1,
 				
 		// The <div> containing the AJAX ad to refresh.
 		// This is tied to the gallery slides.
@@ -276,7 +276,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 			namespace = options.namespace,
 			
 			// Subtract 1 to convert from user-friendly to an index.
-			activeIndex = options.activeIndex - 1, 
+			activeIndex = options.activePhoto - 1, 
 			totalPhotos,
 			
 			speed = options.speed,
@@ -431,7 +431,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 					
 						core.buildStatus();
 						
-						if ( options.showControls ) {
+						if ( totalPhotos > 1 && options.showControls ) {
 							core.buildControls();
 						}
 						
@@ -500,55 +500,58 @@ $.aolPhotoGallery = function( customOptions, elem ){
 					if ( ! $slide.data("image-loaded." + namespace) ) {
 						
 						photo = photos[ index ];
-						photoSrc = photo.photoSrc;
-						dynamicPhotoSrc = $.getDynamicImageSrc( photoSrc, photoWidth, photoHeight );
-							
-						// Preload this image and be sure its siblings are loaded.
-						if ( isCarousel ) {
-							
-							// Images are tricky because we need to know the width
-							// to pull off a carousel.  We must first download the 
-							// image, figure out the width, and set its parent.
-							image = new Image();
-							
-							image.onload = function(){
-								
-								// Once an image loads, be sure to do this 
-								// after all animations have finished.
-								$slideContainer.queue(function(next){
-									var slideContainerWidth = $slideContainer.width();
-	
-									$slide.css({
-										backgroundImage: "url(" + dynamicPhotoSrc + ")",
-										width: image.width + "px",
-					//					height: image.height + "px", // We want images to center, so we keep this full height.
-										height: photoHeight + "px",
-										visibility: "visible"
-									});
-									
-									// Update the slide container's width.
-									$slideContainer.width( slideContainerWidth + $slide.outerWidth() );
-	
-									// Update the position of the active index if needed.
-									core.updateCarouselPosition();
-									next();
-								});
-							};
-							
-							// Set the src after event hooks for IE.
-							image.src = dynamicPhotoSrc;
-
-						} else {
-							// Set up background images on slides. This is nice because we don't have to 
-							// mess with <img>, which downloads automatically where as CSS will only
-							// download when visible.
-							$slide.css("backgroundImage", "url(" + dynamicPhotoSrc + ")");
-	
-						}
 						
-						$slide.data("image-loaded." + namespace, 1);
+						if ( photo ) {
+							
+							photoSrc = photo.photoSrc;
+							dynamicPhotoSrc = $.getDynamicImageSrc( photoSrc, photoWidth, photoHeight );
+								
+							// Preload this image and be sure its siblings are loaded.
+							if ( isCarousel ) {
+								
+								// Images are tricky because we need to know the width
+								// to pull off a carousel.  We must first download the 
+								// image, figure out the width, and set its parent.
+								image = new Image();
+								
+								image.onload = function(){
+									
+									// Once an image loads, be sure to do this 
+									// after all animations have finished.
+									$slideContainer.queue(function(next){
+										var slideContainerWidth = $slideContainer.width();
+		
+										$slide.css({
+											backgroundImage: "url(" + dynamicPhotoSrc + ")",
+											width: image.width + "px",
+						//					height: image.height + "px", // We want images to center, so we keep this full height.
+											height: photoHeight + "px",
+											visibility: "visible"
+										});
+										
+										// Update the slide container's width.
+										$slideContainer.width( slideContainerWidth + $slide.outerWidth() );
+		
+										// Update the position of the active index if needed.
+										core.updateCarouselPosition();
+										next();
+									});
+								};
+								
+								// Set the src after event hooks for IE.
+								image.src = dynamicPhotoSrc;
+	
+							} else {
+								// Set up background images on slides. This is nice because we don't have to 
+								// mess with <img>, which downloads automatically where as CSS will only
+								// download when visible.
+								$slide.css("backgroundImage", "url(" + dynamicPhotoSrc + ")");
+		
+							}
+							
+							$slide.data("image-loaded." + namespace, 1);
+						}
 					}
-				
 					
 				},
 				
@@ -573,7 +576,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 					
 					// Before we do anything, we should animate to ensure it's smooth.
 					core.updateCarouselPosition( oldIndex );
-						
+					
 					// Next we should start fetching any new photos.
 					core.preloadCarouselPhotos( activeIndex );
 					
@@ -827,6 +830,11 @@ $.aolPhotoGallery = function( customOptions, elem ){
 					$slideContainer.wrap( "<div class=\"gallery\"></div>" );
 					
 					$gallery = ui.$gallery = $slideContainer.parent();
+					
+					// If we have fewer photos, we need to adjust the siblings if needed.
+					if ( totalPhotos < carouselSiblings * 2 + 1 ) {
+						carouselSiblings = parseInt( ( totalPhotos - 1 ) / 2, 10 );
+					}
 					
 					if ( isCarousel ) {
 					
@@ -1104,7 +1112,10 @@ $.aolPhotoGallery = function( customOptions, elem ){
 							$captionContainer.css("opacity", 0);
 						});
 						$aolPhotoGalleryClone.bind("thumbnail-mousedown." + namespace, function(){
-							$captions.eq( activeIndex ).css("opacity", 0);
+							// Artz: The desired effect would be to set this to 0 so 
+							// the thumbnail captions immediately show.  Need to spend 
+							// time figuring out how best to achieve this.
+							$captions.eq( activeIndex ).css("opacity", 1);
 							$captionContainer.css({
 								"display": "block",
 								"visibility": "visible",
