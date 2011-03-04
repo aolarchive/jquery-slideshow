@@ -15,11 +15,14 @@
 	* Think we got this for the most part, but we should trace all relevant spots and use getIndex() function once.
 	* Once we get Ad confirmation, we need to see if fullscreen can be semitransparent.
 	* Generate a close fullscreen button in full screen mode.
+	* Wallpaper feature.
 	
 */
 (function($, window, document, location){
 
-var defaultOptions = {
+var body = document.body,
+	
+	defaultOptions = {
 
 		// This allows developers to add addtional 
 		// class names to the container <div>, useful
@@ -202,8 +205,24 @@ var defaultOptions = {
 			fullscreen: "Fullscreen",
 			thumbnails: "Thumbnails",
 			next: "Next",
-			back: "Back"
+			back: "Back",
+			wallpaper: "Download Wallpaper",
+			wallpaperSeparator: " x "
 		},
+		
+		buildWallpaper: 0,
+		
+		showCurrentWallpaper: 1,
+		wallpaperSizes: [
+			{
+				width: 1024,
+				height: 768
+			},
+			{
+				width: 1600,
+				height: 1200
+			}
+		],
 		
 		// Overrides for DOM elements, generally 
 		// developers shouldn't touch these.
@@ -335,6 +354,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 						event.preventDefault();
 					});
 					
+					data.galleryId = $aolPhotoGalleryClone.data("gallery-id") || 0;
 					data.galleryName = $galleryName.text();
 					data.galleryDescription = $galleryDescription.html();
 					
@@ -447,7 +467,6 @@ $.aolPhotoGallery = function( customOptions, elem ){
 							core.bindFullscreenParent();
 						}
 						
-						
 						if ( options.showThumbnails || options.toggleThumbnails ) {
 							core.buildThumbnails();
 						}
@@ -455,9 +474,98 @@ $.aolPhotoGallery = function( customOptions, elem ){
 						if ( options.sponsorAdMN ) {
 							core.buildSponsorAd();
 						}
+						
+						if ( options.buildWallpaper ) {
+							core.buildWallpaper();
+						}
 
 						$aolPhotoGallery.replaceWith( $aolPhotoGalleryClone );
 					}
+				},
+				
+				buildWallpaper: function(){
+					
+					var wallpaperSizes = options.wallpaperSizes,
+						wallpaperHTML = ["<div class=\"wallpaper button\"><b>" + template.wallpaper + "</b><ul>"],
+						$wallpaper,
+						wallpaperWidth,
+						wallpaperHeight,
+						screenHeight = screen.height,
+						screenWidth = screen.width,
+						i, l;
+					
+					if ( options.showCurrentWallpaper ) {
+						wallpaperHTML.push( 
+							["<li data-width=\"",
+							screenWidth,
+							"\" data-height=\"",
+							screenHeight,
+							"\">",
+							screenWidth,
+							template.wallpaperSeparator,
+							screenHeight,
+							" (Current)</li>"].join("") );
+					}
+					
+					for ( i = 0, l = wallpaperSizes.length; i < l; i++ ) {
+
+						wallpaperWidth = wallpaperSizes[i].width;
+						wallpaperHeight = wallpaperSizes[i].height;
+						wallpaperHTML.push( 
+							["<li data-width=\"",
+							wallpaperWidth,
+							"\" data-height=\"",
+							wallpaperHeight,
+							"\">",
+							wallpaperWidth,
+							template.wallpaperSeparator,
+							wallpaperHeight,
+							"</li>"].join("") );
+					}
+					
+					wallpaperHTML.push("</ul></div>")
+					
+					$gallery.after( $( wallpaperHTML.join("") ) );
+					
+					core.bindWallpaper();
+				},
+				
+				bindWallpaper: function(){
+					
+					var $wallpaperButton = $aolPhotoGalleryClone.find( ".wallpaper" ),
+						$wallpaperList = $wallpaperButton.find("> ul");
+					
+					$wallpaperButton.bind("mouseenter." + namespace, function(){
+						$wallpaperList.slideDown( speed / 2 );
+					});
+					
+					$wallpaperButton.bind("mouseleave." + namespace, function(){
+						$wallpaperList.slideUp( speed / 2 );
+					});
+					
+					$wallpaperButton.delegate(".wallpaper > ul > li", "click." + namespace, function(){
+
+						var $wallpaperLink = $(this),
+							wallpaperWidth = $wallpaperLink.data("width"),
+							wallpaperHeight = $wallpaperLink.data("height");
+						
+						// Trigger the event if anyone cares.
+						$wallpaperLink.trigger( "wallpaper-download." + namespace, [{ width: wallpaperWidth, height: wallpaperHeight }] );
+
+					});
+					
+					$aolPhotoGalleryClone.bind( "wallpaper-download." + namespace, function( event, data ) {
+						
+						var photo = photos[ activeIndex ];
+						
+						if ( photo ) {
+							photoSrc = photo.photoSrc;
+							dynamicPhotoSrc = $.getDynamicImageSrc( photoSrc, data.width, data.height, 1 );
+							location.href = dynamicPhotoSrc;
+						}
+						
+					});
+					
 				},
 				
 				buildCredits: function(){
@@ -1140,6 +1248,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 						
 						$status.hide();
 										
+					// Artz: What is this?
 					// If we need to show thumbnails by default and 
 					// hide the captions, do so now.
 					} else if ( options.showThumbnails && options.toggleThumbnails ) {
@@ -1578,6 +1687,10 @@ $.aolPhotoGallery = function( customOptions, elem ){
 			// Localize core functions for performance.
 			getIndex = core.getIndex,
 			
+			// Variable used to indicate we need to tell
+			// Omniture this page view refreshed an ad.
+			reportAdImpressionInOmniture = 0,
+			
 			initRefreshAd = function(){
 				
 				var // adMagicNumbers = options.refreshAd.split(),
@@ -1598,8 +1711,12 @@ $.aolPhotoGallery = function( customOptions, elem ){
 				if ( refreshDivId ) {
 					// Listen for status updates to count photo mousedowns.
 					$aolPhotoGalleryClone.bind("status-update." + namespace, function(){
+					
 					// Code for refreshing ads here.
-
+						
+						// Tell Omniture we need to report the impression.
+						reportAdImpressionInOmniture = 1;
+						
 						// Increment our status counter.
 						refreshStatus++;
 
@@ -1653,15 +1770,34 @@ $.aolPhotoGallery = function( customOptions, elem ){
 
 					// Whenever there's a status update, let's fire a page view.
 					$aolPhotoGalleryClone.bind("status-update." + namespace, function(){
+
+						var updateArea = $aolPhotoGalleryClone.width() * $aolPhotoGalleryClone.height(),
+							omnitureConfig = {
+								pageName: data.galleryName,
+								prop1: "gallery",
+								prop2: options.preset || "default",
+//								prop6custom: "", // Sponsorship info
+								prop9: "bsg:" + data.galleryId
+//								prop11: "" // Ad refresh MN
+//								channel: "" // Currently disabled, if needed we can make it a metadata option.
+							};
 						
-						var updateArea = $aolPhotoGalleryClone.width() * $aolPhotoGalleryClone.height();
+						if ( reportAdImpressionInOmniture && options.fullscreenAdMN ) {
+							omnitureConfig.prop11 = options.fullscreenAdMN;
+						}
 		
 						// Check for Comscore page refresh requirements.
 						if ( updateArea > ( trackingArea * trackingRatio ) ) {
 							
-							// Refresh our tracking page after animations complete.
+							// Call our tracking after animations complete.
 							setTimeout(function(){
-								$.mmTrack();
+								
+								// Pass in information about this gallery.
+								$.omniView( omnitureConfig );
+								
+								$.comscoreView( omnitureConfig );
+								//$.mmTrack();
+								
 							}, speed);
 							
 						} else {
@@ -1715,81 +1851,86 @@ $.fn.aolPhotoGallery = function( customOptions ){
 })(jQuery, window, document, location);
 
 /*
-	Creates an mm_track URL, used for tracking page views to Comscore.
+	This function registers a page view for Comscore.
 */
-(function( $, window, document, location ){
+(function($, document, location){
+$.comscoreView = function( options ) {
 	
 	var encode = encodeURIComponent,
-		omnitureObj,
-		omnitureAccount = "",
-		omnitureChannel = "",
-		omnitureProp1 = "",
-		omnitureProp2 = "",
-		omnitureEnabled = "",
+		hostname = location.hostname,
+		isSandbox = /\.sandbox\./.test(hostname),
 		
-		protocol = location.protocol,
-		host = location.hostname,
+		omnitureObj = window.s_265 || {},
 		
-// 		url = location.href, // Don't think we need this, yet.
-//		urlClean, // Don't think we need this, yet.
+		omnitureProp1 = options.prop1 || omnitureObj.prop1,
+		omnitureProp2 = options.prop2 || omnitureObj.prop2,
+		omniturePageName = options.pageName || document.title,
+		omnitureChannel = options.channel || omnitureObj.channel,
 
-		isSandbox = /\.sandbox\./.test(host), // Disable tracking in developer sandboxes.
+		url; 
 		
-		title = "?title=" + encode( document.title ),
+	// Disable tracking in developer sandboxes.	
+	if ( isSandbox ) {
+		if ( window.console ) {
+			console.info("jQuery.mmTrack: Comscore tracking is disabled in sandbox.");
+		}
+	} else {
 		
-		mmTrackIframe,
-		mmTrackIframeStyle;
+		url = [ location.protocol, 
+				"//",
+				hostname,
+				"/mm_track/",
+				omnitureProp1 ? omnitureProp1 + "/" : "",
+				omnitureProp2 ? omnitureProp2 + "/" : "",
+				omniturePageName ? "?title=" + encode( omniturePageName ) : "",
+				omnitureChannel ? "&s_channel=" + omnitureChannel : ""
+			].join("");
+			
+		$.get( url );
+		
+	}
+/*
+http://www.stylelist.com/mm_track/Fashion%7CCelebrity%7CNews%7CCelebrity%20Style/Article/?title=%5Bstylelist-stylelist_look_of_the_day%5D%20Look%20of%20the%20Day%3A%20Vanessa%20Hudgens%20-%20StyleList&omni=1&s_account=aolstylist,aolsvc&s_channel=us.style&pfxID=sty&ts=49924991
+*/
+};
+})(jQuery, document, location);
+/*
+	This function registers a page view in Omniture
+	and temporarily maps over settings on the s_265 object.
+*/
+(function($, window){
+$.omniView = function( options ){
+
+	var omnitureObj = window.s_265,
+		tempObj = {},
+		prop;
 	
-	function populateOmniVars(){
-		if ( omnitureObj = window.s_265 ) {
-			omnitureEnabled = "&omni=1";
-			omnitureAccount = "&s_account=" + window.s_account;
-			omnitureChannel = "&s_channel=" + omnitureObj.channel;
-			omnitureProp1 = omnitureObj.prop1 ? omnitureObj.prop1 + "/" : "";
-			omnitureProp2 = omnitureObj.prop2 ? omnitureObj.prop2 + "/" : "";
+	options = options || {};
+	
+	if ( omnitureObj ) {
+		
+		// Temporarily save the original options to 
+		// an object and set the new option.
+		for ( prop in options ) {
+			if ( options.hasOwnProperty( prop ) ) {
+				tempObj[prop] = omnitureObj[prop];
+				omnitureObj[prop] = options[prop];
+			}
+		}
+		
+		// Trigger an Omniture page view.
+		omnitureObj.t();
+		
+		// Set the original values back to normal.
+		for ( prop in options ) {
+			if ( options.hasOwnProperty( prop ) ) {
+				omnitureObj[prop] = tempObj[prop];
+			}
 		}
 	}
-	
-	$.mmTrack = function() {
-		if ( isSandbox ) {
-			if ( window.console ) {
-				console.info("jQuery.mmTrack: Comscore tracking is disabled in sandbox.");
-			}
-		} else {
-			
-			if ( ! omnitureObj ) {
-				populateOmniVars();
-			}
-			
-			if ( ! mmTrackIframe ) {
-				mmTrackIframe = document.createElement("iframe");
-				mmTrackIframeStyle = mmTrackIframe.style;
-				mmTrackIframe.id = "aol-mmtrack";
-			//	mmTrackIframeStyle.width = 0;
-			//	mmTrackIframeStyle.height = 0;
-				mmTrackIframeStyle.display = "none";
-				
-				$( document.body ).append( mmTrackIframe );
-			}		
-
-			var mmTrackUrl = [ 
-				protocol, 
-				"//",
-				host,
-				"/mm_track/",
-				omnitureProp1,
-				omnitureProp2,
-				title,
-				omnitureEnabled,
-				omnitureAccount,
-				omnitureChannel].join("");
-			
-			mmTrackIframe.src = mmTrackUrl + "&ts=" + +new Date();
-
-		}
-	};
-	
-})( jQuery, window, document, location );
+};
+// $.omniView(); // Test view.
+})(jQuery, window);
 
 (function($){
 	
