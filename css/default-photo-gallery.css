@@ -30,7 +30,7 @@
 	padding: 8px 20px 7px;
     text-shadow: 1px 1px 1px hsla(0, 0%, 100%, 0.5);
 
-    -webkit-transition: 0.2s background-color;
+    -webkit-transition: 0.3s background-color;
 	
         -moz-border-radius: 0;
      -webkit-border-radius: 0;
@@ -272,4 +272,15 @@
         -moz-border-radius: 2px;
      -webkit-border-radius: 2px;
              border-radius: 2px;
+}
+.aol-photo-gallery .wallpaper ul {
+	margin-top: 6px;
+}
+.aol-photo-gallery .wallpaper li {
+	padding: 4px 0;
+	text-align: center;
+    -webkit-transition: 0.3s background-color;
+}
+.aol-photo-gallery .wallpaper li:hover {
+	background-color: #6ec3ff;
 }
