@@ -1213,7 +1213,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 						}, speed);
 
 					});
-					
+
 					// If the toggle feature is present, add those bindings.
 					if ( options.toggleThumbnails ) {
 						$aolPhotoGalleryClone.bind("show-thumbnails." + namespace, function(){
@@ -1858,7 +1858,8 @@ $.comscoreView = function( options ) {
 	
 	var encode = encodeURIComponent,
 		hostname = location.hostname,
-		isSandbox = /\.sandbox\./.test(hostname),
+		// isSandbox = /\.sandbox\./.test(hostname),
+		isSandbox = /\.sandbox\./.test(hostname) && hostname != "omniture.sandbox.platform.aol.com",
 		
 		omnitureObj = window.s_265 || {},
 		
