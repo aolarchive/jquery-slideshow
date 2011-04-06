@@ -4,7 +4,12 @@
 
 .aol-photo-gallery {
 	position: relative;
-	overflow: hidden;
+
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
 }
 .aol-photo-gallery ul {
 	list-style: none;
@@ -16,23 +21,41 @@
 	margin: 0;
 	padding: 0;
 	border: 0;
-}
-.aol-photo-gallery .button, 
-.aol-photo-gallery-fullscreen .button {
-	cursor: pointer;
-	z-index: 5;
-	display: inline-block;
+	height: auto;
 }
 .aol-photo-gallery h2 a {
 	text-decoration: none;
 	color: inherit;
 	cursor: inherit;
 }
-.aol-photo-gallery .description,
-.aol-photo-gallery h2 {
-	margin-right: 175px;
+.aol-photo-gallery .top-left, 
+.aol-photo-gallery .bottom-left {
+	float: left;
+	position: relative;
 }
-.aol-photo-gallery .description p {
+.aol-photo-gallery .top-left li , 
+.aol-photo-gallery .bottom-left li {
+	display: inline-block;
+	cursor: pointer;
+}
+.aol-photo-gallery .top-center,
+.aol-photo-gallery .bottom-center {
+	text-align: center;
+}
+.aol-photo-gallery .top-center li,
+.aol-photo-gallery .bottom-center li {
+	display: inline-block;
+	cursor: pointer;
+}
+.aol-photo-gallery .top-right,
+.aol-photo-gallery .bottom-right {
+	float: right;
+	position: relative;
+}
+.aol-photo-gallery .top-right li,
+.aol-photo-gallery .bottom-right li {
+	display: inline-block;
+	cursor: pointer;
 }
 .aol-photo-gallery .gallery {
 	position: relative;
@@ -73,10 +96,6 @@
 }
 .aol-photo-gallery .captions li p {
 }
-.aol-photo-gallery .captions .credit {
-	position: absolute;
-	top: -20px;
-}
 .aol-photo-gallery .show-thumbnails {
 	float: right;
 	cursor: pointer;
@@ -90,16 +109,6 @@
 	cursor: pointer;
 	background: transparent url(aol-loader-small.gif) no-repeat center center;
 }
-.aol-photo-gallery .status {
-	float: right;
-}
-.aol-photo-gallery .controls {
-	float: right;
-/*	position: relative; */
-}
-.aol-photo-gallery .controls li {
-	float: left;
-}
 .aol-photo-gallery .sponsor {
 	float: right;
 }
@@ -110,8 +119,9 @@
 	position: absolute;
 	top: 0;
 	left: 0;
-	z-index: 9999;
+	z-index: 99999999;
 	display: none;
+	background-color: #000;
 }
 .aol-photo-gallery-fullscreen .fullscreen {
 /*	position: fixed; Artz: Fixed is cool but people can't scroll if it's too big. Consider auto height later. */
@@ -121,9 +131,11 @@
 	left: 0;
 	width: 100%;
 }
-.aol-photo-gallery-fullscreen .close {
+.aol-photo-gallery-fullscreen .close-button {
+	height: auto;
 	position: absolute;
 	right: 0;
+	cursor: pointer;
 }
 .aol-photo-gallery-fullscreen h2 {
 }
@@ -238,11 +250,17 @@
 .aol-photo-galleries li img {
     display: block;
 }
-.aol-photo-gallery .wallpaper {
+.aol-photo-gallery .wallpaper-button {
 	padding-right: 0;
 	padding-left: 0;
+	position: relative;
 }
-.aol-photo-gallery .wallpaper ul {
+.aol-photo-gallery .wallpaper-button ul {
 	display: none;
-	overflow: hidden;
+	position: absolute;
+	margin: 0;
+	z-index: 10;
+}
+.aol-photo-gallery .wallpaper-button ul li {
+	display: block;
 }

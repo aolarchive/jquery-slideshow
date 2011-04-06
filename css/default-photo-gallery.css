@@ -1,16 +1,39 @@
-/*  Default Theme
+/*
+	Default Theme
     A basic theme for AOL Photo Galleries. Feel free to customize or replace
+*/
+
+/*
+	background-color: #6fc4fa;
+	padding: 8px 20px 7px;
+	line-height: 20px;
+
+.aol-photo-gallery .controls li:hover {
+	background-color: #b6e3ff;
+}
+
 */
 
 .aol-photo-gallery {
 	font-size: 15px;
 	line-height: 24px;
 }
-.aol-photo-gallery .button, 
-.aol-photo-gallery-fullscreen .button {
+.aol-photo-gallery > .top-center li,
+.aol-photo-gallery > .bottom-center li {
+	font-size: 15px;
+	line-height: 20px;
+	padding: 8px 16px 7px;
+	margin: 10px 0;
+}
+
+.aol-photo-gallery .top-left li, 
+.aol-photo-gallery .bottom-left li,
+.aol-photo-gallery .top-right li,
+.aol-photo-gallery .bottom-right li,
+.aol-photo-gallery-fullscreen .close-button {
 	color: #000;
 	background: #6fc4fa;
-    background: hsla(203, 93%, 71%); /* hsla equivalent for modern browsers */
+    background: hsla(203, 93%, 71%); 
     background-image:
         -webkit-gradient(
             linear,
@@ -25,11 +48,14 @@
             hsla(0, 0%, 0%, 0) 0%,
             hsla(0, 0%, 100%, 0.2) 60%,
         );
+	
+	font-weight: bold;
 	font-size: 15px;
 	line-height: 20px;
-	padding: 8px 20px 7px;
-    text-shadow: 1px 1px 1px hsla(0, 0%, 100%, 0.5);
-
+	padding: 8px 16px 7px;
+	margin: 10px 0;
+    text-shadow: 1px 1px 0 hsla(0, 0%, 100%, .6);
+	
     -webkit-transition: 0.3s background-color;
 	
         -moz-border-radius: 0;
@@ -37,6 +63,29 @@
              border-radius: 0;
 }
 
+.aol-photo-gallery .top-left li:last-child, 
+.aol-photo-gallery .bottom-left li:last-child {
+		-moz-border-radius: 0 5px 5px 0;
+ -webkit-border-radius: 0 5px 5px 0;
+		 border-radius: 0 5px 5px 0;
+
+}
+.aol-photo-gallery .top-right li:first-child, 
+.aol-photo-gallery .bottom-right li:first-child {
+		-moz-border-radius: 5px 0 0 5px;
+ -webkit-border-radius: 5px 0 0 5px;
+		 border-radius: 5px 0 0 5px;
+
+}
+
+.aol-photo-gallery > .top-left li:hover, 
+.aol-photo-gallery > .bottom-left li:hover,
+.aol-photo-gallery > .top-right li:hover,
+.aol-photo-gallery > .bottom-right li:hover,
+.aol-photo-gallery-fullscreen .close-button:hover {
+	background-color: #b6e3ff;
+}
+/*
 .aol-photo-gallery .button:hover,
 .aol-photo-gallery-fullscreen .button:hover,
 .aol-photo-gallery .gallery .controls .button:hover {
@@ -48,7 +97,7 @@
      -webkit-border-radius: 5px 0 0 5px;
              border-radius: 5px 0 0 5px;
 }
-
+*/
 .aol-photo-gallery h2 {
 	margin: 0 0 7px;
     padding: 0;
@@ -60,7 +109,7 @@
 
 .aol-photo-gallery .description,
 .aol-photo-gallery h2 {
-	margin-right: 175px;
+	margin-right: 145px;
 }
 
 .aol-photo-gallery .description p {
@@ -72,7 +121,7 @@
 .aol-photo-gallery .gallery {
     background: #000;
     background: hsla(0, 0%, 0%, 1);
-    margin: 0 0 1em;
+	clear: both;
 }
 
 .aol-photo-gallery .captions {
@@ -91,12 +140,6 @@
 .aol-photo-gallery .captions li p {
 	margin-top: 0;
 	line-height: 22px;
-}
-
-.aol-photo-gallery .show-thumbnails {
-	background-color: #6fc4fa;
-	padding: 8px 20px 7px;
-	line-height: 20px;
 }
 
 .aol-photo-gallery .show-thumbnails:hover {
@@ -118,14 +161,6 @@
 	background: transparent url(aol-loader-small.gif) no-repeat center center;
 }
 
-.aol-photo-gallery .status {
-	line-height: 20px;
-	padding: 8px 10px 7px;
-}
-
-.aol-photo-gallery .controls li:hover {
-	background-color: #b6e3ff;
-}
 
 /* Fullscreen Styles */
 
@@ -145,7 +180,7 @@
     background-color: #000;
 	padding-top: 25px;
 }
-.aol-photo-gallery-fullscreen .close {
+.aol-photo-gallery-fullscreen .close-button {
 	margin-right: 25px;
 
         -moz-border-radius: 5px;
@@ -172,16 +207,6 @@
 .aol-photo-gallery-fullscreen .button {
 	color: #000;
 }
-
-.aol-photo-gallery-fullscreen .status {
-    color: #333;
-    position: absolute;
-    right: 0;
-}
-
-.aol-photo-gallery-fullscreen .captions {
-}
-
 .aol-photo-gallery-fullscreen ul.captions li h3 {
     color: #999;
     font-size: 24px;
@@ -269,18 +294,65 @@
 	filter: alpha(opacity=66); /* IE lt 8 */
 	-ms-filter: "alpha(opacity=66)"; /* IE 8 */
 
-        -moz-border-radius: 2px;
-     -webkit-border-radius: 2px;
-             border-radius: 2px;
+        -moz-border-radius: 0 0 3px 0;
+     -webkit-border-radius: 0 0 3px 0;
+             border-radius: 0 0 3px 0;
 }
-.aol-photo-gallery .wallpaper ul {
-	margin-top: 6px;
+
+.aol-photo-gallery .wallpaper-button ul {
+	background-color: #b6e3ff;
+	width: 169px;
+	top: 35px;
+	left: 0;
+	padding: 5px;
+	padding-top: 0;
+        -moz-border-radius: 0 0 0 5px;
+     -webkit-border-radius: 0 0 0 5px;
+             border-radius: 0 0 0 5px;
 }
-.aol-photo-gallery .wallpaper li {
+
+.aol-photo-gallery .top-left .wallpaper-button ul, 
+.aol-photo-gallery .bottom-left .wallpaper-button ul {
+        -moz-border-radius: 0 0 5px 0;
+     -webkit-border-radius: 0 0 5px 0;
+             border-radius: 0 0 5px 0;
+}
+
+/*.aol-photo-gallery .wallpaper li {
 	padding: 4px 0;
 	text-align: center;
     -webkit-transition: 0.3s background-color;
 }
 .aol-photo-gallery .wallpaper li:hover {
 	background-color: #6ec3ff;
+}*/
+.aol-photo-gallery .wallpaper-button ul li,
+.aol-photo-gallery .wallpaper-button ul li:first-child {
+	display: block;
+	background: transparent;
+	font-weight: normal;
+	padding: 4px 0;
+	text-align: center;
+	margin: 0;
+	font-size: 14px;
+	
+    -webkit-transition: 0.3s background-color;
+
+        -moz-border-radius: 3px;
+     -webkit-border-radius: 3px;
+             border-radius: 3px;
 }
+.aol-photo-gallery .wallpaper-button ul li:hover {
+	background-color: #6ec3ff;
+}
+
+.aol-photo-gallery .top-right {
+	margin-top: -55px;
+}
+
+/*
+.aol-photo-gallery .captions .credit {
+	position: absolute;
+	top: -20px;
+}
+*/
