@@ -1530,10 +1530,14 @@ $.aolPhotoGallery = function( customOptions, elem ){
 					$thumbnailContainer.data("thumbnails-loaded", thumbnailsLoaded);
 					
 					// Append thumbnails.
-					if ( options.thumbnailAfter ) {
-						$aolPhotoGalleryClone.append( $thumbnailContainer );
-					} else {
+					if ( options.toggleThumbnails ) {
 						$gallery.prepend( $thumbnailContainer );
+					} else {
+						if ( options.thumbnailAfter ) {
+							$aolPhotoGalleryClone.append( $thumbnailContainer );
+						} else {
+							$gallery.before( $thumbnailContainer );
+						}
 					}
 					
 					$thumbnails = ui.$thumbnails = $thumbnailContainer.find("li");
