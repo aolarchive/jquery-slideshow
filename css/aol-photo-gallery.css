@@ -92,27 +92,12 @@
 	position: absolute;
 	visibility: hidden;
 }
-.aol-photo-gallery .captions li h3 {
-}
-.aol-photo-gallery .captions li p {
-}
-.aol-photo-gallery .show-thumbnails {
-	float: right;
-	cursor: pointer;
-	position:relative;
-	z-index: 5;
-}
-.aol-photo-gallery .thumbnails {
-}
 .aol-photo-gallery .thumbnails li {
 	float: left;
 	cursor: pointer;
 	background: transparent url(aol-loader-small.gif) no-repeat center center;
 }
 .aol-photo-gallery .sponsor {
-	float: right;
-}
-.aol-photo-gallery .show-fullscreen {
 	float: right;
 }
 .aol-photo-gallery-fullscreen {
@@ -150,9 +135,6 @@
 	right: 25px;
 	top: 0;
 }
-.aol-photo-gallery-fullscreen .button {
-}
-
 /* Portrait Styles */
 
 /* Width and height left in core styles to preserve functionality... see if we can abstract out later */
@@ -173,24 +155,6 @@
 }
 
 /* Carousel Styles */
-.aol-photo-gallery .gallery .controls {
-	float: right;
-    position: static;
-	z-index: 5;
-}
-.aol-photo-gallery .gallery .controls li {
-	cursor: pointer;
-	position: absolute;
-}
-.aol-photo-gallery .gallery .controls .back {
-	left: 0;
-	top: 0;
-}
-.aol-photo-gallery .gallery .controls .next {
-	right: 0;
-	top: 0;
-}
-
 .aol-photo-gallery-carousel .gallery .photos {
 	position: absolute;
 	top: 0;
@@ -211,6 +175,7 @@
 }
 
 /* Galleries */
+/*
 .aol-photo-galleries ul {
 	padding: 0;
 	display: table;
@@ -250,6 +215,7 @@
 .aol-photo-galleries li img {
     display: block;
 }
+*/
 .aol-photo-gallery .wallpaper-button {
 	padding-right: 0;
 	padding-left: 0;

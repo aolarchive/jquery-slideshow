@@ -19,9 +19,7 @@
 */
 (function($, window, document, location){
 
-var body = document.body,
-	
-	defaultOptions = {
+var defaultOptions = {
 
 		// This allows developers to add addtional 
 		// class names to the container <div>, useful
@@ -52,9 +50,13 @@ var body = document.body,
 			
 			"portrait": { // aol-photo-gallery-portrait
 				captionsAfter: 0,
+				showCaptions: 1,
 				photoWidth: 325,
 				showFullscreen: 0,
-				creditInside: "$slides"
+				creditInside: "$slides",
+				build: {
+					"thumbnails-button": ""
+				}
 			},
 			
 			"launch": { // aol-photo-gallery-launch
@@ -331,6 +333,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 			
 			// Subtract 1 to convert from user-friendly to an index.
 			activeIndex = options.activePhoto - 1, 
+			activePhotoId = options.activePhotoId,
 			totalPhotos,
 			
 			speed = options.speed,
@@ -356,10 +359,8 @@ $.aolPhotoGallery = function( customOptions, elem ){
 			$fullscreen,
 			$fullscreenButton,
 			$status,
-			$controls,
 			$thumbnailContainer,
 			$thumbnails,
-			$showThumbnails,
 			$sponsor,
 			
 			core = {
@@ -424,7 +425,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 						$galleryDescription = $aolPhotoGalleryClone.find( ui.galleryDescription );
 						data.galleryDescription = $galleryDescription.html();
 						if ( options.descriptionAfter ) {
-							$aolPhotoGalleryClone.append( $galleryDescription )
+							$aolPhotoGalleryClone.append( $galleryDescription );
 						}
 					}
 					
@@ -471,14 +472,21 @@ $.aolPhotoGallery = function( customOptions, elem ){
 								photoDescription = $anchorElem.attr("title"),
 								photoSrc = $anchorElem.data("photo-src"),
 								photoCredit = $anchorElem.data("credit"),
-								photoCreditURL = $anchorElem.data("credit-url");
+								photoCreditURL = $anchorElem.data("credit-url"),
+								photoId = $anchorElem.data("media-id");
+							
+							// Allows us to set the active index based on the Media ID.
+							if ( activePhotoId == photoId ) {
+								activeIndex = i;
+							}
 							
 							photos.push({
 								photoName: photoName,
 								photoDescription: photoDescription,
 								photoSrc: photoSrc,
 								photoCredit: photoCredit,
-								photoCreditURL: photoCreditURL
+								photoCreditURL: photoCreditURL,
+								photoId: photoId
 							});
 							
 							// Assign an index to this anchor's parent element.
@@ -584,7 +592,6 @@ $.aolPhotoGallery = function( customOptions, elem ){
 				buildWallpaper: function(){
 					
 					var wallpaperSizes = options.wallpaperSizes,
-						$wallpaper,
 						wallpaperWidth,
 						wallpaperHeight,
 						wallpaperHTML = ["<ul>"],
@@ -630,7 +637,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 						"</li>"].join("") );
 					}
 					
-					wallpaperHTML.push("</ul>")
+					wallpaperHTML.push("</ul>");
 					
 					$wallpaperButton.append( wallpaperHTML.join("") );
 					
@@ -1298,16 +1305,23 @@ $.aolPhotoGallery = function( customOptions, elem ){
 				bindCaptions: function(){
 					$aolPhotoGalleryClone.bind("status-update." + namespace, function(event, data){
 						
-						var oldIndex = data.oldIndex,
-							activeIndex = data.activeIndex,
-														
-							$oldCaption = $captions.eq( oldIndex );
+						var oldIndex = data.oldIndex,	
+							$oldCaption = $captions.eq( oldIndex ),
+							$activeCaption = $captions.eq( activeIndex );
 
 						$oldCaption.css({
 							zIndex: 0
 						}).animate({
 							opacity: 0
 						}, speed);
+						
+						$activeCaption.css({
+							visibility: "visible",
+							opacity: 0,
+							zIndex: 1
+						}).animate({
+							opacity: 1
+						}, speed);	
 
 					});
 
@@ -1464,7 +1478,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 					// If we need to show thumbnails by default and 
 					// hide the next button, do so now. 
 					// Also hide it if there's only 1 photo.
-					if ( options.showThumbnails && options.toggleThumbnails || totalPhotos === 1 ) {
+					if ( ( options.showThumbnails && options.toggleThumbnails ) || totalPhotos === 1 ) {
 						ui["$next-button"].hide();
 					}
 					core.bindNextbutton();
@@ -1483,7 +1497,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 					// If we need to show thumbnails by default and 
 					// hide the back button, do so now.
 					// Also hide it if there's only 1 photo.
-					if ( options.showThumbnails && options.toggleThumbnails || totalPhotos === 1 ) {
+					if ( ( options.showThumbnails && options.toggleThumbnails ) || totalPhotos === 1 ) {
 						ui["$back-button"].hide();
 					}
 					core.bindBackbutton();
@@ -1690,7 +1704,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 
 							// Animate it to the left.
 							$thumbnailContainer.animate({
-								"left": 0 - parseInt( $thumbnailContainer.css("marginLeft"), 10 )
+								"left": 0 - parseInt( $thumbnailContainer.css("marginLeft"), 10 ) 
 							}, speed);
 							
 						});
@@ -1933,10 +1947,11 @@ $.aolPhotoGallery = function( customOptions, elem ){
 				
 				$aolPhotoGalleryClone.bind("status-update." + namespace, function(event, data){
 					
-					var activePhoto = data.activeIndex + 1,
+						// Attempt to use Media ID, fall back to photo number.
+					var photoId = photos[ activeIndex ].photoId || data.activeIndex + 1, 
 						href = location.href,
-						deepLinkHash = "#" + deepLinkHashName + "-" + activePhoto;
-					
+						deepLinkHash = "#" + deepLinkHashName + "-" + photoId;
+
 					if ( pattern.test( href ) ) {
 						location.replace( href.replace( pattern, deepLinkHash ) );
 					} else {
@@ -1944,11 +1959,12 @@ $.aolPhotoGallery = function( customOptions, elem ){
 					}
 					
 				});
-				
+		
 				// Override the default active index with 
 				// the one found in the hash.
 				if ( matches ) {
-					activeIndex = matches[0].replace( "#" + deepLinkHashName + "-", "" ) - 1;
+					// activeIndex = matches[0].replace( "#" + deepLinkHashName + "-", "" ) - 1;
+					activePhotoId = parseInt( matches[0].replace( "#" + deepLinkHashName + "-", "" ), 10 );
 				}
 				
 			},
@@ -2044,10 +2060,8 @@ $.fn.aolPhotoGallery = function( customOptions ){
 (function( $, window, document, location ){
 	
 	var encode = encodeURIComponent,
-		omnitureObj, // Local Omniture reference.
-		hostname = location.hostname,
 		// isSandbox = /\.sandbox\./.test(hostname),
-		isSandbox = /\.sandbox\./.test(hostname) && hostname !== "omniture.sandbox.platform.aol.com",
+		// isSandbox = /\.sandbox\./.test(hostname) && hostname !== "omniture.sandbox.platform.aol.com",
 		
 		protocol = location.protocol,
 		host = location.hostname,
