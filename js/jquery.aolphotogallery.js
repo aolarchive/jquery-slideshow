@@ -1321,7 +1321,11 @@ $.aolPhotoGallery = function( customOptions, elem ){
 							zIndex: 1
 						}).animate({
 							opacity: 1
-						}, speed);	
+						}, speed);
+						// The following code is added to fix the Captions issue. 
+						$captionContainer.animate({
+							height: $activeCaption.height()
+						}, speed);
 
 					});
 
