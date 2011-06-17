@@ -2,6 +2,7 @@
 	AOL Photo Gallery Module
 	@author David Artz
 	@since 1/21/2011
+	@6/17/2011: Ramesh Kumar added support for prop17 and prop21 omniture values for International blogs.
 	
 	To Do:
 	
@@ -104,6 +105,7 @@ var defaultOptions = {
 		
 		// Default options for full screen.
 		fullscreenOptions: {
+			isInternational : 0,
 			photoWidth: 559,
 			photoHeight: 487,
 			preset: "carousel",
@@ -1321,11 +1323,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 							zIndex: 1
 						}).animate({
 							opacity: 1
-						}, speed);
-						// The following code is added to fix the Captions issue. 
-						$captionContainer.animate({
-							height: $activeCaption.height()
-						}, speed);
+						}, speed);	
 
 					});
 
@@ -1985,7 +1983,8 @@ $.aolPhotoGallery = function( customOptions, elem ){
 								prop2: "gallery",
 //								prop6custom: "", // Sponsorship info
 								prop9: "bsg:" + data.galleryId,
-								channel: options.trackingId
+								channel: options.trackingId,
+								isInternational : options.isInternational
 //								prop11: "" // Ad refresh MN
 //								channel: "" // Currently disabled, if needed we can make it a metadata option.
 							};
@@ -2093,7 +2092,12 @@ $.fn.aolPhotoGallery = function( customOptions ){
 			
 			if ( omnitureObj || omnitureConfig ) {
 				
-				omnitureEnabled = "&omni=1";
+				if ( omnitureConfig.isInternational ) {
+				    // Merged prop17 and prop21 with omni=2, which will get initiated only on International blogs.  
+					omnitureEnabled = "&omni=2&sprop17=" + omnitureObj.prop17 + "&sprop21=" + omnitureObj.prop21;
+				} else {
+					omnitureEnabled = "&omni=1";
+				}
 				
 				// Set Omniture account
 				if ( omnitureConfig.s_account ) {
