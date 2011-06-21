@@ -3,6 +3,7 @@
 	@author David Artz
 	@since 1/21/2011
 	@6/17/2011: Ramesh Kumar added support for prop17 and prop21 omniture values for International blogs.
+	@6/21/2011: Ramesh Kumar fixed another omniture bug, specific to International mmx tracking. pfxID was not getting passed onto mm_track page. Some values were showing up as "undefined". 
 	
 	To Do:
 	
@@ -2094,7 +2095,8 @@ $.fn.aolPhotoGallery = function( customOptions ){
 				
 				if ( omnitureConfig.isInternational ) {
 				    // Merged prop17 and prop21 with omni=2, which will get initiated only on International blogs.  
-					omnitureEnabled = "&omni=2&sprop17=" + omnitureObj.prop17 + "&sprop21=" + omnitureObj.prop21;
+				    // Passing the pfxID value to mm_track via GET vars - Ramesh Kumar
+					omnitureEnabled = "&omni=2&pfxID=" + omnitureObj.pfxID + "&sprop17=" + omnitureObj.prop17 + "&sprop21=" + omnitureObj.prop21;
 				} else {
 					omnitureEnabled = "&omni=1";
 				}
