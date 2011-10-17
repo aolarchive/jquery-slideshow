@@ -4,6 +4,7 @@
 	@since 1/21/2011
 	@6/17/2011: Ramesh Kumar added support for prop17 and prop21 omniture values for International blogs.
 	@6/21/2011: Ramesh Kumar fixed another omniture bug, specific to International mmx tracking. pfxID was not getting passed onto mm_track page. Some values were showing up as "undefined". 
+	@7/20/2011 : Sobia Ali made some updates for the UK team. The file is checked in and is named: jquery.aolphotogallery.uk.js
 	
 	To Do:
 	
