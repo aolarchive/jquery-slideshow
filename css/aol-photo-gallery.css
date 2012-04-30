@@ -122,6 +122,14 @@
 	right: 0;
 	cursor: pointer;
 }
+.aol-photo-gallery-fullscreen .thumbnail-container {
+	overflow: hidden;
+	padding: 0 25px;
+}
+.aol-photo-gallery-fullscreen .thumbnail-container-inner {
+	overflow: hidden;
+}
+
 .aol-photo-gallery-fullscreen h2 {
 }
 .aol-photo-gallery-fullscreen .aol-photo-gallery {
