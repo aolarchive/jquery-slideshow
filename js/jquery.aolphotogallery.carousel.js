@@ -1750,7 +1750,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 				buildThumbCarousel: function() {
 				
 					var $fullscreen = ui.$fullscreen,
-						$thumbnailContainer = $fullscreen.find('.fullscreen ul.thumbnails'),
+						$thumbnailContainer = $fullscreen.find('ul.thumbnails'),
 						$thumbnailContainerParent = "<div class=\"thumbnail-container\"><div class=\"thumbnail-container-inner\"></div><ul class=\"bottom-left\"><li class=\"thumbnail-prev\">Back</li><li class=\"thumbnail-next\">Next</li></ul></div>",
 						fullscreenOptions = options.fullscreenOptions,
 						thumbCarouselOptions = fullscreenOptions.thumbCarouselOptions;
@@ -1926,6 +1926,18 @@ $.aolPhotoGallery = function( customOptions, elem ){
 							$topCenter.fadeIn(speed);
 						}
 
+					});
+					
+					// Ramesh: Keyboard shortcuts for next (right arrow) and back (left arrow). 
+					 
+					$(documentElem).keyup(function(event){
+						if (event.keyCode == 39) {
+							$aolPhotoGalleryClone.trigger("next-mousedown." + namespace);
+						}
+						
+						if (event.keyCode == 37) {
+							$aolPhotoGalleryClone.trigger("back-mousedown." + namespace);
+						}
 					});
 				},
 
