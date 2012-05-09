@@ -1060,6 +1060,14 @@ $.aolPhotoGallery = function( customOptions, elem ){
                         // Reset the parent gallery to whatever slide we're on right now.
                         $aolPhotoGalleryClone.trigger("fullscreen-close." + namespace);
                     });
+                    
+                    // Sobia's code for fullscreen hash tag.
+                    var testHash = parseHash("fullscreen");
+                    if (testHash) {
+                    	if (testHash[0] === "fullscreen") {
+                    		$fullscreenButton.trigger("fullscreen-button." + namespace);
+                    	}
+                    }
 
 
         /*
@@ -2101,6 +2109,26 @@ $.aolPhotoGallery = function( customOptions, elem ){
                 }
 
             },
+            
+            parseHash = function (param) {
+            
+            	   if (window.location.href.indexOf('#') !== -1) {
+            	   
+            		    var hashes = window.location.href.slice(window.location.href.indexOf('#') + 1).split('&');
+            		    for(var i = 0; i < hashes.length; i++) {
+            				
+            				hash = hashes[i].split('-');
+            				
+            				if (hash) {
+            					if (hash[0] === param) {
+            						return [hash[0], hash[1]]
+            					} 
+            				}
+            				
+            		    }
+            	    }
+            
+            }, 
 
             initDeepLinking = function(){
 
