@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html>
+<meta charset="utf-8">
+<head>
+<title>My Photo Gallery Post - Platform Blog</title>
+<!--<link rel="stylesheet" href="http://platform.aol.com/media/global.css">
+<link rel="stylesheet" href="http://platform.aol.com/media/blog.css">
+<link rel="stylesheet" href="http://platform.aol.com/media/calendarEvent.css">
+<link type="image/x-icon" rel="shortcut icon" href="http://www.blogsmithmedia.com/platform.aol.com/media/favicon.ico" />-->
+<link rel="stylesheet" href="../css/aol-photo-gallery.css" />
+<link rel="stylesheet" href="../css/default-photo-gallery.css" />
+<style>
+html {
+	font-family: arial;
+}
+body {
+	width: 960px;
+	margin: 0 auto;
+}
+div.post {
+	width: 600px;
+	border: 10px solid #ccc;
+	float:left;
+}
+div.aside {
+	float: right;
+	width: 300px;
+}
+div#ad300x250 {
+	position: absolute;
+	right: 0;
+}
+</style>
+</head>
+<body>
+<script type="text/javascript" src="http://o.aolcdn.com/ads/adsWrapper.js"></script>
+<script type='text/javascript'>
+adSetAdURL('/_uac/adpage.html');
+</script>
+<h1>Photo Gallery Module Test Page</h1>
+<h2>Link Launcher</h2>
+<a href="/photos/" name="aol-photo-gallery"
+    data-ajax-url="aol-photo-gallery-ajax.html">AJAX Photo Gallery</a>
+</body>
+<!-- <script src="/FED_SVN/libraries/jquery/jquery-1.4.4.min.js"></script> -->
+<script src="http://o.aolcdn.com/os/aol/jquery-1.4.4.min.js"></script>
+<script src="../js/jquery.aolphotogallery.carousel.js"></script>
+<script>
+(function($){
+
+//var $aolPhotoGalleries = $("div.aol-photo-gallery");
+
+// Faster way to select elements than class names.
+$("[name='aol-photo-gallery']").eq(0).aolPhotoGallery({
+    preset: "launch",
+    photoWidth: 300,
+    photoHeight: 350,
+    omnitureChannel: "artz"
+});
+
+})(jQuery);
+</script>
+</html>
