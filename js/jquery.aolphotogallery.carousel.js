@@ -107,6 +107,14 @@ var defaultOptions = {
         // The max width and height of generated thumbs.
         thumbnailWidth: 74,
         thumbnailHeight: 74,
+        
+        // Default options for Thumbnail Carousel
+        buildThumbCarousel: 0,
+        thumbCarouselOptions: {
+            "startImage": 0,
+            "scrollNumImages": 5,
+            "animateSpeed": 300
+        },
 
         // Default options for full screen.
         fullscreenOptions: {
@@ -123,14 +131,6 @@ var defaultOptions = {
                 "fullscreen-button": "",
                 "thumbnails-button": ""
 //				"thumbnails-button": "bottom-left append after $gallery"
-            },
-            buildThumbCarousel: 0,
-            // TODO: These should live in the default options, and
-            // get inherited by fullscreen options.
-            thumbCarouselOptions: {
-                "startImage": 0,
-                "scrollNumImages": 5,
-                "animateSpeed": 300
             }
         },
 
@@ -1022,18 +1022,8 @@ $.aolPhotoGallery = function( customOptions, elem ){
 
                             // Build the Thumbnail Carousel only on Fullscreen mode:
                             // TODO: Make this work in non-fullscreen mode too.
-                            if ( fullscreenOptions.buildThumbCarousel ) {
-                                // Don't build the carousel, if there are fewer photos
-                                // TODO: 13 should not be hard coded here. Carousel should
-                                // be smart enough to understand if it needs next/prev buttons
-                                // by calculating widths.
-                                if ( totalPhotos >= 13 ) {
-                                    core.buildThumbCarousel();
-                                } else {
-                                    if ( window.console ) {
-                                        console.info("jQuery.aolPhotoGallery: Not enough photos to build the thumbnail carousel");
-                                    }
-                                }
+                            if ( options.buildThumbCarousel ) {
+                                	core.buildThumbCarousel( "fullscreen" );
                             }
 
                         } else {
@@ -1792,16 +1782,20 @@ $.aolPhotoGallery = function( customOptions, elem ){
                     }
                 },
 
-                buildThumbCarousel: function() {
-
-                    var $fullscreen = ui.$fullscreen,
+                buildThumbCarousel: function( view ) {
+                
+                	if ( view === "fullscreen" ) {
+                		$view = ui.$fullscreen
+                	} else {
+                		$view = $aolPhotoGalleryClone;
+                	}
+					
+                    var //$fullscreen = ui.$fullscreen,
                         // TODO: This should be accessible in ui object.
-                        $thumbnailContainer = $fullscreen.find('ul.thumbnails'),
+                        $thumbnailContainer = $view.find('ul.thumbnails'),
                         $thumbnailContainerParent = "<div class=\"thumbnail-container\"><div class=\"thumbnail-container-inner\"></div><ul class=\"bottom-left\"><li class=\"thumbnail-prev\">Back</li><li class=\"thumbnail-next\">Next</li></ul></div>",
-                        fullscreenOptions = options.fullscreenOptions,
-                        thumbCarouselOptions = fullscreenOptions.thumbCarouselOptions;
-
-                        $thumbnailContainer.wrap($thumbnailContainerParent);
+                        thumbCarouselOptions = options.thumbCarouselOptions;
+                        
 
                     var isAnimating = false,
                         $thumbnailItems = $thumbnailContainer.find("li"),
@@ -1812,74 +1806,82 @@ $.aolPhotoGallery = function( customOptions, elem ){
                         animateSpeed = thumbCarouselOptions.animateSpeed,
                         current,
                         visible = Math.round($thumbnailContainer.width() / sizeFirstElmnt);
-
-                    // Clone items for the infinite carousel..
-                    $thumbnailContainer.prepend($thumbnailItems.slice(totalImages-visible-1+1).clone()).append($thumbnailItems.slice(0,visible).clone());
-                    startImage += visible;
-
-                    //After Cloning, we need to get the new count of the thumbnails..
-                    var $newThumbnailItems = $thumbnailContainer.find("li"),
-                        itemLength = $newThumbnailItems.size(),
-                        ulWidth = sizeFirstElmnt * itemLength;
-                        current = startImage;
-
-                    $thumbnailContainer.css({
-                                        width : ulWidth+"px",
-                                        position: "relative",
-                                        left : -(current*sizeFirstElmnt)
-                                        });
-
-                    $fullscreen.delegate(".thumbnail-prev", "mousedown." + namespace, function(){
-                            var activeCount = current-scroll;
-
-                            if(!isAnimating) {
-                                if ( activeCount <= startImage-visible-1 ) { // If first, then goto last
-                                         $thumbnailContainer.css("left", -((itemLength-(visible*2))*sizeFirstElmnt)+"px");
-
-                                         current = (activeCount==startImage-visible-1) ? itemLength-(visible*2)-1 : itemLength-(visible*2)-scroll;
-                                } else if (	activeCount>=itemLength-visible+1 ) { // If last, then goto first
-                                         $thumbnailContainer.css("left", -( (visible) * sizeFirstElmnt ) + "px" );
-
-                                         current = (activeCount==itemLength-visible+1) ? visible+1 : visible+scroll;
-                                } else   current = activeCount;
-
-                                isAnimating = true;
-
-                                $thumbnailContainer.animate({
-                                            left: -(current*sizeFirstElmnt)
-                                                }, 150,
-                                                function() { isAnimating = false;}
-                                        );
-                                    }
-                                return false;
-
-                    });
-
-                    $fullscreen.delegate(".thumbnail-next", "mousedown." + namespace, function(){
-                            var activeCount = current+scroll;
-
-                            if(!isAnimating) {
-                                if ( activeCount <= startImage-visible-1 ) { // If first, then goto last
-                                         $thumbnailContainer.css("left", -((itemLength-(visible*2))*sizeFirstElmnt)+"px");
-
-                                         current = (activeCount==startImage-visible-1) ? itemLength-(visible*2)-1 : itemLength-(visible*2)-scroll;
-                                } else if (	activeCount>=itemLength-visible+1 ) { // If last, then goto first
-                                         $thumbnailContainer.css("left", -( (visible) * sizeFirstElmnt ) + "px" );
-
-                                         current = (activeCount==itemLength-visible+1) ? visible+1 : visible+scroll;
-                                } else   current = activeCount;
-
-                                isAnimating = true;
-
-                                $thumbnailContainer.animate({
-                                            left: -(current*sizeFirstElmnt)
-                                                }, 150,
-                                                function() { isAnimating = false;}
-                                        );
-                                    }
-                                return false;
-
-                    });
+                    
+                    // Build the thumbnail carousel, only if there are more images beyond the thumbnail container width.     
+					if ( totalPhotos >= visible ) {
+						$thumbnailContainer.wrap($thumbnailContainerParent);
+	                    // Clone items for the infinite carousel..
+	                    $thumbnailContainer.prepend($thumbnailItems.slice(totalImages-visible-1+1).clone()).append($thumbnailItems.slice(0,visible).clone());
+	                    startImage += visible;
+	
+	                    //After Cloning, we need to get the new count of the thumbnails..
+	                    var $newThumbnailItems = $thumbnailContainer.find("li"),
+	                        itemLength = $newThumbnailItems.size(),
+	                        ulWidth = sizeFirstElmnt * itemLength;
+	                        current = startImage;
+	
+	                    $thumbnailContainer.css({
+	                                        width : ulWidth+"px",
+	                                        position: "relative",
+	                                        left : -(current*sizeFirstElmnt)
+	                                        });
+	
+	                    $view.delegate(".thumbnail-prev", "mousedown." + namespace, function(){
+	                            var activeCount = current-scroll;
+	
+	                            if(!isAnimating) {
+	                                if ( activeCount <= startImage-visible-1 ) { // If first, then goto last
+	                                         $thumbnailContainer.css("left", -((itemLength-(visible*2))*sizeFirstElmnt)+"px");
+	
+	                                         current = (activeCount==startImage-visible-1) ? itemLength-(visible*2)-1 : itemLength-(visible*2)-scroll;
+	                                } else if (	activeCount>=itemLength-visible+1 ) { // If last, then goto first
+	                                         $thumbnailContainer.css("left", -( (visible) * sizeFirstElmnt ) + "px" );
+	
+	                                         current = (activeCount==itemLength-visible+1) ? visible+1 : visible+scroll;
+	                                } else   current = activeCount;
+	
+	                                isAnimating = true;
+	
+	                                $thumbnailContainer.animate({
+	                                            left: -(current*sizeFirstElmnt)
+	                                                }, 150,
+	                                                function() { isAnimating = false;}
+	                                        );
+	                                    }
+	                                return false;
+	
+	                    });
+	
+	                    $view.delegate(".thumbnail-next", "mousedown." + namespace, function(){
+	                            var activeCount = current+scroll;
+	
+	                            if(!isAnimating) {
+	                                if ( activeCount <= startImage-visible-1 ) { // If first, then goto last
+	                                         $thumbnailContainer.css("left", -((itemLength-(visible*2))*sizeFirstElmnt)+"px");
+	
+	                                         current = (activeCount==startImage-visible-1) ? itemLength-(visible*2)-1 : itemLength-(visible*2)-scroll;
+	                                } else if (	activeCount>=itemLength-visible+1 ) { // If last, then goto first
+	                                         $thumbnailContainer.css("left", -( (visible) * sizeFirstElmnt ) + "px" );
+	
+	                                         current = (activeCount==itemLength-visible+1) ? visible+1 : visible+scroll;
+	                                } else   current = activeCount;
+	
+	                                isAnimating = true;
+	
+	                                $thumbnailContainer.animate({
+	                                            left: -(current*sizeFirstElmnt)
+	                                                }, 150,
+	                                                function() { isAnimating = false;}
+	                                        );
+	                                    }
+	                                return false;
+	
+	                    });
+                  } else {
+                      if ( window.console ) {
+                          console.info("jQuery.aolPhotoGallery: Not enough photos to build the thumbnail carousel");
+                      }
+                  }
                 },
 
                 bindControls: function(){
@@ -2131,32 +2133,60 @@ $.aolPhotoGallery = function( customOptions, elem ){
             }, 
 
             initDeepLinking = function(){
-
-                var pattern = new RegExp( "\#" + deepLinkHashName + "-[0-9]+" ),
-                    matches = pattern.exec( location.href );
-
-                $aolPhotoGalleryClone.bind("status-update." + namespace, function(event, data){
-
-                        // Attempt to use Media ID, fall back to photo number.
-                    var photoId = photos[ activeIndex ].photoId || data.activeIndex + 1,
-                        href = location.href,
-                        deepLinkHash = "#" + deepLinkHashName + "-" + photoId;
-
-                    if ( pattern.test( href ) ) {
-                        location.replace( href.replace( pattern, deepLinkHash ) );
-                    } else {
-                        location.replace( href + deepLinkHash );
-                    }
-
-                });
-
-                // Override the default active index with
-                // the one found in the hash.
-                if ( matches ) {
-                    // activeIndex = matches[0].replace( "#" + deepLinkHashName + "-", "" ) - 1;
-                    activePhotoId = parseInt( matches[0].replace( "#" + deepLinkHashName + "-", "" ), 10 );
-                }
-
+            			
+            				var testHash = parseHash(deepLinkHashName);
+            				if (testHash) {
+            					if (testHash[0] === deepLinkHashName) {
+            						activePhotoId = parseHash(deepLinkHashName)[1];
+            					}
+            				}
+            
+            
+            				
+            				var pattern = new RegExp( deepLinkHashName + "-[0-9]+" ),
+            					matches = pattern.exec( location.href );
+            				
+            				$aolPhotoGalleryClone.bind("status-update." + namespace, function(event, data){
+            					
+            					// Attempt to use Media ID, fall back to photo number.
+            					var photoId = photos[ activeIndex ].photoId || data.activeIndex + 1, 
+            						href = location.href,
+            						
+            						
+            						deepLinkHash = deepLinkHashName + "-" + photoId;
+            						
+            
+            					if ( pattern.test( href ) ) {
+            						
+            						location.replace( href.replace( pattern, deepLinkHash ) );
+            					
+            					} else {
+            						if (window.location.href.indexOf('#') !== -1)  {
+            						
+            						location.replace( href + '&' + deepLinkHash );
+            						
+            						} else {
+            						
+            						location.replace( href + '#' + deepLinkHash );
+            						
+            						
+            						}
+            						
+            						
+            					}
+            					
+            				});
+            		
+            				
+            		
+            		
+            				// Override the default active index with 
+            				// the one found in the hash.
+            				//if ( matches ) {
+            					// activeIndex = matches[0].replace( "#" + deepLinkHashName + "-", "" ) - 1;
+            					//activePhotoId = parseInt( matches[0].replace( "#" + deepLinkHashName + "-", "" ), 10 );
+            				//}
+            				
             },
 
             initTracking = function(){
