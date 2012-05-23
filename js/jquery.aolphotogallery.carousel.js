@@ -11,7 +11,6 @@
     * Deep link into full screen mode.
     * Related galleries.
     * End cards?
-    * ACCESSIBILITY: Keyboard shortcuts for next (right arrow) and back (left arrow).
     * Autodetect the width of the column, and adjust the image size.
     * Make default thumbnail view with toggle.
     * LINE 889: Remove thumbnail opacity effect from the core code, make it optional.
@@ -109,7 +108,7 @@ var defaultOptions = {
         thumbnailHeight: 74,
         
         // Default options for Thumbnail Carousel
-        buildThumbCarousel: 0,
+        buildThumbCarousel: 1,
         thumbCarouselOptions: {
             "startImage": 0,
             "scrollNumImages": 5,
@@ -1790,9 +1789,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
                 		$view = $aolPhotoGalleryClone;
                 	}
 					
-                    var //$fullscreen = ui.$fullscreen,
-                        // TODO: This should be accessible in ui object.
-                        $thumbnailContainer = $view.find('ul.thumbnails'),
+                    var $thumbnailContainer = $view.find('ul.thumbnails'),
                         $thumbnailContainerParent = "<div class=\"thumbnail-container\"><div class=\"thumbnail-container-inner\"></div><ul class=\"bottom-left\"><li class=\"thumbnail-prev\">Back</li><li class=\"thumbnail-next\">Next</li></ul></div>",
                         thumbCarouselOptions = options.thumbCarouselOptions;
                         
@@ -1813,6 +1810,9 @@ $.aolPhotoGallery = function( customOptions, elem ){
 	                    // Clone items for the infinite carousel..
 	                    $thumbnailContainer.prepend($thumbnailItems.slice(totalImages-visible-1+1).clone()).append($thumbnailItems.slice(0,visible).clone());
 	                    startImage += visible;
+	                    
+	                    // Adding the styles for the thumbnail containers via JS itself. Dont want to modify the CSS file for it ;) 
+	                    $(".thumbnail-container, .thumbnail-container-inner").css("overflow", "hidden");
 	
 	                    //After Cloning, we need to get the new count of the thumbnails..
 	                    var $newThumbnailItems = $thumbnailContainer.find("li"),
@@ -1844,7 +1844,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 	
 	                                $thumbnailContainer.animate({
 	                                            left: -(current*sizeFirstElmnt)
-	                                                }, 150,
+	                                                }, animateSpeed,
 	                                                function() { isAnimating = false;}
 	                                        );
 	                                    }
@@ -1870,7 +1870,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 	
 	                                $thumbnailContainer.animate({
 	                                            left: -(current*sizeFirstElmnt)
-	                                                }, 150,
+	                                                }, animateSpeed,
 	                                                function() { isAnimating = false;}
 	                                        );
 	                                    }
