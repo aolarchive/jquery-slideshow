@@ -9,6 +9,20 @@
 <link type="image/x-icon" rel="shortcut icon" href="http://www.blogsmithmedia.com/platform.aol.com/media/favicon.ico" />-->
 <link rel="stylesheet" href="../css/aol-photo-gallery.css" />
 <link rel="stylesheet" href="../css/default-photo-gallery.css" />
+<style type="text/css">
+
+.aside .captions {
+	position:relative;
+}
+
+.aside .captions li {
+	visibility:hidden;
+	position:absolute;
+	left:0;
+	overflow: auto;
+}
+
+</style>
 <style>
 html {
 	font-family: arial;
@@ -177,7 +191,7 @@ adSetAdURL('/_uac/adpage.html');
 //var $aolPhotoGalleries = $("div.aol-photo-gallery");
 
 // Faster way to select elements than class names.
-$("[name='aol-photo-gallery']").eq(0).aolPhotoGallery({ preset: "slideshow", photoWidth: 600, photoHeight: 350, omnitureChannel: "artz", buildThumbCarousel: 1});
+$("[name='aol-photo-gallery']").eq(0).aolPhotoGallery({ preset: "slideshow", photoWidth: 600, photoHeight: 350, omnitureChannel: "artz", fullscreenOptions: {contentsInRightRail: 1, creditInside: "$captions"}});
 
 })(jQuery);
 </script>

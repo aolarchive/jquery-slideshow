@@ -118,6 +118,9 @@ var defaultOptions = {
         // Default options for full screen.
         fullscreenOptions: {
             isInternational : 0,
+            // Moving contents like "Title", "Description", "Captions" etc., to the right rail above the Ad. 
+            // TODO: Need to create a separate function to accomodate this. For now, it will be used within buildCaptions() 
+            contentsInRightRail: 0,
             photoWidth: 559,
             photoHeight: 487,
             preset: "carousel",
@@ -227,7 +230,7 @@ var defaultOptions = {
         // Inserts the controls inisde the gallery <div>,
         // falsy inserts outside.
         captionsAfter: 1,
-
+        
         // Shows the credit box.
         showCredit: 1,
 
@@ -1323,8 +1326,18 @@ $.aolPhotoGallery = function( customOptions, elem ){
 
                     $captions = $( captionHTML.join("") );
 
-                    // Append captions.
-                    if ( options.captionsAfter ) {
+                    // Need to move this into its own function. 
+                    // Let's tie this with captions for now.
+                    if ( options.contentsInRightRail ) {
+                    		var $aside = $('div.aside');
+                    					
+                    		if ($aside.length !== 0) {
+                    				$aside.prepend( $captions );
+                    				$aside.prepend( $aolPhotoGalleryClone.find('.description') );
+                    				$aside.prepend( ui.$galleryName );
+                    			}
+                    					
+                    } else if ( options.captionsAfter ) {
                         $gallery.after( $captions );
                     } else {
                         $gallery.prepend( $captions );
@@ -1379,6 +1392,10 @@ $.aolPhotoGallery = function( customOptions, elem ){
                         }).animate({
                             opacity: 1
                         }, speed);
+                        
+                        $captionContainer.animate({
+                            height: $activeCaption.height()
+                        }, { duration: speed, queue: false } );
 
                     });
 
@@ -1790,7 +1807,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
                 	}
 					
                     var $thumbnailContainer = $view.find('ul.thumbnails'),
-                        $thumbnailContainerParent = "<div class=\"thumbnail-container\"><div class=\"thumbnail-container-inner\"></div><ul class=\"bottom-left\"><li class=\"thumbnail-prev\">Back</li><li class=\"thumbnail-next\">Next</li></ul></div>",
+                        $thumbnailContainerParent = "<div class=\"thumbnail-container\"><div class=\"thumbnail-container-inner\"></div><ul class=\"thumbnail-carousel-controls\"><li class=\"thumbnail-prev\">Back</li><li class=\"thumbnail-next\">Next</li></ul></div>",
                         thumbCarouselOptions = options.thumbCarouselOptions;
                         
 
