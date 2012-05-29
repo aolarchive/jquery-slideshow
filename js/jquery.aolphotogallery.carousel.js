@@ -8,7 +8,6 @@
     @4/30/2012 : Ramesh Kumar added a new feature for thumbnail carousel in fullscreenmode. Function name: buildThumbCarousel()
 
     To Do:
-    * Deep link into full screen mode.
     * Related galleries.
     * End cards?
     * Autodetect the width of the column, and adjust the image size.
@@ -314,6 +313,26 @@ var defaultOptions = {
     deepLinkHashName = "photo";
 
 $.aolPhotoGallery = function( customOptions, elem ){
+	
+	// Sobia's parse Hashtag code. Defining this function at the top so that its available for ajaxURL call. 
+	//TODO: Dave, need your inputs to do this in a better way. 
+	
+	parseHash = function (param) {
+	
+		   if (window.location.href.indexOf('#') !== -1) {
+		   
+			    var hashes = window.location.href.slice(window.location.href.indexOf('#') + 1).split('&');
+			    for(var i = 0; i < hashes.length; i++) {
+					hash = hashes[i].split('-');
+					if (hash) {
+						if (hash[0] === param) {
+							return [hash[0], hash[1]]
+						} 
+					}
+				}
+		    }
+	
+	}
 
     // Initialize the gallery.
     if ( elem ) {
@@ -328,6 +347,20 @@ $.aolPhotoGallery = function( customOptions, elem ){
             // and use as content instead.
             ajaxSrc = $elem.data("ajax-url");
             if ( ajaxSrc ) {
+  				//Launch Fullscreen for Ajax based gallery. URL should have #fullscreen in it for this to work. 
+  				//So any page that has a ajax based gallery link, it should load the fullscreen. 
+  				//This should help the AOL Music team to share the deeplink URLs with #fullscreen in it. 
+            	var testHash = parseHash("fullscreen");
+            		if (testHash) {
+            			$.get( ajaxSrc, function( data ) {
+            			    $ajaxDiv = $( data );
+            			    $ajaxDiv.css("display", "none");
+            			    $elem.after( $ajaxDiv );
+            			    $ajaxDiv = $.aolPhotoGallery( customOptions, $ajaxDiv[0] );
+            			    $ajaxDiv.trigger("fullscreen-button");
+            			}, "html");
+            		}
+            		
                 $elem.click(function(event){
                     if ( $ajaxDiv ) {
                         $ajaxDiv.trigger("fullscreen-button");
@@ -337,7 +370,6 @@ $.aolPhotoGallery = function( customOptions, elem ){
                             $ajaxDiv.css("display", "none");
                             $elem.after( $ajaxDiv );
                             $ajaxDiv = $.aolPhotoGallery( customOptions, $ajaxDiv[0] );
-                            console.log( $ajaxDiv );
                             $ajaxDiv.trigger("fullscreen-button");
                         }, "html");
                     }
@@ -1308,7 +1340,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
                     }
 
                 },
-
+                
                 buildCaptions: function(){
 
                     var i = 0,
@@ -1993,7 +2025,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 
                     });
 
-                    // Ramesh: Keyboard shortcuts for next (right arrow) and back (left arrow).
+                    // Ramesh: Keyboard shortcuts for next (right arrow), back (left arrow) and escape keys.
 
                     $(documentElem).keyup(function(event){
                         if (event.keyCode == 39) {
@@ -2002,6 +2034,23 @@ $.aolPhotoGallery = function( customOptions, elem ){
 
                         if (event.keyCode == 37) {
                             $aolPhotoGalleryClone.trigger("back-mousedown." + namespace);
+                        }
+                        
+                        if (event.keyCode == 27) {
+                        	// Close the fullscreen, if esc key is pressed. 
+                        	if ( $fullscreen ) {
+           						$fullscreen.animate({
+                                       opacity: 0
+                                   }, speed * 1.5).queue(function(next){
+                                       $fullscreen.css({
+                                           display: "none"
+                                       });
+                                       next();
+                                });
+           
+                                // Reset the parent gallery to whatever slide we're on right now.
+                                $aolPhotoGalleryClone.trigger("fullscreen-close." + namespace);   
+                        	}
                         }
                     });
                 },
@@ -2128,27 +2177,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
                 }
 
             },
-            
-            parseHash = function (param) {
-            
-            	   if (window.location.href.indexOf('#') !== -1) {
-            	   
-            		    var hashes = window.location.href.slice(window.location.href.indexOf('#') + 1).split('&');
-            		    for(var i = 0; i < hashes.length; i++) {
-            				
-            				hash = hashes[i].split('-');
-            				
-            				if (hash) {
-            					if (hash[0] === param) {
-            						return [hash[0], hash[1]]
-            					} 
-            				}
-            				
-            		    }
-            	    }
-            
-            }, 
-
+          
             initDeepLinking = function(){
             			
             				var testHash = parseHash(deepLinkHashName);
