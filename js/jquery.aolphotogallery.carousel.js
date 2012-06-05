@@ -8,7 +8,6 @@
     @4/30/2012 : Ramesh Kumar added a new feature for thumbnail carousel in fullscreenmode. Function name: buildThumbCarousel()
 
     To Do:
-    * Config options for AOL Share
     * Update Thumbnail carousel to move to next set of images, when the active photo matches with the last thumbnail visible in the carousel.  
     * Related galleries.
     * End cards?
@@ -114,6 +113,11 @@ var defaultOptions = {
             "startImage": 0,
             "scrollNumImages": 5,
             "animateSpeed": 300
+        },
+        
+        // AOL Share options
+        aolShareOptions: {
+        	deferCount: 0
         },
 
         // Default options for full screen.
@@ -986,7 +990,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 
                     $aolPhotoGalleryClone.delegate(".fullscreen-button", "mousedown", function(){
                         $(this).trigger("fullscreen-button." + namespace);
-                        $.insertAolShare();
+                        core.insertAolShare();
                     });
 
                     // Mousedown feels faster.
@@ -1056,7 +1060,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 
                             // Initialize the photo gallery in full screen.
                             $fullscreenPhotoGallery.aolPhotoGallery( fullscreenOptions );
-                            $.insertAolShare();
+                            core.insertAolShare();
 
                             // Build the Thumbnail Carousel only on Fullscreen mode:
                             // TODO: Make this work in non-fullscreen mode too.
@@ -1069,7 +1073,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
                             // If we're already initialized, we need to ensure
                             // to set to the current active index.
                             $aolPhotoGalleryClone.trigger("fullscreen-open." + namespace, [{ index: activeIndex }]);
-                            $.insertAolShare();
+                            core.insertAolShare();
 
                         }
 
@@ -1212,10 +1216,10 @@ $.aolPhotoGallery = function( customOptions, elem ){
                             var $elem = $(this);
                             if ( options.preset === "launch" ) {
                                 $elem.trigger("fullscreen-button." + namespace);
-                                $.insertAolShare();
+                                core.insertAolShare();
                             } else {
                                 $elem.trigger("next-mousedown." + namespace);
-                                $.insertAolShare();
+                                core.insertAolShare();
                             }
                         });
 
@@ -1231,7 +1235,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
                                 photoIndex = +$photo.data("index");  // The + converts the string to a number.
 
                             $photo.trigger("photo-mousedown." + namespace, [{ index: photoIndex }]);
-                            $.insertAolShare();
+                            core.insertAolShare();
 
                         });
                     }
@@ -1535,7 +1539,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
                             $status.html( getStatusTemplate() )
                                 .trigger("status-update." + namespace, [{ oldIndex: oldIndex, activeIndex: activeIndex }]);
                                 
-                                $.insertAolShare();
+                                core.insertAolShare();
                         }
                     });
 
@@ -1553,7 +1557,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
                                 statusRateLimit = 0;
                             }, speed );
                             
-                            $.insertAolShare();
+                            core.insertAolShare();
                         }
                     });
 
@@ -1572,7 +1576,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
                                 statusRateLimit = 0;
                             }, speed );
                             
-                            $.insertAolShare();
+                            core.insertAolShare();
                         }
                     });
             /*
@@ -1607,7 +1611,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
                 bindNextbutton: function(){
                     $aolPhotoGalleryClone.delegate(".next-button", "mousedown." + namespace, function(){
                         $(this).trigger("next-mousedown." + namespace);
-                        $.insertAolShare();
+                        core.insertAolShare();
                     });
                     $aolPhotoGalleryClone.delegate(".next-button", "mouseover." + namespace, function(){
                         $(this).trigger("next-mouseover." + namespace);
@@ -1627,7 +1631,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
                 bindBackbutton: function(){
                     $aolPhotoGalleryClone.delegate(".back-button", "mousedown." + namespace, function(){
                         $(this).trigger("back-mousedown." + namespace);
-                        $.insertAolShare();
+                        core.insertAolShare();
                     });
                     $aolPhotoGalleryClone.delegate(".back-button", "mouseover." + namespace, function(){
                         $(this).trigger("back-mouseover." + namespace);
@@ -2143,6 +2147,28 @@ $.aolPhotoGallery = function( customOptions, elem ){
                         }, 0);
                     }
 
+                },
+                
+                insertAolShare: function(){
+                		var aolShareOptions = options.aolShareOptions;
+		                // Remove necessary elements  
+		                $(".aol-photo-gallery-fullscreen .aol-share").remove();
+		                
+		                var $activePhoto = $("ul.photos li.active a"),
+		                	pageURL = window.location.pathname,
+		                	pageTitle = document.title,
+		                	mediaLink = pageTitle,
+		                	mediaLink = mediaLink.replace(/'/g, ""),
+		                	mediaID = $activePhoto.attr("data-photo-src"),
+		                	mediaTitle = pageTitle,
+		                	$dataPID = $("ul.photos li.active a").attr("data-media-id");
+		                
+		                // Write in new share block
+		                $("#aol-share-bar").append("<a name='aol-share' class='aol-share' data-pid='" + $dataPID +"' data-media-id='" + mediaID + "' href='mailto:yourfriend@email.com?subject=Check this out:" + mediaLink + "&body=http://" + document.location.host + pageURL + "#fullscreen&photo-" + $dataPID + "' title='" + mediaTitle + "'>Share</a>");
+		                
+		                // Call aolShare function to rebuild share bar.
+		                $("#aol-share-bar .aol-share").aolShare( aolShareOptions );	
+                
                 }
 
             },
@@ -2492,35 +2518,6 @@ $.getDynamicImageSrc = function( photoSrc, photoWidth, photoHeight, thumbnail, s
     }
 
     return "http://o.aolcdn.com/dims-global/dims3/GLOB/" + action + "/" + dimensions + modifiers + "/" + photoSrc;
-};
-
-})(jQuery);
-
-(function($){
-
-$.insertAolShare = function() {
-	// Remove necessary elements  
-	$(".aol-photo-gallery-fullscreen .aol-share").remove();
-	
-	var $activePhoto = $("ul.photos li.active a"),
-		pageURL = window.location.pathname,
-		pageTitle = document.title,
-		mediaLink = pageTitle,
-		mediaLink = mediaLink.replace(/'/g, ""),
-		mediaID = $activePhoto.attr("data-photo-src"),
-		mediaTitle = pageTitle,
-		$dataPID = $("ul.photos li.active a").attr("data-media-id");
-	
-    // Write in new share block
-	$("#aol-share-bar").append("<a name='aol-share' class='aol-share' data-pid='" + $dataPID +"' data-media-id='" + mediaID + "' href='mailto:yourfriend@email.com?subject=Check this out:" + mediaLink + "&body=http://" + document.location.host + pageURL + "#fullscreen&photo-" + $dataPID + "' title='" + mediaTitle + "'>Share</a>");
-	
-	// Call aolShare function to rebuild share bar.
-	$("#aol-share-bar .aol-share").aolShare({
-		deferCount: 0, 
-		services:['facebook','twitter','email','pinterest','plusone'],
-		plugins:{'facebook':{useShortUrl:0}}
-	});				
-	   
 };
 
 })(jQuery);
