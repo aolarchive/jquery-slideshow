@@ -316,7 +316,9 @@ var defaultOptions = {
     trackingRatio = 0.5,
 
     // Standard naming convention for deep linked photos.
-    deepLinkHashName = "photo";
+    // Ramesh: Changing the value to "photoID" from "photo", as it was conflicting
+    //         with new regex pattern that was added to support alphanumeric media IDs. 
+    deepLinkHashName = "photoID";
 
 $.aolPhotoGallery = function( customOptions, elem ){
 	
@@ -990,7 +992,6 @@ $.aolPhotoGallery = function( customOptions, elem ){
 
                     $aolPhotoGalleryClone.delegate(".fullscreen-button", "mousedown", function(){
                         $(this).trigger("fullscreen-button." + namespace);
-                        core.insertAolShare();
                     });
 
                     // Mousedown feels faster.
@@ -1073,11 +1074,9 @@ $.aolPhotoGallery = function( customOptions, elem ){
                             // If we're already initialized, we need to ensure
                             // to set to the current active index.
                             $aolPhotoGalleryClone.trigger("fullscreen-open." + namespace, [{ index: activeIndex }]);
-                            core.insertAolShare();
-
+                            
                         }
-
-                                        });
+		            });
 
                     $fullscreen.delegate(".close-button", "mousedown", function(){
                     // Turn the lights on.
@@ -1131,6 +1130,8 @@ $.aolPhotoGallery = function( customOptions, elem ){
                     $parentGallery.bind("fullscreen-open." + namespace, function(event, data){
 
                         $aolPhotoGalleryClone.trigger("status-reset", [{ index: data.index }]);
+                        
+                        core.insertAolShare();
 
                     });
 
@@ -1216,7 +1217,6 @@ $.aolPhotoGallery = function( customOptions, elem ){
                             var $elem = $(this);
                             if ( options.preset === "launch" ) {
                                 $elem.trigger("fullscreen-button." + namespace);
-                                core.insertAolShare();
                             } else {
                                 $elem.trigger("next-mousedown." + namespace);
                                 core.insertAolShare();
@@ -1611,7 +1611,6 @@ $.aolPhotoGallery = function( customOptions, elem ){
                 bindNextbutton: function(){
                     $aolPhotoGalleryClone.delegate(".next-button", "mousedown." + namespace, function(){
                         $(this).trigger("next-mousedown." + namespace);
-                        core.insertAolShare();
                     });
                     $aolPhotoGalleryClone.delegate(".next-button", "mouseover." + namespace, function(){
                         $(this).trigger("next-mouseover." + namespace);
@@ -1631,7 +1630,6 @@ $.aolPhotoGallery = function( customOptions, elem ){
                 bindBackbutton: function(){
                     $aolPhotoGalleryClone.delegate(".back-button", "mousedown." + namespace, function(){
                         $(this).trigger("back-mousedown." + namespace);
-                        core.insertAolShare();
                     });
                     $aolPhotoGalleryClone.delegate(".back-button", "mouseover." + namespace, function(){
                         $(this).trigger("back-mouseover." + namespace);
@@ -2164,7 +2162,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
 		                	$dataPID = $("ul.photos li.active a").attr("data-media-id");
 		                
 		                // Write in new share block
-		                $("#aol-share-bar").append("<a name='aol-share' class='aol-share' data-pid='" + $dataPID +"' data-media-id='" + mediaID + "' href='mailto:yourfriend@email.com?subject=Check this out:" + mediaLink + "&body=http://" + document.location.host + pageURL + "#fullscreen&photo-" + $dataPID + "' title='" + mediaTitle + "'>Share</a>");
+		                $("#aol-share-bar").append("<a name='aol-share' class='aol-share' data-pid='" + $dataPID +"' data-media-id='" + mediaID + "' href='mailto:yourfriend@email.com?subject=Check this out:" + mediaLink + "&body=http://" + document.location.host + pageURL + "#fullscreen&" + deepLinkHashName + "-" + $dataPID + "' title='" + mediaTitle + "'>Share</a>");
 		                
 		                // Call aolShare function to rebuild share bar.
 		                $("#aol-share-bar .aol-share").aolShare( aolShareOptions );	
@@ -2239,7 +2237,7 @@ $.aolPhotoGallery = function( customOptions, elem ){
             
             
             				
-            				var pattern = new RegExp( deepLinkHashName + "-[0-9]+" ),
+            				var pattern = new RegExp( deepLinkHashName + "-[a-zA-Z0-9_-|.]+" ),
             					matches = pattern.exec( location.href );
             				
             				$aolPhotoGalleryClone.bind("status-update." + namespace, function(event, data){
@@ -2257,18 +2255,11 @@ $.aolPhotoGallery = function( customOptions, elem ){
             						location.replace( href.replace( pattern, deepLinkHash ) );
             					
             					} else {
-            						if (window.location.href.indexOf('#') !== -1)  {
-            						
-            						location.replace( href + '&' + deepLinkHash );
-            						
+            						if (window.location.href.indexOf('#') !== -1 && window.location.href.indexOf('&') === -1)  {
+            							location.replace( href + '&' + deepLinkHash );
             						} else {
-            						
-            						location.replace( href + '#' + deepLinkHash );
-            						
-            						
+            							location.replace( href + '#' + deepLinkHash );
             						}
-            						
-            						
             					}
             					
             				});
