@@ -316,8 +316,6 @@ var defaultOptions = {
     trackingRatio = 0.5,
 
     // Standard naming convention for deep linked photos.
-    // Ramesh: Changing the value to "photoID" from "photo", as it was conflicting
-    //         with new regex pattern that was added to support alphanumeric media IDs. 
     deepLinkHashName = "photoID";
 
 $.aolPhotoGallery = function( customOptions, elem ){
@@ -325,11 +323,11 @@ $.aolPhotoGallery = function( customOptions, elem ){
 	// Sobia's parse Hashtag code. Defining this function at the top so that its available for ajaxURL call. 
 	//TODO: Dave, need your inputs to do this in a better way. 
 	
-	parseHash = function (param) {
+	function parseHash(param) {
 	
 		   if (window.location.href.indexOf('#') !== -1) {
 		   
-			    var hashes = window.location.href.slice(window.location.href.indexOf('#') + 1).split('&');
+			    var hashes = window.location.href.slice(window.location.href.indexOf('#') + 1).split(/[?,&]+/);
 			    for(var i = 0; i < hashes.length; i++) {
 					hash = hashes[i].split('-');
 					if (hash) {
