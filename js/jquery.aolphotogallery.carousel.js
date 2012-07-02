@@ -141,21 +141,21 @@
                 "next-button": "bottom-right append",
                 "fullscreen-button": "",
                 "thumbnails-button": ""
-                //				"thumbnails-button": "bottom-left append after $gallery"
+                //              "thumbnails-button": "bottom-left append after $gallery"
             }
         },
 
         // If supplied, make a sponsorship advertisement.
-        //		sponsorAdMN: "93302143",
+        //      sponsorAdMN: "93302143",
         sponsorAdWidth: 215,
         sponsorAdHeight: 35,
 
-        //		Is there a house 300x250 we can display?
-        //		fullscreenAdMN: "773630",
+        //      Is there a house 300x250 we can display?
+        //      fullscreenAdMN: "773630",
         fullscreenAdWidth: 300,
         fullscreenAdHeight: 250,
 
-        //		fullscreenSponsorAdMN: "",
+        //      fullscreenSponsorAdMN: "",
         fullscreenSponsorAdWidth: 215,
         fullscreenSponsorAdHeight: 35,
 
@@ -191,7 +191,7 @@
         // Inserts the "Show Thumbnails" button before
         // the gallery in the DOM if truthy, after
         // if falsy.
-        // TBR		toggleThumbnailsAfter: 1,
+        // TBR      toggleThumbnailsAfter: 1,
         // Toggle to show the name of the gallery.
         showName: 1,
 
@@ -678,10 +678,13 @@
                     buildWallpaper: function () {
 
                         var wallpaperSizes = options.wallpaperSizes,
-                            wallpaperWidth, wallpaperHeight, wallpaperHTML = ["<ul>"],
+                            wallpaperWidth,
+                            wallpaperHeight,
+                            wallpaperHTML = ["<ul>"],
                             screenHeight = screen.height,
                             screenWidth = screen.width,
-                            i, l;
+                            i,
+                            l;
 
                         $wallpaperButton = ui["$wallpaper-button"];
 
@@ -689,7 +692,7 @@
                             wallpaperHTML.push(["<li data-width=\"", screenWidth, "\" data-height=\"", screenHeight, "\">", screenWidth, template.wallpaperSeparator, screenHeight, " (Current)</li>"].join(""));
                         }
 
-                        for (i = 0, l = wallpaperSizes.length; i < l; i++) {
+                        for (i = 0, l = wallpaperSizes.length; i < l; i += 1) {
 
                             wallpaperWidth = wallpaperSizes[i].width;
                             wallpaperHeight = wallpaperSizes[i].height;
@@ -735,7 +738,8 @@
 
                         $aolPhotoGalleryClone.bind("wallpaper-download." + namespace, function (event, data) {
 
-                            var photo = photos[activeIndex];
+                            var photo = photos[activeIndex],
+                                photoSrc;
 
                             if (photo) {
                                 photoSrc = photo.photoSrc;
@@ -756,7 +760,8 @@
                         // Credits just hang out in one of the other UI containers.
                         var creditTemplate = template.credit,
                             $creditParent = ui[options.creditInside],
-                            photoCredit, photoCreditURL;
+                            photoCredit,
+                            photoCreditURL;
 
                         if ($creditParent) {
                             $creditParent.each(function (i) {
@@ -783,7 +788,10 @@
                         index = getIndex(index);
 
                         var $slide = $slides.eq(index),
-                            photo, photoSrc, dynamicPhotoSrc, image;
+                            photo,
+                            photoSrc,
+                            dynamicPhotoSrc,
+                            image;
 
                         if (!$slide.data("image-loaded." + namespace)) {
 
@@ -812,7 +820,7 @@
                                             $slide.css({
                                                 backgroundImage: "url(" + dynamicPhotoSrc + ")",
                                                 width: image.width + "px",
-                                                //					height: image.height + "px", // We want images to center, so we keep this full height.
+                                                //                  height: image.height + "px", // We want images to center, so we keep this full height.
                                                 height: photoHeight + "px",
                                                 visibility: "visible"
                                             });
@@ -852,7 +860,7 @@
                         // to load the image as well.
                         while (currentIndex <= lastIndex) {
                             core.preloadPhoto(currentIndex);
-                            currentIndex++;
+                            currentIndex += 1;
                         }
                     },
 
@@ -874,7 +882,7 @@
                             // siblings exist in the DOM to the left and to
                             // the right of the active.
                             $nodeBack = $nodeNext = $slides.eq(activeIndex);
-                            for (i = 0; i < carouselSiblings; i++) {
+                            for (i = 0; i < carouselSiblings; i += 1) {
 
                                 $nodeBack = $nodeBack.prev();
                                 $nodeNext = $nodeNext.next();
@@ -907,7 +915,9 @@
                         // Look into caching some of these widths.
                         var $slide = $slides.eq(getIndex(activeIndex)),
                             galleryWidth = $gallery.width(),
-                            activePosition, $oldSlide, oldPosition;
+                            activePosition,
+                            $oldSlide,
+                            oldPosition;
 
                         activePosition = (galleryWidth - $slide.width()) / 2 - $slide.position().left;
 
@@ -956,11 +966,18 @@
 
                     bindFullscreen: function () {
 
-                        var $fullscreenPhotoGallery, $fullscreenContainer = $fullscreen.find(".fullscreen"),
-                            $fullscreenAd, fullscreenAdId = adDivName + (adDivId++),
+                        var $fullscreenPhotoGallery,
+                            $fullscreenContainer = $fullscreen.find(".fullscreen"),
+                            $fullscreenAd,
+                            fullscreenAdId = adDivName + (adDivId += 1),
                             fullscreenOptions = options.fullscreenOptions,
 
-                            bodyElemWidth, bodyElemHeight, htmlElemWidth, htmlElemHeight, documentHeight, documentWidth;
+                            bodyElemWidth,
+                            bodyElemHeight,
+                            htmlElemWidth,
+                            htmlElemHeight,
+                            documentHeight,
+                            documentWidth;
 
                         $aolPhotoGalleryClone.delegate(".fullscreen-button", "mousedown", function () {
                             $(this).trigger("fullscreen-button." + namespace);
@@ -979,8 +996,8 @@
                             // Turn the lights out.
                             $fullscreen.css({
                                 display: "block",
-                                //							width: ( bodyElemWidth > htmlElemWidth ? bodyElemWidth : htmlElemWidth ) + "px",
-                                //							height: ( bodyElemHeight > htmlElemHeight ? bodyElemHeight : htmlElemHeight ) + "px",
+                                //                          width: ( bodyElemWidth > htmlElemWidth ? bodyElemWidth : htmlElemWidth ) + "px",
+                                //                          height: ( bodyElemHeight > htmlElemHeight ? bodyElemHeight : htmlElemHeight ) + "px",
                                 width: Math.max(bodyElemWidth, htmlElemWidth, documentWidth) + "px",
                                 height: Math.max(bodyElemHeight, htmlElemHeight, documentHeight) + "px",
                                 opacity: 0
@@ -1081,12 +1098,12 @@
                     if ( options.toggleThumbnails ) {
 
                         $aolPhotoGalleryClone.bind("thumbnails-button." + namespace, function (){
-                    //		$fullscreenButton.css("visibility", "hidden");
+                    //      $fullscreenButton.css("visibility", "hidden");
                         });
 
                         $aolPhotoGalleryClone.bind("thumbnail-mousedown." + namespace, function (){
                             $fullscreenButton.css({
-                    //			"visibility": "visible"
+                    //          "visibility": "visible"
                             });
                         });
                     }
@@ -1332,10 +1349,11 @@
                         var i,
                             l = ui.$anchors.length,
                             captionHTML = ["<ul class=\"captions\">"],
-                            photo, $aside;
+                            photo,
+                            $aside;
 
                         // Build thumbnail HTML.
-                        for (i = 0; i < l; i++) {
+                        for (i = 0; i < l; i += 1) {
                             photo = photos[i];
                             captionHTML.push("<li data-index=\"" + i + "\"><h3>" + photo.photoName + "</h3>" + photo.photoDescription + "</li>");
                         }
@@ -1369,20 +1387,20 @@
                         });
 
                         $captionContainer = ui.$captionContainer = $captions.parent();
-                        //					console.log( $captions.parent() );
-                        //		if ( ! options.showThumbnails ) {
+                        //                  console.log( $captions.parent() );
+                        //      if ( ! options.showThumbnails ) {
                         // Need to make this tweak in the next UI thread.
                         setTimeout(function () {
                             $captionContainer.height($captions.eq(activeIndex).height());
-                            //	.width( $captionContainer.width() );
+                            //  .width( $captionContainer.width() );
                         }, 0);
-                        //		}
+                        //      }
                         core.bindCaptions();
 
                         // If we need to show thumbnails by default and
                         // hide the captions, do so now.
                         if (options.showThumbnails && options.toggleThumbnails) {
-                            //						$captions.parent().css("visibility", "hidden");
+                            //                      $captions.parent().css("visibility", "hidden");
                             $captionContainer.hide();
                         }
                     },
@@ -1500,11 +1518,11 @@
                             if (oldIndex !== activeIndex) {
                                 $status.html(getStatusTemplate())
                                 // Here, we don't send the oldIndex so animations know to snap right to the active one.
-                                .trigger("status-update." + namespace, [{
-                                    activeIndex: activeIndex,
-                                    oldIndex: oldIndex,
-                                    init: true
-                                }]);
+                                    .trigger("status-update." + namespace, [{
+                                        activeIndex: activeIndex,
+                                        oldIndex: oldIndex,
+                                        init: true
+                                    }]);
                             }
                         });
 
@@ -1646,14 +1664,14 @@
                         // Build thumbnail HTML.
                         if (options.showThumbnails) {
 
-                            for (i = 0; i < l; i++) {
+                            for (i = 0; i < l; i += 1) {
                                 thumbnailHTML.push("<li style=\"background: url(" + $.getDynamicImageSrc(photos[i].photoSrc, thumbnailWidth, thumbnailHeight, 1) + ") no-repeat center center; width: " + thumbnailWidth + "px; height: " + thumbnailHeight + "px; display: " + ((i >= thumbnailCount) ? "none" : "block") + "; opacity: .7;\" data-index=\"" + i + "\"></li>");
                             }
                             thumbnailsLoaded = 1;
 
                         } else {
 
-                            for (i = 0; i < l; i++) {
+                            for (i = 0; i < l; i += 1) {
                                 // Nate: Added filter style for opacity in IE6/7
                                 thumbnailHTML.push("<li data-src=\"" + $.getDynamicImageSrc(photos[i].photoSrc, thumbnailWidth, thumbnailHeight, 1) + "\" style=\"width: " + thumbnailWidth + "px; height: " + thumbnailHeight + "px; display: " + ((i >= thumbnailCount) ? "none" : "block") + "; opacity: .7; filter: alpha(opacity = 70);\" data-index=\"" + i + "\"></li>");
                             }
@@ -1699,7 +1717,7 @@
                                     thumbnailHeight = $thumbnailContainer.height(),
                                     maxHeight = Math.max(moduleHeight - thumbnailHeight, moduleHeight - galleryHeight);
 
-                                //	var padding = parseInt( $thumbnailContainer.css("paddingTop"), 10 ) + parseInt( $thumbnailContainer.css("paddingBottom"), 10 );
+                                //  var padding = parseInt( $thumbnailContainer.css("paddingTop"), 10 ) + parseInt( $thumbnailContainer.css("paddingBottom"), 10 );
                                 // Thumbnails are visible by default, so set
                                 // them up to be visible.
                                 if (options.showThumbnails) {
@@ -1827,7 +1845,7 @@
 
                                 // Animate it to the left.
                                 $thumbnailContainer.animate({
-                                    "left": - parseInt($thumbnailContainer.css("marginLeft"), 10)
+                                    "left": -parseInt($thumbnailContainer.css("marginLeft"), 10)
                                 }, speed);
 
                             });
@@ -1848,15 +1866,8 @@
                     },
 
                     buildThumbCarousel: function (view) {
-                                                var $view;
-
-                        if (view === "fullscreen") {
-                            $view = ui.$fullscreen;
-                        } else {
-                            $view = $aolPhotoGalleryClone;
-                        }
-
-                        var $thumbnailContainer = $view.find('ul.thumbnails'),
+                        var $view = (view === "fullscreen") ? ui.$fullscreen : $aolPhotoGalleryClone,
+                            $thumbnailContainer = $view.find('ul.thumbnails'),
                             $thumbnailContainerParent = "<div class=\"thumbnail-container\"><div class=\"thumbnail-container-inner\"></div><ul class=\"thumbnail-carousel-controls\"><li class=\"thumbnail-prev\">Back</li><li class=\"thumbnail-next\">Next</li></ul></div>",
                             thumbCarouselOptions = options.thumbCarouselOptions;
 
@@ -1868,28 +1879,20 @@
                             scroll = thumbCarouselOptions.scrollNumImages,
                             startImage = thumbCarouselOptions.startImage,
                             animateSpeed = thumbCarouselOptions.animateSpeed,
-                            current, visible = Math.round($thumbnailContainer.width() / sizeFirstElmnt);
+                            visible = Math.round($thumbnailContainer.width() / sizeFirstElmnt),
+                            initleft = $thumbnailContainer.offset().left,
+                            ulWidth = sizeFirstElmnt * totalImages;
 
                         // Build the thumbnail carousel, only if there are more images beyond the thumbnail container width.
                         if (totalPhotos >= visible) {
                             $thumbnailContainer.wrap($thumbnailContainerParent);
-                            // Clone items for the infinite carousel..
-                            $thumbnailContainer.prepend($thumbnailItems.slice(totalImages - visible - 1 + 1).clone()).append($thumbnailItems.slice(0, visible).clone());
-                            startImage += visible;
 
                             // Adding the styles for the thumbnail containers via JS itself. Dont want to modify the CSS file for it ;)
                             $(".thumbnail-container, .thumbnail-container-inner").css("overflow", "hidden");
 
-                            //After Cloning, we need to get the new count of the thumbnails..
-                            var $newThumbnailItems = $thumbnailContainer.find("li"),
-                                itemLength = $newThumbnailItems.size(),
-                                ulWidth = sizeFirstElmnt * itemLength;
-                            current = startImage;
-
                             $thumbnailContainer.css({
                                 width: ulWidth + "px",
-                                position: "relative",
-                                left: -(current * sizeFirstElmnt)
+                                position: "relative"
                             });
 
                             $view.delegate(".thumbnail-prev", "mousedown." + namespace, function () {
@@ -1907,24 +1910,13 @@
                         }
 
                         $view.bind("thumbnail-prev-mousedown." + namespace, function () {
-                            var activeCount = current - scroll,
-                                itemLength;
-
                             if (!isAnimating) {
-                                if (activeCount <= startImage - visible - 1) { // If first, then goto last
-                                    $thumbnailContainer.css("left", -((itemLength - (visible * 2)) * sizeFirstElmnt) + "px");
-
-                                    current = (activeCount === startImage - visible - 1) ? itemLength - (visible * 2) - 1 : itemLength - (visible * 2) - scroll;
-                                } else if (activeCount >= itemLength - visible + 1) { // If last, then goto first
-                                    $thumbnailContainer.css("left", -((visible) * sizeFirstElmnt) + "px");
-
-                                    current = (activeCount === itemLength - visible + 1) ? visible + 1 : visible + scroll;
-                                } else { current = activeCount; }
-
+                                $thumbnailContainer.css("left", -(sizeFirstElmnt * scroll) + "px");
+                                $thumbnailContainer.children().slice(-scroll).prependTo($thumbnailContainer);
                                 isAnimating = true;
 
                                 $thumbnailContainer.animate({
-                                    left: -(current * sizeFirstElmnt)
+                                    left : '+=' + sizeFirstElmnt * scroll
                                 }, animateSpeed, function () {
                                     isAnimating = false;
                                 });
@@ -1933,29 +1925,15 @@
                         });
 
                         $view.bind("thumbnail-next-mousedown." + namespace, function () {
-                            var activeCount = current + scroll,
-                                itemLength;
-
-                            if (!isAnimating) {
-                                if (activeCount <= startImage - visible - 1) { // If first, then goto last
-                                    $thumbnailContainer.css("left", -((itemLength - (visible * 2)) * sizeFirstElmnt) + "px");
-
-                                    current = (activeCount === startImage - visible - 1) ? itemLength - (visible * 2) - 1 : itemLength - (visible * 2) - scroll;
-                                } else if (activeCount >= itemLength - visible + 1) { // If last, then goto first
-                                    $thumbnailContainer.css("left", -((visible) * sizeFirstElmnt) + "px");
-
-                                    current = (activeCount === itemLength - visible + 1) ? visible + 1 : visible + scroll;
-                                } else { current = activeCount; }
-
-                                isAnimating = true;
-
-                                $thumbnailContainer.animate({
-                                    left: -(current * sizeFirstElmnt)
-                                }, animateSpeed, function () {
-                                    isAnimating = false;
+                            $thumbnailContainer.animate({
+                                left : '-=' + sizeFirstElmnt * scroll
+                            }, animateSpeed, function () {
+                                $thumbnailContainer.offset({
+                                    left : initleft
                                 });
-                            }
-                            return false;
+                                $thumbnailContainer.css("left", -(sizeFirstElmnt * scroll) + "px");
+                                $thumbnailContainer.children().slice(0, scroll).appendTo($thumbnailContainer);
+                            });
                         });
 
                     },
@@ -1990,13 +1968,13 @@
 
                             if ($bottomLeft) {
                                 $bottomLeft.animate({
-                                    left: - ($bottomLeft.outerWidth() + 1)
+                                    left: -($bottomLeft.outerWidth() + 1)
                                 }, speed);
                             }
 
                             if ($topLeft) {
                                 $topLeft.animate({
-                                    left: - ($topLeft.outerWidth() + 1)
+                                    left: -($topLeft.outerWidth() + 1)
                                 }, speed);
                             }
 
@@ -2127,7 +2105,7 @@
 
                     buildSponsorAd: function () {
 
-                        var sponsorAdId = adDivName + (adDivId++),
+                        var sponsorAdId = adDivName + (adDivId += 1),
                             sponsorHTML = "<div id=\"" + sponsorAdId + "\" class=\"sponsor advertisement\"></div>";
 
                         $sponsor = ui.$sponsor = $(sponsorHTML);
@@ -2180,7 +2158,7 @@
                 initRefreshAd = function () {
 
                     var // adMagicNumbers = options.refreshAd.split(),
-                    refreshDivId = options.refreshDivId,
+                        refreshDivId = options.refreshDivId,
                         refreshStatus = 0,
                         refreshCount = options.refreshCount;
 
@@ -2203,7 +2181,7 @@
                             reportAdImpressionInOmniture = 1;
 
                             // Increment our status counter.
-                            refreshStatus++;
+                            refreshStatus += 1;
 
                             // If we are at the limit, time to refresh and reset.
                             if (refreshStatus === refreshCount) {
@@ -2213,7 +2191,7 @@
                                     // Set a timeout so that it doesn't interfere
                                     // with our transition animation.
                                     setTimeout(function () {
-                                        adsReloadAd(refreshDivId);
+                                        window.adsReloadAd(refreshDivId);
                                     }, speed);
                                 }
                                 // Artz: Consider throwing an error here.
@@ -2279,12 +2257,12 @@
                                 pageName: data.galleryName,
                                 prop1: options.preset || "default",
                                 prop2: "gallery",
-                                //								prop6custom: "", // Sponsorship info
+                                //                              prop6custom: "", // Sponsorship info
                                 prop9: "bsg:" + data.galleryId,
                                 channel: options.trackingId,
                                 isInternational: options.isInternational
-                                //								prop11: "" // Ad refresh MN
-                                //								channel: "" // Currently disabled, if needed we can make it a metadata option.
+                                //                              prop11: "" // Ad refresh MN
+                                //                              channel: "" // Currently disabled, if needed we can make it a metadata option.
                             };
 
                         if (reportAdImpressionInOmniture && options.fullscreenAdMN) {
@@ -2337,10 +2315,8 @@
             // Return
             return $aolPhotoGalleryClone;
             // Otherwise, extend the default options.
-        } else {
-            $.extend(true, defaultOptions, customOptions);
         }
-
+        $.extend(true, defaultOptions, customOptions);
     };
 
     $.fn.aolPhotoGallery = function (customOptions) {
@@ -2371,7 +2347,8 @@
 
         isSandbox = /\.sandbox\./.test(host),
         // Disable tracking in developer sandboxes.
-        mmTrackIframe, mmTrackIframeStyle;
+        mmTrackIframe,
+        mmTrackIframeStyle;
 
     $.mmTrack = function (omnitureConfig) {
         if (isSandbox) {
@@ -2440,17 +2417,26 @@
                 mmTrackIframe = document.createElement("iframe");
                 mmTrackIframeStyle = mmTrackIframe.style;
                 mmTrackIframe.id = "aol-mmtrack";
-                //	mmTrackIframeStyle.width = 0;
-                //	mmTrackIframeStyle.height = 0;
+                //  mmTrackIframeStyle.width = 0;
+                //  mmTrackIframeStyle.height = 0;
                 mmTrackIframeStyle.display = "none";
 
                 $(document.body).append(mmTrackIframe);
             }
 
             mmTrackUrl = [
-            protocol, "//", host, "/mm_track/", omnitureProp1, omnitureProp2, omniturePageName, omnitureEnabled, omnitureAccount, omnitureChannel].join("");
+                protocol,
+                "//",
+                host,
+                "/mm_track/",
+                omnitureProp1,
+                omnitureProp2,
+                omniturePageName,
+                omnitureEnabled,
+                omnitureAccount,
+                omnitureChannel].join("");
 
-            //			console.log( mmTrackUrl );
+            //console.log( mmTrackUrl );
             mmTrackIframe.src = mmTrackUrl + "&ts=" + +new Date();
 
         }
