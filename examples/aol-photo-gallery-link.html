@@ -9,6 +9,20 @@
 <link type="image/x-icon" rel="shortcut icon" href="http://www.blogsmithmedia.com/platform.aol.com/media/favicon.ico" />-->
 <link rel="stylesheet" href="../css/aol-photo-gallery.css" />
 <link rel="stylesheet" href="../css/default-photo-gallery.css" />
+<style type="text/css">
+
+.aside .captions {
+	position:relative;
+}
+
+.aside .captions li {
+	visibility:hidden;
+	position:absolute;
+	left:0;
+	overflow: auto;
+}
+
+</style>
 <style>
 html {
 	font-family: arial;
@@ -30,8 +44,7 @@ div#ad300x250 {
 	position: absolute;
 	right: 0;
 }
-</style>
-<script>
+</style><script>
 (function(d){
 var s=d.createElement("script"), 
     h=d.getElementsByTagName("head")[0];
@@ -121,8 +134,11 @@ adSetAdURL('/_uac/adpage.html');
     data-ajax-url="aol-photo-gallery-ajax.html">AJAX Photo Gallery</a>
 </body>
 <!-- <script src="/FED_SVN/libraries/jquery/jquery-1.4.4.min.js"></script> -->
-<script src="http://o.aolcdn.com/os/aol/jquery-1.4.4.min.js"></script>
-<script src="../js/jquery.aolphotogallery.carousel.js"></script>
+<script src="http://o.aolcdn.com/os/aol/jquery-1.6.1.min.js"></script>
+
+<script src="http://o.aolcdn.com/os_merge/?file=/aol/jquery.getjs.min.js&file=/aol/jquery.inlinecss.min.js&file=/aol/jquery.openwindow.min.js&file=/aol/jquery.shorturl.min.js&file=/aol/jquery.aolshare.min.js" type="text/javascript"></script>
+<script src="../js/jquery.aolphotogallery-2.0.min.js"></script>
+<!--script src="http://o.aolcdn.com/os/aol/jquery.aolphotogallery-2.0.min.js" type="text/javascript"></script-->
 <script>
 (function($){
 
@@ -130,13 +146,18 @@ adSetAdURL('/_uac/adpage.html');
 
 // Faster way to select elements than class names.
 $("[name='aol-photo-gallery']").eq(0).aolPhotoGallery({
-    preset: "launch",
-    photoWidth: 300,
+    preset: "slideshow",
+    photoWidth: 600,
     photoHeight: 350,
     omnitureChannel: "artz",
     fullscreenOptions: {
-                            buildThumbCarousel: 1
-        	}
+        contentsInRightRail: 1,
+        creditInside: "$captions",
+        aolShareOptions : {
+            deferCount: 1,
+            services : ['facebook', 'twitter', 'email', 'pinterest']
+        }
+    }
 });
 
 })(jQuery);
