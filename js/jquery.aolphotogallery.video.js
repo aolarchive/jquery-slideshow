@@ -118,7 +118,10 @@
             "scrollNumImages": 5,
             "animateSpeed": 300
         },
+
         // AOL Share options
+        //Enabling the AOLShare by default. Developer can turn it off by setting the value to 0
+        insertAolShare: 1,
         aolShareOptions: {
             deferCount: 0
         },
@@ -995,6 +998,9 @@
                             $fullscreenAd,
                             fullscreenAdId = adDivName + (adDivId += 1),
                             fullscreenOptions = options.fullscreenOptions,
+                            $embedSlide = $slides.eq(activeIndex),
+                            $embedVideoSlide = $embedSlide.find("a").data("video"),
+
 
                             bodyElemWidth,
                             bodyElemHeight,
@@ -1009,6 +1015,15 @@
 
                         // Mousedown feels faster.
                         $aolPhotoGalleryClone.bind("fullscreen-button." + namespace, function () {
+
+                            // Adding this to disable the video, when user clicks on Fullscreen button, while video is being played. 
+                            if ($embedVideoSlide) {
+                                $embedSlide.find("iframe").attr({
+                                    src: "",
+                                    style: "visibility:hidden"
+                                });
+                            }
+
                             viewflag = "fullscreen";
                             bodyElemWidth = body.offsetWidth || 0;
                             bodyElemHeight = body.offsetHeight || 0;
@@ -1185,7 +1200,7 @@
 
                             setTimeout(function () {
                                 core.updateCarousel();
-
+                                // This will support youtube videos, if the url is added to data-video attribute in images.
                                 if ($slides.eq(activeIndex).find("a").data("video")) {
                                     $slides.eq(activeIndex).find("iframe").show().attr({
                                         src: $slides.eq(activeIndex).find("a").data("video"),
@@ -1213,6 +1228,8 @@
                             }).addClass("active");
 
                             core.preloadPhoto(activeIndex);
+
+                            // This will support youtube videos, if the url is added to data-video attribute in images. 
                             if ($slides.eq(activeIndex).find("a").data("video")) {
                                 $slides.eq(activeIndex).find("iframe").show().attr({
                                     src: $slides.eq(activeIndex).find("a").data("video"),
@@ -1318,6 +1335,7 @@
 
                             if ($activeSlide.find("a").data("video")) {
                                 setTimeout(function () {
+                                    // Video Slideshow support
                                     $activeSlide.find("iframe").show().attr({
                                         src: $activeSlide.find("a").data("video"),
                                         width: photoWidth,
@@ -2185,24 +2203,26 @@
                     insertAolShare: function () {
                         // Insert AOL Share only in Fullscreen mode.
                         // TODO: Support AolShare on Embedded mode too.
-                        if (viewflag === "fullscreen") {
-                            // Remove necessary elements
-                            $(".aol-photo-gallery-fullscreen .aol-share").remove();
+                        if (options.insertAolShare) {
+                            if (viewflag === "fullscreen") {
+                                // Remove necessary elements
+                                $(".aol-photo-gallery-fullscreen .aol-share").remove();
 
-                            var $activePhoto = $("ul.photos li.active a"),
-                                pageURL = window.location.pathname,
-                                pageTitle = document.title,
-                                mediaLink = pageTitle.replace(/'/g, ""),
-                                mediaID = $activePhoto.attr("data-photo-src"),
-                                mediaURL = $activePhoto.attr("href") || "http://" + document.location.host + pageURL,
-                                mediaTitle = pageTitle,
-                                $dataPID = $("ul.photos li.active a").attr("data-media-id"),
-                                aolShareOptions = options.aolShareOptions;
+                                var $activePhoto = $("ul.photos li.active a"),
+                                    pageURL = window.location.pathname,
+                                    pageTitle = document.title,
+                                    mediaLink = pageTitle.replace(/'/g, ""),
+                                    mediaID = $activePhoto.attr("data-photo-src"),
+                                    mediaURL = $activePhoto.attr("href") || "http://" + document.location.host + pageURL,
+                                    mediaTitle = pageTitle,
+                                    $dataPID = $("ul.photos li.active a").attr("data-media-id"),
+                                    aolShareOptions = options.aolShareOptions;
 
-                            // Write in new share block
-                            $("#aol-share-bar").append("<a name='aol-share' class='aol-share' data-pid='" + $dataPID + "' data-media-id='" + mediaID + "' href='mailto:yourfriend@email.com?subject=Check this out:" + mediaLink + "&body=" + mediaURL + "#fullscreen&" + deepLinkHashName + "-" + $dataPID + "' title='" + mediaTitle + "'>Share</a>");
-                            // Call aolShare function to rebuild share bar.
-                            $("#aol-share-bar .aol-share").aolShare(aolShareOptions);
+                                // Write in new share block
+                                $("#aol-share-bar").append("<a name='aol-share' class='aol-share' data-pid='" + $dataPID + "' data-media-id='" + mediaID + "' href='mailto:yourfriend@email.com?subject=Check this out:" + mediaLink + "&body=" + mediaURL + "#fullscreen&" + deepLinkHashName + "-" + $dataPID + "' title='" + mediaTitle + "'>Share</a>");
+                                // Call aolShare function to rebuild share bar.
+                                $("#aol-share-bar .aol-share").aolShare(aolShareOptions);
+                            }
                         }
                     }
                 },

@@ -200,15 +200,17 @@ adSetAdURL('/_uac/adpage.html');
 
 // Faster way to select elements than class names.
 $("[name='aol-photo-gallery']").eq(0).aolPhotoGallery({
-    preset: "slideshow",
+    preset: "carousel",
     photoWidth: 600,
     photoHeight: 350,
     omnitureChannel: "artz",
+    creditInside: "$captions",
     fullscreenOptions: {
     	photoWidth: 800,
     	photoHeight: 450,
         contentsInRightRail: 1,
         creditInside: "$captions",
+        insertAolShare: 1,
         aolShareOptions : {
             deferCount: 1,
             services : ['facebook', 'twitter', 'email', 'pinterest']
