@@ -2328,7 +2328,7 @@
 
   };
 
-})(jQuery, window, document, location);
+}(jQuery, window, document, location));
 
 /*
  Creates an mm_track URL, used for tracking page views to Comscore.
@@ -2449,7 +2449,7 @@
     }
   };
 
-})(jQuery, window, document, location);
+}(jQuery, window, document, location));
 
 
 (function ($) {
@@ -2485,4 +2485,4 @@
     return "http://o.aolcdn.com/dims-global/dims3/GLOB/" + action + "/" + dimensions + modifiers + "/" + photoSrc;
   };
 
-})(jQuery);
+}(jQuery));

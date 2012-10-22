@@ -18,16 +18,25 @@ module.exports = function (grunt) {
       }
     },
     min: {
-      dist: {
-        src: ['<banner:meta.banner>', '<config:concat.dist.dest>'],
-        dest: 'dist/<%= pkg.name %>.min.js'
+      'photogallery-1.0': {
+        //src: ['<banner:meta.banner>', '<config:concat.dist.dest>'],
+        src: ['<banner:meta.banner>', 'src/jquery.aolphotogallery-1.0.js'],
+        //dest: 'dist/<%= pkg.name %>.min.js'
+        dest: 'dist/jquery.aolphotogallery-1.0.min.js'
+      },
+      photogallery: {
+        //src: ['<banner:meta.banner>', '<config:concat.dist.dest>'],
+        src: ['<banner:meta.banner>', 'src/jquery.aolphotogallery.js'],
+        //dest: 'dist/<%= pkg.name %>.min.js'
+        dest: 'dist/jquery.aolphotogallery.min.js'
       }
     },
     qunit: {
       files: ['test/**/*.html']
     },
     lint: {
-      files: ['grunt.js', 'src/**/*.js', 'test/**/*.js']
+      //files: ['grunt.js', 'src/**/*.js', 'test/**/*.js']
+      files: ['grunt.js', 'src/jquery.aolphotogallery.js']
     },
     watch: {
       files: '<config:lint.files>',
@@ -59,6 +68,7 @@ module.exports = function (grunt) {
   });
 
   // Default task.
-  grunt.registerTask('default', 'lint qunit concat min');
+  //grunt.registerTask('default', 'lint qunit concat min');
+  grunt.registerTask('default', 'lint qunit min');
 
 };
