@@ -3,6 +3,10 @@ module.exports = function (grunt) {
 
   // Project configuration.
   grunt.initConfig({
+    server: {
+      port: 8000,
+      base: '.'
+    },
     pkg: '<json:aol-slideshow.json>',
     meta: {
       banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
@@ -38,9 +42,30 @@ module.exports = function (grunt) {
       //files: ['grunt.js', 'src/**/*.js', 'test/**/*.js']
       files: ['grunt.js', 'src/jquery.aolphotogallery.js']
     },
+    compass: {
+      dev: {
+        src: 'assets/scss',
+        dest: 'assets/css',
+        linecomments: true,
+        forcecompile: true,
+        debugsass: true,
+        relativeassets: true,
+        images: 'assets/images'
+      },
+      dist: {
+        src: 'assets/scss',
+        dest: 'dist/css',
+        outputstyle: 'compressed',
+        linecomments: false,
+        forcecompile: true,
+        debugsass: false,
+        relativeassets: true,
+        images: 'assets/images'
+      }
+    },
     watch: {
-      files: '<config:lint.files>',
-      tasks: 'lint qunit'
+      files: ['<config:lint.files>', 'assets/scss/**/*.scss'],
+      tasks: 'default'
     },
     jshint: {
       options: {
@@ -67,8 +92,14 @@ module.exports = function (grunt) {
     uglify: {}
   });
 
+  grunt.loadNpmTasks('grunt-compass');
+  // Doesn't seem ready for primetime. We'll want to move to this eventually,
+  // though.
+  //grunt.loadNpmTasks('grunt-contrib-compass');
+
   // Default task.
   //grunt.registerTask('default', 'lint qunit concat min');
-  grunt.registerTask('default', 'lint qunit min');
+  grunt.registerTask('default', 'lint qunit min compass');
+  grunt.registerTask('watch-serve', 'server watch');
 
 };
