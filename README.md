@@ -70,3 +70,5 @@ Note that the `phantomjs` executable needs to be in the system `PATH` for grunt 
 * Mac users will want to have XCode and the command line tools installed.
 * Homebrew is the preferred package manager.
 
+### JJ Notes
+* Explicitly list in requirements to install grunt and phantomjs globally
