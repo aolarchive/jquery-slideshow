@@ -165,7 +165,7 @@
 /* Fullscreen Styles */
 
 .aol-photo-gallery .sponsor {
-	width: 215px;
+	width: auto;
 	height: 35px;
 }
 
@@ -173,33 +173,44 @@
 	float: right;
 }
 .aol-photo-gallery-fullscreen {
-	color: #fff;
-	background-color: #000;
+	color: #000;
+	background-color: rgba(0, 0, 0, 0.85);
+	text-align: center;
 }
 .aol-photo-gallery-fullscreen .fullscreen {
-    background-color: #000;
-	padding-top: 25px;
+	position: relative;
+	top: 50% !important;
+    background-color: #FFF;
+	width: 901px;
+	height: 517px;
+	padding: 25px 35px;
+	text-align: left;
+	margin: -275px auto 0 auto;
 }
 .aol-photo-gallery-fullscreen .close-button {
-	margin-right: 25px;
-
+	margin: {
+		top: -25px;
+		right: -90px;
+	}
         -moz-border-radius: 5px;
      -webkit-border-radius: 5px;
              border-radius: 5px;
 
 }
 .aol-photo-gallery-fullscreen h2 {
-	color: #fff;
+	color: #000;
 	line-height: 50px;
 	margin: 0;
 	padding: 0;
+	font-size: 25px;
+	font-weight: bold;
 }
 .aol-photo-gallery-fullscreen .aol-photo-gallery {
-	padding: 0 25px;
+	padding: 0;
 	margin-right: 325px;
 }
 .aol-photo-gallery-fullscreen .aside {
-	margin-top: 75px;
+	margin-top: 25px;
 	right: 25px;
 	top: 0;
 	width: 300px;
