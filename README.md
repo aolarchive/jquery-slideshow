@@ -62,3 +62,11 @@ Note that the `phantomjs` executable needs to be in the system `PATH` for grunt 
 * [How to set the path and environment variables in Windows](http://www.computerhope.com/issues/ch000549.htm)
 * [Where does $PATH get set in OS X 10.6 Snow Leopard?](http://superuser.com/questions/69130/where-does-path-get-set-in-os-x-10-6-snow-leopard)
 * [How do I change the PATH variable in Linux](https://www.google.com/search?q=How+do+I+change+the+PATH+variable+in+Linux)
+
+### ARTZ Notes
+
+* Mention that a compilation step is needed (i.e. run grunt after cloning).
+* Install compass (http://compass-style.org/install/).
+* Mac users will want to have XCode and the command line tools installed.
+* Homebrew is the preferred package manager.
+
