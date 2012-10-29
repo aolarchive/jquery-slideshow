@@ -68,7 +68,7 @@
 	margin: 0 auto;
 }
 .aol-photo-gallery .gallery .photos li {
-	background: transparent url(aol-loader.gif) no-repeat center center;
+	background: transparent url(../images/aol-loader.gif) no-repeat center center;
 	position: absolute;
 	visibility: hidden;
 	cursor: pointer;
@@ -95,7 +95,7 @@
 .aol-photo-gallery .thumbnails li {
 	float: left;
 	cursor: pointer;
-	background: transparent url(aol-loader-small.gif) no-repeat center center;
+	background: transparent url(../images/aol-loader-small.gif) no-repeat center center;
 }
 .aol-photo-gallery .sponsor {
 	float: right;
