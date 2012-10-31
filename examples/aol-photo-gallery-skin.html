@@ -122,8 +122,8 @@ adSetAdURL('/_uac/adpage.html');
       build: {
         "fullscreen-button": "",
         "wallpaper-button": "",
-        "next-button": "",
-        "back-button": ""
+        "back-button": "bottom-center append before $gallery",
+        "next-button": "bottom-center append",
       },
       photoWidth: 576,
       photoHeight: 296,
@@ -137,6 +137,10 @@ adSetAdURL('/_uac/adpage.html');
     build: {
       "fullscreen-button": "",
       "wallpaper-button": ""
+    },
+    thumbCarouselOptions: {
+      "scrollNumImages": 1,
+      "animateSpeed": 400
     }
   });
 

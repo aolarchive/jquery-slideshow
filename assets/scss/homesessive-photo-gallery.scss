@@ -157,8 +157,13 @@
 }
 
 .aol-photo-gallery .thumbnails li {
-	margin: 5px;
+	margin: 2px 3px;
+	padding: 2px;
+	border: 1px solid white;
 	background: transparent url(../images/aol-loader-small.gif) no-repeat center center;
+}
+.aol-photo-gallery .thumbnails li.active {
+	border-color: #333;
 }
 
 
@@ -219,9 +224,9 @@
 }
 .aol-photo-gallery-fullscreen .aside h2 {
 	position: absolute;
+	top: 0;
 	line-height: inherit;
 	margin-left: -600px;
-	margin-top: -25px;
 	width: 576px;
 }
 .aol-photo-gallery-fullscreen .aside h2 a {
@@ -244,12 +249,13 @@
 }
 .aol-photo-gallery-fullscreen #aol-share-bar {
 	margin-left: 40px;
+	margin-top: -7px;
 }
 .aol-photo-gallery-fullscreen .captions {
 	position: relative;
 	clear: both;
 	list-style: none;
-	margin: 40px 0 1em 0;
+	margin: 51px 0 1em 0;
 	padding: 0;
 	border: 0;
 	font-size: 13px;
@@ -278,12 +284,13 @@
 }
 .aol-photo-gallery-fullscreen .thumbnails {
 	background-color: transparent;
+	margin-left: -3px;
 }
 .aol-photo-gallery-fullscreen .thumbnails li {
 	
 }
 .aol-photo-gallery-fullscreen .thumbnail-container {
-	padding: 0 30px;
+	padding: 0 26px;
 }
 .aol-photo-gallery-fullscreen .thumbnail-prev,
 .aol-photo-gallery-fullscreen .thumbnail-next {
@@ -294,15 +301,16 @@
 	background: url('../images/homesessive_sprite.png') no-repeat -97px -80px;
 	text-indent: -99999px;
 	cursor: pointer;
+	position: relative;
 }
 .aol-photo-gallery-fullscreen .thumbnail-prev {
 	float: left;
-	margin-left: -30px;
+	margin-left: -26px;
 	background-position: -97px -80px;
 }
 .aol-photo-gallery-fullscreen .thumbnail-next {
 	float: right;
-	margin-right: -30px;
+	margin-right: -26px;
 	background-position: -97px -100px
 }
 .aol-photo-gallery-fullscreen .gallery {
@@ -313,6 +321,30 @@
 .aol-photo-gallery-fullscreen #aol-photo-gallery-ad1 {
 	position: absolute;
 	bottom: 0;
+}
+.aol-photo-gallery-fullscreen .bottom-center {
+	clear: both;
+}
+.aol-photo-gallery-fullscreen .bottom-center .back-button,
+.aol-photo-gallery-fullscreen .bottom-center .next-button {
+	position: relative;
+	height: 43px;
+	width: 35px;
+	padding: 0;
+	margin: -200px 0 0 0;
+	background: url('../images/homesessive_sprite.png') no-repeat -121px -75px;
+	text-indent: -99999px;
+	z-index: 1;
+}
+.aol-photo-gallery-fullscreen .bottom-center .back-button {
+	float: left;
+	left: 7px;
+	background-position: -121px -75px;
+}
+.aol-photo-gallery-fullscreen .bottom-center .next-button {
+	float: right;
+	right: 7px;
+	background-position: -157px -74px;
 }
 
 /* Portrait Styles */
