@@ -146,6 +146,13 @@
         //              "thumbnails-button": "bottom-left append after $gallery"
       }
     },
+    
+    // Default options for how content is displayed in right rail
+    rightRailOptions: {
+      includeName: 1,
+      includeDescription: 1,
+      includeCaptions: 1
+    },
 
     // If supplied, make a sponsorship advertisement.
     // sponsorAdMN: "93302143",
@@ -254,7 +261,7 @@
     // Prepends if falsy or appends if truthy to
     // the "creditInside" container.
     creditAfter: 0,
-
+    
     imageQuality: 85,
     // Artz: Add this in. Not used just yet.
     // Templates that developers can override.
@@ -1379,9 +1386,15 @@
               $aside = $('div.aside .contents-in-rr');
 
               if ($aside.length !== 0) {
-                $aside.append(ui.$galleryName);
-                $aside.append($aolPhotoGalleryClone.find('.description'));
-                $aside.append($captions);
+                if (options.rightRailOptions.includeName) {
+                  $aside.append(ui.$galleryName);
+                }
+                if (options.rightRailOptions.includeDescription) {
+                  $aside.append($aolPhotoGalleryClone.find('.description'));
+                }
+                if (options.rightRailOptions.includeCaptions) {
+                  $aside.append($captions);
+                }
               }
 
             } else if (options.captionsAfter) {
