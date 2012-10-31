@@ -200,7 +200,7 @@
 	cursor: pointer;
 	background: url('../images/homesessive_sprite.png') no-repeat 0 -73px;
 	margin: {
-		top: -25px;
+		top: -75px;
 		right: -58px;
 		left: 0;
 		bottom: 0;
@@ -216,11 +216,12 @@
 }
 .aol-photo-gallery-fullscreen h2 {
 	color: #000;
-	line-height: 50px;
+	/*line-height: 50px;*/
 	margin: 0;
 	padding: 0;
 	font-size: 25px;
 	font-weight: bold;
+	float: left;
 }
 .aol-photo-gallery-fullscreen .aside h2 {
 	position: absolute;
@@ -249,13 +250,12 @@
 }
 .aol-photo-gallery-fullscreen #aol-share-bar {
 	margin-left: 40px;
-	margin-top: -7px;
 }
 .aol-photo-gallery-fullscreen .captions {
 	position: relative;
 	clear: both;
 	list-style: none;
-	margin: 51px 0 1em 0;
+	margin: 20px 0 1em 0;
 	padding: 0;
 	border: 0;
 	font-size: 13px;
@@ -274,7 +274,7 @@
 .aol-photo-gallery-fullscreen .captions li h3 {
     color: #000;
     font-weight: bold;
-    margin: 1em 0 0 0;
+    margin: 0.5em 0 0 0;
 }
 .aol-photo-gallery-fullscreen .captions li p {
 	margin-top: 0;
@@ -315,7 +315,7 @@
 }
 .aol-photo-gallery-fullscreen .gallery {
 	float: left;
-	margin-top: 35px;
+	margin-top: 10px;
 	margin-bottom: 20px;
 }
 .aol-photo-gallery-fullscreen #aol-photo-gallery-ad1 {
@@ -345,6 +345,22 @@
 	float: right;
 	right: 7px;
 	background-position: -157px -74px;
+}
+.aol-photo-gallery-fullscreen .aol-photo-gallery .top-right {
+	margin: 10px 0 0 0;
+}
+.aol-photo-gallery-fullscreen .top-right .status {
+	background: none;
+	padding: 0;
+	margin: 0;
+	font-size: 12px;
+	font-weight: normal;
+	color: #BC7CAC;
+	letter-spacing:	1px;
+	text-shadow: none;
+}
+.aol-photo-gallery-fullscreen .top-right .status:hover {
+	background-color: transparent;
 }
 
 /* Portrait Styles */

@@ -122,16 +122,21 @@ adSetAdURL('/_uac/adpage.html');
       build: {
         "fullscreen-button": "",
         "wallpaper-button": "",
-        "back-button": "bottom-center append before $gallery",
+        "back-button": "bottom-center append after $gallery",
         "next-button": "bottom-center append",
+        "status": "top-right append before $gallery"
       },
       photoWidth: 576,
       photoHeight: 296,
       thumbnailWidth: 92,
       thumbnailHeight: 68,
       contentsInRightRail: 1,
+      rightRailOptions: {
+        includeName: 0,
+        includeDescription: 0
+      },
       creditAfter: 1,
-      showStatus: 0,
+      showStatus: 1,
       showThumbnails: 1
     },
     build: {
