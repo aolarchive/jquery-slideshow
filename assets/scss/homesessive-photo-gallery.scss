@@ -1,6 +1,5 @@
 /*
-	Default Theme
-    A basic theme for AOL Photo Galleries. Feel free to customize or replace
+	Homesessive Theme
 */
 
 /*
@@ -179,6 +178,8 @@
 }
 .aol-photo-gallery-fullscreen {
 	position: fixed;
+	width: 100% !important;
+	height: 100% !important;
 	color: #000;
 	background-color: #000;
 	background-color: rgba(0, 0, 0, 0.85);
@@ -251,6 +252,9 @@
 }
 .aol-photo-gallery-fullscreen #aol-share-bar {
 	margin-left: 40px;
+}
+.aol-photo-gallery-fullscreen #aol-share-bar .aol-share {
+	float: none;
 }
 .aol-photo-gallery-fullscreen .captions {
 	position: relative;
