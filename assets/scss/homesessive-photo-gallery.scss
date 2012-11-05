@@ -1,6 +1,5 @@
 /*
-	Default Theme
-    A basic theme for AOL Photo Galleries. Feel free to customize or replace
+	Homesessive Theme
 */
 
 /*
@@ -157,15 +156,20 @@
 }
 
 .aol-photo-gallery .thumbnails li {
-	margin: 5px;
+	margin: 2px 3px;
+	padding: 2px;
+	border: 1px solid white;
 	background: transparent url(../images/aol-loader-small.gif) no-repeat center center;
+}
+.aol-photo-gallery .thumbnails li.active {
+	border-color: #333;
 }
 
 
 /* Fullscreen Styles */
 
 .aol-photo-gallery .sponsor {
-	width: 215px;
+	width: auto;
 	height: 35px;
 }
 
@@ -173,41 +177,204 @@
 	float: right;
 }
 .aol-photo-gallery-fullscreen {
-	color: #fff;
+	position: fixed;
+	width: 100% !important;
+	height: 100% !important;
+	color: #000;
 	background-color: #000;
+	background-color: rgba(0, 0, 0, 0.85);
+	text-align: center;
 }
 .aol-photo-gallery-fullscreen .fullscreen {
-    background-color: #000;
-	padding-top: 25px;
+	position: relative;
+	top: 50% !important;
+    background-color: #FFF;
+	width: 901px;
+	height: 517px;
+	padding: 25px 35px;
+	text-align: left;
+	margin: -275px auto 0 auto;
 }
 .aol-photo-gallery-fullscreen .close-button {
-	margin-right: 25px;
-
-        -moz-border-radius: 5px;
-     -webkit-border-radius: 5px;
-             border-radius: 5px;
-
-}
-.aol-photo-gallery-fullscreen h2 {
-	color: #fff;
-	line-height: 50px;
-	margin: 0;
+	display: block;
+	height: 46px;
+	width: 47px;
+	cursor: pointer;
+	background: url('../images/homesessive_sprite.png') no-repeat 0 -73px;
+	margin: {
+		top: -75px;
+		right: -58px;
+		left: 0;
+		bottom: 0;
+	}
 	padding: 0;
 }
+.aol-photo-gallery-fullscreen .close-button b {
+	display: none;
+}
+.aol-photo-gallery-fullscreen .close-button:hover {
+	background-color: transparent;
+	background-position: -47px -73px;
+}
+.aol-photo-gallery-fullscreen h2 {
+	color: #000;
+	/*line-height: 50px;*/
+	margin: 0;
+	padding: 0;
+	font-size: 25px;
+	font-weight: bold;
+	float: left;
+}
+.aol-photo-gallery-fullscreen h2 a {
+	color: #000;
+}
+.aol-photo-gallery-fullscreen .aside h2 {
+	position: absolute;
+	top: 0;
+	line-height: inherit;
+	margin-left: -600px;
+	width: 576px;
+}
+.aol-photo-gallery-fullscreen .aside h2 a {
+	color: black;
+	text-decoration: none;
+}
 .aol-photo-gallery-fullscreen .aol-photo-gallery {
-	padding: 0 25px;
+	padding: 0;
 	margin-right: 325px;
 }
 .aol-photo-gallery-fullscreen .aside {
-	margin-top: 75px;
+	margin-top: 25px;
 	right: 25px;
 	top: 0;
-	width: 300px;
+	width: 310px;
+	height: 517px;
+}
+.aol-photo-gallery-fullscreen .description {
+	display: none;
+}
+.aol-photo-gallery-fullscreen #aol-share-bar {
+	margin-left: 40px;
+}
+.aol-photo-gallery-fullscreen #aol-share-bar .aol-share {
+	float: none;
+}
+.aol-photo-gallery-fullscreen .captions {
+	position: relative;
+	clear: both;
+	list-style: none;
+	margin: 20px 0 1em 0;
+	padding: 0;
+	border: 0;
+	font-size: 13px;
+	font-weight: normal;
+	line-height: 1.5em;
+	border-top: 1px solid #F0F0E1;
+}
+.aol-photo-gallery-fullscreen .captions li {
+	position: absolute;
+	visibility: hidden;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	height: auto;
 }
 .aol-photo-gallery-fullscreen .captions li h3 {
-    color: #999;
-    font-size: 24px;
-    font-weight: normal;
+    color: #000;
+    font-weight: bold;
+    margin: 0.5em 0 0 0;
+}
+.aol-photo-gallery-fullscreen .captions li p {
+	margin-top: 0;
+}
+.aol-photo-gallery-fullscreen .captions li .credit {
+	margin-top: 1em;
+}
+.aol-photo-gallery-fullscreen .thumbnails {
+	background-color: transparent;
+	margin-left: -3px;
+}
+.aol-photo-gallery-fullscreen .thumbnails li {
+	
+}
+.aol-photo-gallery-fullscreen .thumbnail-container {
+	padding: 0 26px;
+	width: auto;
+}
+.aol-photo-gallery-fullscreen .thumbnail-container-inner {
+	position: relative;
+}
+.aol-photo-gallery-fullscreen .thumbnail-prev,
+.aol-photo-gallery-fullscreen .thumbnail-next {
+	margin-top: -53px;
+	width: 19px;
+	height: 20px;
+	display: block;
+	background: url('../images/homesessive_sprite.png') no-repeat -97px -80px;
+	text-indent: -99999px;
+	cursor: pointer;
+	position: relative;
+}
+.aol-photo-gallery-fullscreen .thumbnail-prev {
+	float: left;
+	margin-left: -26px;
+	background-position: -97px -80px;
+}
+.aol-photo-gallery-fullscreen .thumbnail-next {
+	float: right;
+	margin-right: -26px;
+	background-position: -97px -100px
+}
+.aol-photo-gallery-fullscreen .gallery {
+	float: left;
+	width: 100%;
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+.aol-photo-gallery-fullscreen #aol-photo-gallery-ad1 {
+	position: absolute;
+	bottom: 0;
+}
+.aol-photo-gallery-fullscreen .bottom-center {
+	clear: both;
+}
+.aol-photo-gallery-fullscreen .bottom-center .back-button,
+.aol-photo-gallery-fullscreen .bottom-center .next-button {
+	position: relative;
+	height: 43px;
+	width: 35px;
+	padding: 0;
+	margin: -200px 0 0 0;
+	background: url('../images/homesessive_sprite.png') no-repeat -121px -75px;
+	text-indent: -99999px;
+	z-index: 1;
+}
+.aol-photo-gallery-fullscreen .bottom-center .back-button {
+	float: left;
+	left: 7px;
+	background-position: -121px -75px;
+}
+.aol-photo-gallery-fullscreen .bottom-center .next-button {
+	float: right;
+	right: 7px;
+	background-position: -157px -74px;
+}
+.aol-photo-gallery-fullscreen .aol-photo-gallery .top-right {
+	margin: 10px 0 0 0;
+}
+.aol-photo-gallery-fullscreen .top-right .status {
+	background: none;
+	padding: 0;
+	margin: 0;
+	font-size: 10px;
+	font-weight: normal;
+	color: #BC7CAC;
+	letter-spacing:	1px;
+	text-shadow: none;
+	text-transform: uppercase;
+}
+.aol-photo-gallery-fullscreen .top-right .status:hover {
+	background-color: transparent;
 }
 
 /* Portrait Styles */
