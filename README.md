@@ -532,4 +532,4 @@ Note that the `phantomjs` executable needs to be in the system `PATH` for grunt 
 ## License
 Copyright (c) 2012 AOL, Inc.
 All rights reserved.
-https://github.com/aol/jquery-slideshow/glob/master/LICENSE-BSD
+https://github.com/aol/jquery-slideshow/blob/master/LICENSE-BSD
