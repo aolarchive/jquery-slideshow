@@ -1,0 +1,341 @@
+/*
+	Default Theme
+    A basic theme for AOL Photo Galleries. Feel free to customize or replace
+*/
+/*
+	background-color: #6fc4fa;
+	padding: 8px 20px 7px;
+	line-height: 20px;
+
+.aol-slideshow .controls li:hover {
+	background-color: #b6e3ff;
+}
+
+*/
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\0000317}}
+.aol-slideshow {
+  font-size: 15px;
+  line-height: 24px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\0000322}}
+.aol-slideshow .top-center li,
+.aol-slideshow .bottom-center li {
+  font-size: 15px;
+  line-height: 20px;
+  padding: 8px 16px 7px;
+  margin: 10px 0;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\0000333}}
+.aol-slideshow .top-left li,
+.aol-slideshow .bottom-left li,
+.aol-slideshow .top-right li,
+.aol-slideshow .bottom-right li,
+.aol-slideshow-fullscreen .close-button {
+  color: #000;
+  background: #6fc4fa;
+  background: #70c5fa;
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgba(0, 0, 0, 0)), color-stop(0.6, rgba(255, 255, 255, 0.2)));
+  background-image: -moz-linear-gradient(center bottom, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 0.2) 60%);
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 20px;
+  padding: 8px 16px 7px;
+  margin: 10px 0;
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.6);
+  -webkit-transition: 0.3s background-color;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\0000367}}
+.aol-slideshow .top-left li:last-child,
+.aol-slideshow .bottom-left li:last-child {
+  -moz-border-radius: 0 5px 5px 0;
+  -webkit-border-radius: 0 5px 5px 0;
+  border-radius: 0 5px 5px 0;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\0000374}}
+.aol-slideshow .top-right li:first-child,
+.aol-slideshow .bottom-right li:first-child {
+  -moz-border-radius: 5px 0 0 5px;
+  -webkit-border-radius: 5px 0 0 5px;
+  border-radius: 5px 0 0 5px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\0000385}}
+.aol-slideshow > .top-left li:hover,
+.aol-slideshow > .bottom-left li:hover,
+.aol-slideshow > .top-right li:hover,
+.aol-slideshow > .bottom-right li:hover,
+.aol-slideshow-fullscreen .close-button:hover {
+  background-color: #b6e3ff;
+}
+
+/*
+.aol-slideshow .button:hover,
+.aol-slideshow-fullscreen .button:hover,
+.aol-slideshow .gallery .controls .button:hover {
+	background-color: #b6e3ff;
+}
+
+.aol-slideshow .button:first-child {
+        -moz-border-radius: 5px 0 0 5px;
+     -webkit-border-radius: 5px 0 0 5px;
+             border-radius: 5px 0 0 5px;
+}
+*/
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003101}}
+.aol-slideshow h2 {
+  margin: 0 0 7px;
+  padding: 0;
+  font-size: 22px;
+  line-height: 35px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003111}}
+.aol-slideshow .description,
+.aol-slideshow h2 {
+  margin-right: 145px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003115}}
+.aol-slideshow .description p {
+  line-height: 22px;
+  margin-top: 8px;
+  margin-bottom: 7px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003121}}
+.aol-slideshow .gallery {
+  background: #000;
+  background: black;
+  clear: both;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003129}}
+.aol-slideshow .captions .credit {
+  top: -29px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003133}}
+.aol-slideshow .captions li h3 {
+  font-size: 18px;
+  line-height: 20px;
+  margin: 0;
+  padding: 8px 0 7px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003140}}
+.aol-slideshow .captions li p {
+  margin-top: 0;
+  line-height: 22px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003145}}
+.aol-slideshow .show-thumbnails:hover {
+  background-color: #b6e3ff;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003149}}
+.aol-slideshow .thumbnails {
+  padding-left: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow: hidden;
+  clear: both;
+  top: 0;
+  background-color: #d5efff;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003159}}
+.aol-slideshow .thumbnails li {
+  margin: 5px;
+  background: transparent url(../images/aol-loader-small.gif) no-repeat center center;
+}
+
+/* Fullscreen Styles */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003167}}
+.aol-slideshow .sponsor {
+  width: 215px;
+  height: 35px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003172}}
+.aol-slideshow .show-fullscreen {
+  float: right;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003175}}
+.aol-slideshow-fullscreen {
+  color: #fff;
+  background-color: #000;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003179}}
+.aol-slideshow-fullscreen .fullscreen {
+  background-color: #000;
+  padding-top: 25px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003183}}
+.aol-slideshow-fullscreen .close-button {
+  margin-right: 25px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003191}}
+.aol-slideshow-fullscreen h2 {
+  color: #fff;
+  line-height: 50px;
+  margin: 0;
+  padding: 0;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003197}}
+.aol-slideshow-fullscreen .aol-photo-gallery {
+  padding: 0 25px;
+  margin-right: 325px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003201}}
+.aol-slideshow-fullscreen .aside {
+  margin-top: 75px;
+  right: 25px;
+  top: 0;
+  width: 300px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003207}}
+.aol-slideshow-fullscreen .captions li h3 {
+  color: #999;
+  font-size: 24px;
+  font-weight: normal;
+}
+
+/* Portrait Styles */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003214}}
+.aol-slideshow-portrait .gallery {
+  padding-right: 280px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003218}}
+.aol-slideshow-portrait .captions {
+  color: #fff;
+  margin-top: 0;
+  right: 0;
+  top: 0;
+  width: 250px;
+  height: 500px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003226}}
+.aol-slideshow-portrait .captions li {
+  width: 250px;
+  height: 500px;
+}
+
+/* Carousel Styles */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003232}}
+.aol-slideshow-carousel .gallery .photos li {
+  margin-right: 5px;
+  opacity: .40;
+  /* Standard: FF gt 1.5, Opera, Safari */
+  /*	filter: alpha(opacity=33); /* IE lt 8 */
+  /*	-ms-filter: "alpha(opacity=33)"; /* IE 8 */
+  -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(grayScale=1)";
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003242}}
+.aol-slideshow-carousel .gallery .photos li.active {
+  opacity: 1;
+  /* Standard: FF gt 1.5, Opera, Safari */
+  /*	filter: alpha(opacity=100); /* IE lt 8 */
+  /*	-ms-filter: "alpha(opacity=100)"; /* IE 8 */
+  -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(grayScale=0)";
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003250}}
+.aol-slideshow .gallery .photos li .credit i {
+  color: #000;
+  background-color: #fff;
+  padding: 0 6px;
+  font-size: 12px;
+  font-style: normal;
+  opacity: .66;
+  /* Standard: FF gt 1.5, Opera, Safari */
+  filter: alpha(opacity=66);
+  /* IE lt 8 */
+  -ms-filter: "alpha(opacity=66)";
+  /* IE 8 */
+  -moz-border-radius: 0 0 3px 0;
+  -webkit-border-radius: 0 0 3px 0;
+  border-radius: 0 0 3px 0;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003266}}
+.aol-slideshow .wallpaper-button ul {
+  background-color: #b6e3ff;
+  width: 169px;
+  top: 35px;
+  left: 0;
+  padding: 5px;
+  padding-top: 0;
+  -moz-border-radius: 0 0 0 5px;
+  -webkit-border-radius: 0 0 0 5px;
+  border-radius: 0 0 0 5px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003279}}
+.aol-slideshow .top-left .wallpaper-button ul,
+.aol-slideshow .bottom-left .wallpaper-button ul {
+  -moz-border-radius: 0 0 5px 0;
+  -webkit-border-radius: 0 0 5px 0;
+  border-radius: 0 0 5px 0;
+}
+
+/*.aol-slideshow .wallpaper li {
+	padding: 4px 0;
+	text-align: center;
+    -webkit-transition: 0.3s background-color;
+}
+.aol-slideshow .wallpaper li:hover {
+	background-color: #6ec3ff;
+}*/
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003294}}
+.aol-slideshow .wallpaper-button ul li,
+.aol-slideshow .wallpaper-button ul li:first-child {
+  display: block;
+  background: transparent;
+  font-weight: normal;
+  padding: 4px 0;
+  text-align: center;
+  margin: 0;
+  font-size: 14px;
+  -webkit-transition: 0.3s background-color;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003309}}
+.aol-slideshow .wallpaper-button ul li:hover {
+  background-color: #6ec3ff;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/default-slideshow\.scss}line{font-family:\00003313}}
+.aol-slideshow .top-right {
+  margin-top: -55px;
+}
+
+/*
+.aol-slideshow .captions .credit {
+	position: absolute;
+	top: -20px;
+}
+*/

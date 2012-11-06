@@ -1,0 +1,35 @@
+{
+  "name": "jquery.aol-slideshow",
+  "title": "AOL Slideshow",
+  "description": "Your friendly, neighborhood slideshow.",
+  "version": "2.0",
+  "homepage": "https://github.com/aol/jquery-slideshow",
+  "company": "AOL, Inc.",
+  "authors": [
+    {
+      "name": "Dave Artz",
+      "email": "dave.artz@teamaol.com"
+    },
+    {
+      "name": "Nate Eagle",
+      "email": "nate.eagle@teamaol.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/aol/jquery-slideshow.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aol/jquery-slideshow/issues"
+  },
+  "licenses": [
+    {
+      "type": "BSD",
+      "url": "https://github.com/aol/jquery-slideshow/blob/master/LICENSE-BSD"
+    }
+  ],
+  "dependencies": {
+    "jquery": ">= 1.6"
+  },
+  "keywords": []
+}

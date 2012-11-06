@@ -2,14 +2,12 @@
 /*jslint indent: 2*/
 
 /*
-   AOL Photo Gallery Module
-   @author David Artz
-   @since 1/21/2011
-   @6/17/2011: Ramesh Kumar added support for prop17 and prop21 omniture values for International blogs.
-   @6/21/2011: Ramesh Kumar fixed another omniture bug, specific to International mmx tracking. pfxID was not getting passed onto mm_track page. Some values were showing up as "undefined".
-   @7/20/2011 : Sobia Ali made some updates for the UK team. The file is checked in and is named: jquery.aolphotogallery.uk.js
-   @4/30/2012 : Ramesh Kumar added a new feature for thumbnail carousel in fullscreenmode. Function name: buildThumbCarousel()
+   AOL aolSlideshow Plugin
+   @author David Artz (original)
+   @author Ramesh Kumar
+   @author Nate Eagle (current maintainer)
 
+   // TODO: Move all todo items to Github issues!
    To Do:
  * Update Thumbnail carousel to move to next set of images, when the active photo matches with the last thumbnail visible in the carousel.
  * Related galleries.
@@ -41,7 +39,7 @@
     preset: "slideshow",
     presetOptions: {
 
-      "slideshow": {
+      "aolSlideshow": {
         toggleThumbnails: 1,
         thumbnailAfter: 0
       },
@@ -146,7 +144,7 @@
         //              "thumbnails-button": "bottom-left append after $gallery"
       }
     },
-    
+
     // Default options for how content is displayed in right rail
     rightRailOptions: {
       includeName: 1,
@@ -261,7 +259,7 @@
     // Prepends if falsy or appends if truthy to
     // the "creditInside" container.
     creditAfter: 0,
-    
+
     imageQuality: 85,
     // Artz: Add this in. Not used just yet.
     // Templates that developers can override.
@@ -308,7 +306,7 @@
 
     // Namespace of the widget for event
     // bubbling.
-    namespace: "aol-photo-gallery"
+    namespace: 'aol-slideshow'
 
   },
 
@@ -331,7 +329,7 @@
   // Standard naming convention for deep linked photos.
   deepLinkHashName = "photoID";
 
-  $.aolPhotoGallery = function (customOptions, elem) {
+  $.aolSlideshow = function (customOptions, elem) {
 
     // Sobia's parse Hashtag code. Defining this function at the top so that its available for ajaxURL call.
     //TODO: Dave, need your inputs to do this in a better way.
@@ -379,7 +377,7 @@
               $ajaxDiv = $(data);
               $ajaxDiv.css("display", "none");
               $elem.after($ajaxDiv);
-              $ajaxDiv = $.aolPhotoGallery(customOptions, $ajaxDiv[0]);
+              $ajaxDiv = $.aolSlideshow(customOptions, $ajaxDiv[0]);
               $ajaxDiv.trigger("fullscreen-button");
             }, "html");
           }
@@ -392,7 +390,7 @@
                 $ajaxDiv = $(data);
                 $ajaxDiv.css("display", "none");
                 $elem.after($ajaxDiv);
-                $ajaxDiv = $.aolPhotoGallery(customOptions, $ajaxDiv[0]);
+                $ajaxDiv = $.aolSlideshow(customOptions, $ajaxDiv[0]);
                 $ajaxDiv.trigger("fullscreen-button");
               }, "html");
             }
@@ -404,19 +402,19 @@
         $elem = $elem.closest("div.aol-photo-gallery");
       }
 
-      var $aolPhotoGallery = $elem,
-        // $aolPhotoGallery = ( elem.nodeName === "A" ) ? $(elem).closest("div.aol-photo-gallery").eq(0) : $(elem),
-        $aolPhotoGalleryClone = $aolPhotoGallery.clone(),
+      var $aolSlideshow = $elem,
+        // $aolSlideshow = ( elem.nodeName === "A" ) ? $(elem).closest("div.aol-photo-gallery").eq(0) : $(elem),
+        $aolSlideshowClone = $aolSlideshow.clone(),
         // Offline copy.
         // Options that are passable on the
         // element as data attributes.
         dataOptions = {
-          preset: $aolPhotoGallery.data("preset"),
-          fullscreenAdMN: $aolPhotoGallery.data("fullscreen-ad-mn"),
-          sponsorAdMN: $aolPhotoGallery.data("sponsor-ad-mn"),
-          fullscreenSponsorAdMN: $aolPhotoGallery.data("fullscreen-sponsor-ad-mn"),
-          activePhoto: $aolPhotoGallery.data("active-photo"),
-          trackingId: $aolPhotoGallery.data("tracking-id")
+          preset: $aolSlideshow.data("preset"),
+          fullscreenAdMN: $aolSlideshow.data("fullscreen-ad-mn"),
+          sponsorAdMN: $aolSlideshow.data("sponsor-ad-mn"),
+          fullscreenSponsorAdMN: $aolSlideshow.data("fullscreen-sponsor-ad-mn"),
+          activePhoto: $aolSlideshow.data("active-photo"),
+          trackingId: $aolSlideshow.data("tracking-id")
         },
 
         // Artz: We may not need this.
@@ -484,9 +482,9 @@
           init: function () {
 
             // Expose options for this instance externally.
-            $aolPhotoGalleryClone.data("options", options);
+            $aolSlideshowClone.data("options", options);
 
-            var $galleryName = ui.$galleryName = $aolPhotoGalleryClone.find(ui.galleryName),
+            var $galleryName = ui.$galleryName = $aolSlideshowClone.find(ui.galleryName),
             $galleryDescription,
 
             buildOptions = options.build,
@@ -510,7 +508,7 @@
               event.preventDefault();
             });
 
-            data.galleryId = $aolPhotoGalleryClone.data("gallery-id") || 0;
+            data.galleryId = $aolSlideshowClone.data("gallery-id") || 0;
             data.galleryName = $galleryName.text();
 
             $galleryDescription = $galleryName.find(ui.galleryDescriptionTitle);
@@ -520,20 +518,20 @@
             if ($galleryDescription.attr("title")) {
               data.galleryDescription = $galleryDescription.attr("title");
               if (options.descriptionAfter) {
-                $aolPhotoGalleryClone.append("<div class=\"description\">" + data.galleryDescription + "</div>");
+                $aolSlideshowClone.append("<div class=\"description\">" + data.galleryDescription + "</div>");
               } else {
                 $galleryName.after("<div class=\"description\">" + data.galleryDescription + "</div>");
               }
             } else {
-              $galleryDescription = $aolPhotoGalleryClone.find(ui.galleryDescription);
+              $galleryDescription = $aolSlideshowClone.find(ui.galleryDescription);
               data.galleryDescription = $galleryDescription.html();
               if (options.descriptionAfter) {
-                $aolPhotoGalleryClone.append($galleryDescription);
+                $aolSlideshowClone.append($galleryDescription);
               }
             }
 
-            $anchors = ui.$anchors = $aolPhotoGalleryClone.find(ui.anchors);
-            $slides = ui.$slides = $aolPhotoGalleryClone.find(ui.slides);
+            $anchors = ui.$anchors = $aolSlideshowClone.find(ui.anchors);
+            $slides = ui.$slides = $aolSlideshowClone.find(ui.slides);
             $slideContainer = ui.$slideContainer = $slides.parent();
 
             totalPhotos = $anchors.length;
@@ -598,15 +596,15 @@
               });
 
               if (options.preset) {
-                $aolPhotoGalleryClone.addClass(namespace + "-" + options.preset);
+                $aolSlideshowClone.addClass(namespace + "-" + options.preset);
               }
 
               if (options.theme) {
-                $aolPhotoGalleryClone.addClass(namespace + "-" + options.theme);
+                $aolSlideshowClone.addClass(namespace + "-" + options.theme);
               }
 
               if (options.trackingId) {
-                $aolPhotoGalleryClone.addClass(namespace + "-" + options.trackingId);
+                $aolSlideshowClone.addClass(namespace + "-" + options.trackingId);
               }
 
               core.buildGallery();
@@ -679,7 +677,7 @@
               if (options.sponsorAdMN) {
                 core.buildSponsorAd();
               }
-              $aolPhotoGallery.replaceWith($aolPhotoGalleryClone);
+              $aolSlideshow.replaceWith($aolSlideshowClone);
             }
           },
 
@@ -748,7 +746,7 @@
 
             });
 
-            $aolPhotoGalleryClone.bind("wallpaper-download." + namespace, function (event, data) {
+            $aolSlideshowClone.bind("wallpaper-download." + namespace, function (event, data) {
 
               var photo = photos[activeIndex],
               photoSrc;
@@ -992,12 +990,12 @@
               documentHeight,
               documentWidth;
 
-            $aolPhotoGalleryClone.delegate(".fullscreen-button", "mousedown", function () {
+            $aolSlideshowClone.delegate(".fullscreen-button", "mousedown", function () {
               $(this).trigger("fullscreen-button." + namespace);
             });
 
             // Mousedown feels faster.
-            $aolPhotoGalleryClone.bind("fullscreen-button." + namespace, function () {
+            $aolSlideshowClone.bind("fullscreen-button." + namespace, function () {
               viewflag = "fullscreen";
               bodyElemWidth = body.offsetWidth || 0;
               bodyElemHeight = body.offsetHeight || 0;
@@ -1029,7 +1027,7 @@
               // let's render shit.
               if (!$fullscreenPhotoGallery) {
 
-                $fullscreenPhotoGallery = $aolPhotoGallery.clone();
+                $fullscreenPhotoGallery = $aolSlideshow.clone();
 
                 // Ensure display is block for AJAX load.
                 $fullscreenPhotoGallery.css("display", "block");
@@ -1058,11 +1056,11 @@
                 fullscreenOptions.showFullscreen = 0;
                 fullscreenOptions.activePhoto = activeIndex + 1;
                 fullscreenOptions.ui = {
-                  $parentGallery: $aolPhotoGalleryClone
+                  $parentGallery: $aolSlideshowClone
                 };
 
                 // Initialize the photo gallery in full screen.
-                $fullscreenPhotoGallery.aolPhotoGallery(fullscreenOptions);
+                $fullscreenPhotoGallery.aolSlideshow(fullscreenOptions);
 
                 // Build the Thumbnail Carousel only on Fullscreen mode:
                 // TODO: Make this work in non-fullscreen mode too.
@@ -1074,7 +1072,7 @@
 
                 // If we're already initialized, we need to ensure
                 // to set to the current active index.
-                $aolPhotoGalleryClone.trigger("fullscreen-open." + namespace, [{
+                $aolSlideshowClone.trigger("fullscreen-open." + namespace, [{
                   index: activeIndex
                 }]);
 
@@ -1093,7 +1091,7 @@
               });
 
               // Reset the parent gallery to whatever slide we're on right now.
-              $aolPhotoGalleryClone.trigger("fullscreen-close." + namespace);
+              $aolSlideshowClone.trigger("fullscreen-close." + namespace);
               viewflag = "embed";
             });
 
@@ -1110,11 +1108,11 @@
             // If the toggle feature is present, add those bindings.
             if ( options.toggleThumbnails ) {
 
-            $aolPhotoGalleryClone.bind("thumbnails-button." + namespace, function (){
+            $aolSlideshowClone.bind("thumbnails-button." + namespace, function (){
             //      $fullscreenButton.css("visibility", "hidden");
             });
 
-            $aolPhotoGalleryClone.bind("thumbnail-mousedown." + namespace, function (){
+            $aolSlideshowClone.bind("thumbnail-mousedown." + namespace, function (){
             $fullscreenButton.css({
             //          "visibility": "visible"
             });
@@ -1133,7 +1131,7 @@
             // If we hear an open, we need to update our status to match.
             $parentGallery.bind("fullscreen-open." + namespace, function (event, data) {
 
-              $aolPhotoGalleryClone.trigger("status-reset", [{
+              $aolSlideshowClone.trigger("status-reset", [{
                 index: data.index
               }]);
 
@@ -1228,7 +1226,7 @@
             // If we are not in a carousel, clicking on the photos doesn't just go next.
             if (!isCarousel) {
 
-              $aolPhotoGalleryClone.delegate(".photos > li", "mousedown." + namespace, function () {
+              $aolSlideshowClone.delegate(".photos > li", "mousedown." + namespace, function () {
                 var $elem = $(this);
                 if (options.preset === "launch") {
                   $elem.trigger("fullscreen-button." + namespace);
@@ -1237,12 +1235,12 @@
                 }
               });
 
-              $aolPhotoGalleryClone.delegate(".photos > li", "mouseover." + namespace, function () {
+              $aolSlideshowClone.delegate(".photos > li", "mouseover." + namespace, function () {
                 $(this).trigger("next-mouseover." + namespace);
               });
 
             } else {
-              $aolPhotoGalleryClone.delegate(".photos > li", "mousedown." + namespace, function () {
+              $aolSlideshowClone.delegate(".photos > li", "mousedown." + namespace, function () {
 
                 var photo = this,
                   $photo = $(photo),
@@ -1254,12 +1252,12 @@
             }
 
             // Listen for thumbnail mouseovers and morph the image if needed.
-            $aolPhotoGalleryClone.bind("thumbnail-mouseover." + namespace, function (event, data) {
+            $aolSlideshowClone.bind("thumbnail-mouseover." + namespace, function (event, data) {
               var index = data.index;
               core.preloadPhoto(index);
             });
 
-            $aolPhotoGalleryClone.bind("back-mouseover." + namespace, function (event, data) {
+            $aolSlideshowClone.bind("back-mouseover." + namespace, function (event, data) {
               var backIndex = activeIndex === 0 ? totalPhotos - 1 : activeIndex - 1;
               if (isCarousel) {
                 core.preloadCarouselPhotos(backIndex);
@@ -1268,7 +1266,7 @@
               }
             });
 
-            $aolPhotoGalleryClone.bind("next-mouseover." + namespace, function (event, data) {
+            $aolSlideshowClone.bind("next-mouseover." + namespace, function (event, data) {
               var nextIndex = activeIndex === totalPhotos - 1 ? 0 : activeIndex + 1;
               if (isCarousel) {
                 core.preloadCarouselPhotos(nextIndex);
@@ -1277,7 +1275,7 @@
               }
             });
 
-            $aolPhotoGalleryClone.bind("status-update." + namespace, function (event, data) {
+            $aolSlideshowClone.bind("status-update." + namespace, function (event, data) {
 
               var oldIndex = data.oldIndex,
                 activeIndex = data.activeIndex,
@@ -1334,13 +1332,13 @@
             // If the toggle feature is present, add those bindings.
             if (options.toggleThumbnails) {
 
-              $aolPhotoGalleryClone.bind("thumbnails-button." + namespace, function () {
+              $aolSlideshowClone.bind("thumbnails-button." + namespace, function () {
                 $slideContainer.css("position", "relative").animate({
                   "left": -$gallery.outerWidth()
                 }, speed);
               });
 
-              $aolPhotoGalleryClone.bind("thumbnail-mousedown." + namespace, function (event, data) {
+              $aolSlideshowClone.bind("thumbnail-mousedown." + namespace, function (event, data) {
 
                 $slideContainer.css({
                   "position": "relative" // Artz: Why do we need this? (re: visibility: visible)
@@ -1390,7 +1388,7 @@
                   $aside.append(ui.$galleryName);
                 }
                 if (options.rightRailOptions.includeDescription) {
-                  $aside.append($aolPhotoGalleryClone.find('.description'));
+                  $aside.append($aolSlideshowClone.find('.description'));
                 }
                 if (options.rightRailOptions.includeCaptions) {
                   $aside.append($captions);
@@ -1430,7 +1428,7 @@
           },
 
           bindCaptions: function () {
-            $aolPhotoGalleryClone.bind("status-update." + namespace, function (event, data) {
+            $aolSlideshowClone.bind("status-update." + namespace, function (event, data) {
 
               var oldIndex = data.oldIndex,
               $oldCaption = $captions.eq(oldIndex),
@@ -1461,7 +1459,7 @@
 
             // If the toggle feature is present, add those bindings.
             if (options.toggleThumbnails) {
-              $aolPhotoGalleryClone.bind("thumbnails-button." + namespace, function () {
+              $aolSlideshowClone.bind("thumbnails-button." + namespace, function () {
                 $captionContainer.animate({
                   "opacity": 0
                 }, {
@@ -1469,7 +1467,7 @@
                   queue: false
                 });
               });
-              $aolPhotoGalleryClone.bind("thumbnail-mousedown." + namespace, function (event, data) {
+              $aolSlideshowClone.bind("thumbnail-mousedown." + namespace, function (event, data) {
 
                 // We do this here instead of status update because status update
                 // doesn't fire if we click the same thumbnail we're on.
@@ -1533,7 +1531,7 @@
               return statusTemplate.replace("{{active}}", activeIndex + 1).replace("{{total}}", totalPhotos);
             }
 
-            $aolPhotoGalleryClone.bind("status-reset." + namespace, function (event, data) {
+            $aolSlideshowClone.bind("status-reset." + namespace, function (event, data) {
 
               var oldIndex = activeIndex;
 
@@ -1550,7 +1548,7 @@
               }
             });
 
-            $aolPhotoGalleryClone.bind("photo-mousedown." + namespace, function (event, data) {
+            $aolSlideshowClone.bind("photo-mousedown." + namespace, function (event, data) {
 
               var oldIndex = activeIndex;
 
@@ -1564,7 +1562,7 @@
               }
             });
 
-            $aolPhotoGalleryClone.bind("thumbnail-mousedown." + namespace, function (event, data) {
+            $aolSlideshowClone.bind("thumbnail-mousedown." + namespace, function (event, data) {
 
               var oldIndex = activeIndex;
 
@@ -1579,7 +1577,7 @@
               }
             });
 
-            $aolPhotoGalleryClone.bind("back-mousedown." + namespace, function (event, data) {
+            $aolSlideshowClone.bind("back-mousedown." + namespace, function (event, data) {
               if (!statusRateLimit) {
                 statusRateLimit = 1;
                 var oldIndex = activeIndex;
@@ -1598,7 +1596,7 @@
               }
             });
 
-            $aolPhotoGalleryClone.bind("next-mousedown." + namespace, function () {
+            $aolSlideshowClone.bind("next-mousedown." + namespace, function () {
               if (!statusRateLimit) {
                 statusRateLimit = 1;
 
@@ -1620,11 +1618,11 @@
             // If the toggle feature is present, add those bindings.
             if ( options.toggleThumbnails ) {
 
-            $aolPhotoGalleryClone.bind("thumbnails-button." + namespace, function (){
+            $aolSlideshowClone.bind("thumbnails-button." + namespace, function (){
             $status.css("visibility", "hidden");
             });
 
-            $aolPhotoGalleryClone.bind("thumbnail-mousedown." + namespace, function (){
+            $aolSlideshowClone.bind("thumbnail-mousedown." + namespace, function (){
             $status.css({
             "display": "block",
             "visibility": "visible"
@@ -1646,10 +1644,10 @@
           },
 
           bindNextbutton: function () {
-            $aolPhotoGalleryClone.delegate(".next-button", "mousedown." + namespace, function () {
+            $aolSlideshowClone.delegate(".next-button", "mousedown." + namespace, function () {
               $(this).trigger("next-mousedown." + namespace);
             });
-            $aolPhotoGalleryClone.delegate(".next-button", "mouseover." + namespace, function () {
+            $aolSlideshowClone.delegate(".next-button", "mouseover." + namespace, function () {
               $(this).trigger("next-mouseover." + namespace);
             });
           },
@@ -1665,10 +1663,10 @@
           },
 
           bindBackbutton: function () {
-            $aolPhotoGalleryClone.delegate(".back-button", "mousedown." + namespace, function () {
+            $aolSlideshowClone.delegate(".back-button", "mousedown." + namespace, function () {
               $(this).trigger("back-mousedown." + namespace);
             });
-            $aolPhotoGalleryClone.delegate(".back-button", "mouseover." + namespace, function () {
+            $aolSlideshowClone.delegate(".back-button", "mouseover." + namespace, function () {
               $(this).trigger("back-mouseover." + namespace);
             });
           },
@@ -1709,7 +1707,7 @@
               $gallery.prepend($thumbnailContainer);
             } else {
               if (options.thumbnailAfter) {
-                $aolPhotoGalleryClone.append($thumbnailContainer);
+                $aolSlideshowClone.append($thumbnailContainer);
               } else {
                 $gallery.before($thumbnailContainer);
               }
@@ -1732,7 +1730,7 @@
               setTimeout(function () {
 
                 // We need to calculate the original height for the thumbnail view.
-                var moduleHeight = $aolPhotoGalleryClone.height(),
+                var moduleHeight = $aolSlideshowClone.height(),
                   galleryHeight = $gallery.height(),
                   thumbnailHeight = $thumbnailContainer.height(),
                   maxHeight = Math.max(moduleHeight - thumbnailHeight, moduleHeight - galleryHeight);
@@ -1743,11 +1741,11 @@
                 if (options.showThumbnails) {
 
                   // Remember the initial height when the thumbnails were static for our toggle later.
-                  $aolPhotoGalleryClone.data("thumbnail-view-height." + namespace, maxHeight);
+                  $aolSlideshowClone.data("thumbnail-view-height." + namespace, maxHeight);
 
                   $thumbnailContainer.css({
                     // Use the module width for now.
-                    width: $aolPhotoGalleryClone.width(),
+                    width: $aolSlideshowClone.width(),
                     left: 0,
                     top: $thumbnailContainer.position().top,
                     height: thumbnailHeight
@@ -1758,13 +1756,13 @@
 
                   // If thumbs are dynamic, the height should be equal to either the gallery height,
                   // or the module - gallery or module - thumbnail height, whichever is bigger.
-                  $aolPhotoGalleryClone.data("thumbnail-view-height." + namespace, maxHeight);
+                  $aolSlideshowClone.data("thumbnail-view-height." + namespace, maxHeight);
 
                   $thumbnailContainer.css({
                     position: "absolute",
-                    left: $aolPhotoGalleryClone.width(),
+                    left: $aolSlideshowClone.width(),
                     top: $slideContainer.position().top,
-                    width: $aolPhotoGalleryClone.width(),
+                    width: $aolSlideshowClone.width(),
                     // width: $slideContainer.width(),
                     height: thumbnailHeight
                   });
@@ -1780,7 +1778,7 @@
 
           bindThumbnails: function () {
 
-            $aolPhotoGalleryClone.delegate(".thumbnails > li", "mouseover." + namespace, function () {
+            $aolSlideshowClone.delegate(".thumbnails > li", "mouseover." + namespace, function () {
 
               var thumbnail = this,
                 $thumbnail = $(thumbnail),
@@ -1795,7 +1793,7 @@
 
             });
 
-            $aolPhotoGalleryClone.delegate(".thumbnails > li", "mouseout." + namespace, function () {
+            $aolSlideshowClone.delegate(".thumbnails > li", "mouseout." + namespace, function () {
 
               var thumbnail = this,
                 $thumbnail = $(thumbnail),
@@ -1811,7 +1809,7 @@
             });
 
             // Bind event trigger.
-            $aolPhotoGalleryClone.delegate(".thumbnails > li", "mousedown." + namespace, function () {
+            $aolSlideshowClone.delegate(".thumbnails > li", "mousedown." + namespace, function () {
 
               var thumbnail = this,
                 $thumbnail = $(thumbnail),
@@ -1822,7 +1820,7 @@
 
             });
 
-            $aolPhotoGalleryClone.bind("status-update." + namespace, function (event, data) {
+            $aolSlideshowClone.bind("status-update." + namespace, function (event, data) {
 
               var oldIndex = data.oldIndex,
                 activeIndex = data.activeIndex;
@@ -1836,17 +1834,17 @@
             // If the toggle feature is present, add those bindings.
             if (options.toggleThumbnails) {
 
-              $aolPhotoGalleryClone.bind("thumbnails-button." + namespace, function () {
+              $aolSlideshowClone.bind("thumbnails-button." + namespace, function () {
 
                 // Bunch of junky height nonsense.
-                var currentHeight = $aolPhotoGalleryClone.height(),
-                  originalHeight = $aolPhotoGalleryClone.data("thumbnail-view-height." + namespace);
+                var currentHeight = $aolSlideshowClone.height(),
+                  originalHeight = $aolSlideshowClone.data("thumbnail-view-height." + namespace);
 
                 if (currentHeight > originalHeight) {
-                  $aolPhotoGalleryClone.data("thumbnail-view-height." + namespace, currentHeight);
+                  $aolSlideshowClone.data("thumbnail-view-height." + namespace, currentHeight);
                   originalHeight = currentHeight;
                 }
-                $aolPhotoGalleryClone.height(originalHeight);
+                $aolSlideshowClone.height(originalHeight);
 
                 // We want to ensure we preloaded all the photos once
                 // this toggle is mousedowned.
@@ -1870,14 +1868,14 @@
 
               });
 
-              $aolPhotoGalleryClone.bind("thumbnail-mousedown." + namespace, function () {
+              $aolSlideshowClone.bind("thumbnail-mousedown." + namespace, function () {
 
                 $thumbnailContainer.css({
                   "position": "absolute"
                 }).animate({
-                  "left": $aolPhotoGalleryClone.width()
+                  "left": $aolSlideshowClone.width()
                 }, speed).queue(function (next) {
-                  $aolPhotoGalleryClone.height("auto");
+                  $aolSlideshowClone.height("auto");
                   next();
                 });
 
@@ -1886,7 +1884,7 @@
           },
 
           buildThumbCarousel: function (view) {
-            var $view = (view === "fullscreen") ? ui.$fullscreen : $aolPhotoGalleryClone,
+            var $view = (view === "fullscreen") ? ui.$fullscreen : $aolSlideshowClone,
               $thumbnailContainer = $view.find('ul.thumbnails'),
               $thumbnailContainerParent = "<div class=\"thumbnail-container\"><div class=\"thumbnail-container-inner\"></div><ul class=\"thumbnail-carousel-controls\"><li class=\"thumbnail-prev\">Back</li><li class=\"thumbnail-next\">Next</li></ul></div>",
               thumbCarouselOptions = options.thumbCarouselOptions,
@@ -1924,7 +1922,7 @@
 
             } else {
               if (window.console) {
-                console.info("jQuery.aolPhotoGallery: Not enough photos to build the thumbnail carousel");
+                console.info("jQuery.aolSlideshow: Not enough photos to build the thumbnail carousel");
               }
             }
 
@@ -1967,9 +1965,9 @@
               $topCenter = ui["$top-center"];
 
             // Listen for certain things and hide the controls.
-            $aolPhotoGalleryClone.delegate(".thumbnails-button", "mousedown", function () {
+            $aolSlideshowClone.delegate(".thumbnails-button", "mousedown", function () {
 
-              $aolPhotoGalleryClone.css("overflow", "hidden");
+              $aolSlideshowClone.css("overflow", "hidden");
 
               // Slide the bottom right controls right.
               if ($bottomRight) {
@@ -2007,10 +2005,10 @@
             });
 
             // Listen for certain things and show the controls.
-            $aolPhotoGalleryClone.delegate(".thumbnails > li", "mousedown", function () {
+            $aolSlideshowClone.delegate(".thumbnails > li", "mousedown", function () {
 
               setTimeout(function () {
-                $aolPhotoGalleryClone.css("overflow", "visible");
+                $aolSlideshowClone.css("overflow", "visible");
               }, speed);
 
               // Slide the bottom right controls right.
@@ -2052,11 +2050,11 @@
             // Ramesh: Keyboard shortcuts for next (right arrow), back (left arrow) and escape keys.
             $(documentElem).keyup(function (event) {
               if (event.keyCode === 39) {
-                $aolPhotoGalleryClone.trigger("next-mousedown." + namespace);
+                $aolSlideshowClone.trigger("next-mousedown." + namespace);
               }
 
               if (event.keyCode === 37) {
-                $aolPhotoGalleryClone.trigger("back-mousedown." + namespace);
+                $aolSlideshowClone.trigger("back-mousedown." + namespace);
               }
 
               if (event.keyCode === 27) {
@@ -2072,7 +2070,7 @@
                   });
 
                   // Reset the parent gallery to whatever slide we're on right now.
-                  $aolPhotoGalleryClone.trigger("fullscreen-close." + namespace);
+                  $aolSlideshowClone.trigger("fullscreen-close." + namespace);
                 }
               }
             });
@@ -2094,26 +2092,26 @@
 
           bindShowthumbnails: function () {
 
-            $aolPhotoGalleryClone.delegate(".thumbnails-button", "mousedown." + namespace, function () {
-              $aolPhotoGalleryClone.trigger("thumbnails-button." + namespace);
+            $aolSlideshowClone.delegate(".thumbnails-button", "mousedown." + namespace, function () {
+              $aolSlideshowClone.trigger("thumbnails-button." + namespace);
             });
             /*
-               $aolPhotoGalleryClone.bind("thumbnails-button." + namespace, function (){
+               $aolSlideshowClone.bind("thumbnails-button." + namespace, function (){
                ui["$thumbnails-button"].css("visibility", "hidden");
                });
 
-               $aolPhotoGalleryClone.bind("thumbnail-mousedown." + namespace, function (){
+               $aolSlideshowClone.bind("thumbnail-mousedown." + namespace, function (){
                ui["$thumbnails-button"].css("visibility", "visible");
                });
 
             // If the toggle feature is present, add those bindings. Artz: Not necessary?
             // if ( options.toggleThumbnails ) {
             // Artz: We will probably want a generic way to quickly hide all controls.
-            $aolPhotoGalleryClone.bind("thumbnails-button." + namespace, function (){
+            $aolSlideshowClone.bind("thumbnails-button." + namespace, function (){
             ui["$thumbnails-button"].css("visibility", "hidden");
             });
 
-            $aolPhotoGalleryClone.bind("thumbnail-mousedown." + namespace, function (){
+            $aolSlideshowClone.bind("thumbnail-mousedown." + namespace, function (){
             ui["$thumbnails-button"].css({
             "display": "block",
             "visibility": "visible"
@@ -2130,7 +2128,7 @@
             $sponsor = ui.$sponsor = $(sponsorHTML);
 
             // Sponsorship goes at the top.
-            $aolPhotoGalleryClone.prepend($sponsor);
+            $aolSlideshowClone.prepend($sponsor);
 
             // Render the ad in the next UI thread, once everything is visible.
             if (window.htmlAdWH) {
@@ -2195,7 +2193,7 @@
 
           if (refreshDivId) {
             // Listen for status updates to count photo mousedowns.
-            $aolPhotoGalleryClone.bind("status-update." + namespace, function () {
+            $aolSlideshowClone.bind("status-update." + namespace, function () {
 
               // Code for refreshing ads here.
               // Tell Omniture we need to report the impression.
@@ -2236,7 +2234,7 @@
           }
 
 
-          $aolPhotoGalleryClone.bind("status-update." + namespace, function (event, data) {
+          $aolSlideshowClone.bind("status-update." + namespace, function (event, data) {
 
             // Attempt to use Media ID, fall back to photo number.
             var photoId = photos[activeIndex].photoId || data.activeIndex + 1,
@@ -2271,8 +2269,8 @@
         initTracking = function () {
 
           // Whenever there's a status update, let's fire a page view.
-          $aolPhotoGalleryClone.bind("status-update." + namespace, function () {
-            var updateArea = $aolPhotoGalleryClone.width() * $aolPhotoGalleryClone.height(),
+          $aolSlideshowClone.bind("status-update." + namespace, function () {
+            var updateArea = $aolSlideshowClone.width() * $aolSlideshowClone.height(),
               omnitureConfig = {
                 pageName: data.galleryName,
                 prop1: options.preset || "default",
@@ -2305,7 +2303,7 @@
             } else {
 
               if (window.console) {
-                console.info("jQuery.aolPhotoGallery: Gallery not large enough for Comscore PV tracking.");
+                console.info("jQuery.aolSlideshow: Gallery not large enough for Comscore PV tracking.");
               }
 
             }
@@ -2333,19 +2331,19 @@
       core.init();
 
       // Return
-      return $aolPhotoGalleryClone;
+      return $aolSlideshowClone;
       // Otherwise, extend the default options.
     }
     $.extend(true, defaultOptions, customOptions);
   };
 
-  $.fn.aolPhotoGallery = function (customOptions) {
+  $.fn.aolSlideshow = function (customOptions) {
 
     customOptions = customOptions || {};
     // Since these point to the original DOM nodes,
     // we may want to reset the pointers.
     return this.each(function () {
-      $.aolPhotoGallery(customOptions, this);
+      $.aolSlideshow(customOptions, this);
     });
 
   };
@@ -2465,7 +2463,7 @@
         window.bN.view();
       } else {
         if (window.console) {
-          console.info("jQuery.aolPhotoGallery: AOL DataLayer Beacon is not configured.");
+          console.info("jQuery.aolSlideshow: AOL DataLayer Beacon is not configured.");
         }
       }
     }
