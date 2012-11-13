@@ -2,7 +2,7 @@
     Minimal styling for core photo gallery features
 */
 
-.aol-slideshow {
+.aol-photo-gallery {
 	position: relative;
 
 	-webkit-user-select: none;
@@ -11,70 +11,70 @@
 	-o-user-select: none;
 	user-select: none;
 }
-.aol-slideshow ul {
+.aol-photo-gallery ul {
 	list-style: none;
 	margin: 0;
 	padding: 0;
 	border: 0;
 }
-.aol-slideshow li {
+.aol-photo-gallery li {
 	margin: 0;
 	padding: 0;
 	border: 0;
 	height: auto;
 }
-.aol-slideshow h2 a {
+.aol-photo-gallery h2 a {
 	text-decoration: none;
 	color: inherit;
 	cursor: inherit;
 }
-.aol-slideshow .top-left,
-.aol-slideshow .bottom-left {
+.aol-photo-gallery .top-left,
+.aol-photo-gallery .bottom-left {
 	float: left;
 	position: relative;
 }
-.aol-slideshow .top-left li ,
-.aol-slideshow .bottom-left li {
+.aol-photo-gallery .top-left li ,
+.aol-photo-gallery .bottom-left li {
 	display: inline-block;
 	cursor: pointer;
 }
-.aol-slideshow .top-center,
-.aol-slideshow .bottom-center {
+.aol-photo-gallery .top-center,
+.aol-photo-gallery .bottom-center {
 	text-align: center;
 }
-.aol-slideshow .top-center li,
-.aol-slideshow .bottom-center li {
+.aol-photo-gallery .top-center li,
+.aol-photo-gallery .bottom-center li {
 	display: inline-block;
 	cursor: pointer;
 }
-.aol-slideshow .top-right,
-.aol-slideshow .bottom-right {
+.aol-photo-gallery .top-right,
+.aol-photo-gallery .bottom-right {
 	float: right;
 	position: relative;
 }
-.aol-slideshow .top-right li,
-.aol-slideshow .bottom-right li {
+.aol-photo-gallery .top-right li,
+.aol-photo-gallery .bottom-right li {
 	display: inline-block;
 	cursor: pointer;
 }
-.aol-slideshow .gallery {
+.aol-photo-gallery .gallery {
 	position: relative;
 	clear: both;
     overflow: hidden;
 }
-.aol-slideshow .gallery .photos {
+.aol-photo-gallery .gallery .photos {
 	position: relative;
 	overflow: hidden;
 	margin: 0 auto;
 }
-.aol-slideshow .gallery .photos li {
+.aol-photo-gallery .gallery .photos li {
 	background: transparent url(../images/aol-loader.gif) no-repeat center center;
 	position: absolute;
 	visibility: hidden;
 	cursor: pointer;
 	overflow: hidden;
 }
-.aol-slideshow .photos a {
+.aol-photo-gallery .photos a {
 	display: block;
 	position: absolute;
 	width: 0;
@@ -83,24 +83,24 @@
 	left: 0;
 	overflow: hidden;
 }
-.aol-slideshow .captions {
+.aol-photo-gallery .captions {
 /*	overflow: hidden; */
 	position: relative;
 	clear: both;
 }
-.aol-slideshow .captions li {
+.aol-photo-gallery .captions li {
 	position: absolute;
 	visibility: hidden;
 }
-.aol-slideshow .thumbnails li {
+.aol-photo-gallery .thumbnails li {
 	float: left;
 	cursor: pointer;
 	background: transparent url(../images/aol-loader-small.gif) no-repeat center center;
 }
-.aol-slideshow .sponsor {
+.aol-photo-gallery .sponsor {
 	float: right;
 }
-.aol-slideshow-fullscreen {
+.aol-photo-gallery-fullscreen {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -108,7 +108,7 @@
 	display: none;
 	background-color: #000;
 }
-.aol-slideshow-fullscreen .fullscreen {
+.aol-photo-gallery-fullscreen .fullscreen {
 /*	position: fixed; Artz: Fixed is cool but people can't scroll if it's too big. Consider auto height later. */
 	position: absolute;
 	padding-top: 25px;
@@ -116,27 +116,27 @@
 	left: 0;
 	width: 100%;
 }
-.aol-slideshow-fullscreen .close-button {
+.aol-photo-gallery-fullscreen .close-button {
 	height: auto;
 	position: absolute;
 	right: 0;
 	cursor: pointer;
 }
-.aol-slideshow-fullscreen .thumbnail-container {
+.aol-photo-gallery-fullscreen .thumbnail-container {
 	overflow: hidden;
 	padding: 0 25px;
 }
-.aol-slideshow-fullscreen .thumbnail-container-inner {
+.aol-photo-gallery-fullscreen .thumbnail-container-inner {
 	overflow: hidden;
 }
 
-.aol-slideshow-fullscreen h2 {
+.aol-photo-gallery-fullscreen h2 {
 }
-.aol-slideshow-fullscreen .aol-photo-gallery {
+.aol-photo-gallery-fullscreen .aol-photo-gallery {
 	padding: 0 25px;
 	margin-right: 325px;
 }
-.aol-slideshow-fullscreen .aside {
+.aol-photo-gallery-fullscreen .aside {
 	float: none;
 	position: absolute;
 	margin-top: 75px;
@@ -146,39 +146,39 @@
 /* Portrait Styles */
 
 /* Width and height left in core styles to preserve functionality... see if we can abstract out later */
-.aol-slideshow-portrait .gallery {
+.aol-photo-gallery-portrait .gallery {
 	padding-right: 280px;
 	position: relative;
 }
-.aol-slideshow-portrait .captions {
+.aol-photo-gallery-portrait .captions {
 	position: absolute;
 	top: 0;
 	right: 0;
 	width: 250px;
 	height: 500px;
 }
-.aol-slideshow-portrait .captions li {
+.aol-photo-gallery-portrait .captions li {
 	width: 250px;
 	height: 500px;
 }
 
 /* Carousel Styles */
-.aol-slideshow-carousel .gallery .photos {
+.aol-photo-gallery-carousel .gallery .photos {
 	position: absolute;
 	top: 0;
 	left: 0;
 	overflow: visible;
 }
-.aol-slideshow-carousel .gallery .photos li {
+.aol-photo-gallery-carousel .gallery .photos li {
 	position: static;
 	float: left;
 }
 
-.aol-slideshow-carousel .gallery .photos li.active {
+.aol-photo-gallery-carousel .gallery .photos li.active {
 	cursor: default;
 }
 
-.aol-slideshow .gallery .photos li .credit i {
+.aol-photo-gallery .gallery .photos li .credit i {
 	float:left;
 }
 
@@ -224,17 +224,17 @@
     display: block;
 }
 */
-.aol-slideshow .wallpaper-button {
+.aol-photo-gallery .wallpaper-button {
 	padding-right: 0;
 	padding-left: 0;
 	position: relative;
 }
-.aol-slideshow .wallpaper-button ul {
+.aol-photo-gallery .wallpaper-button ul {
 	display: none;
 	position: absolute;
 	margin: 0;
 	z-index: 10;
 }
-.aol-slideshow .wallpaper-button ul li {
+.aol-photo-gallery .wallpaper-button ul li {
 	display: block;
 }
