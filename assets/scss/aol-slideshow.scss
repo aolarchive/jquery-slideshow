@@ -116,6 +116,7 @@ body {
 }
 .aol-slideshow-fullscreen .fullscreen {
   /*	position: fixed; Artz: Fixed is cool but people can't scroll if it's too big. Consider auto height later. */
+  overflow: hidden;
   position: absolute;
   padding-top: 25px;
   /*	top: 25px; */
