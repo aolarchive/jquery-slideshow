@@ -45,7 +45,7 @@
         thumbnailAfter: 0
       },
 
-      "carousel": { // aol-photo-gallery-carousel
+      "carousel": { // aol-slideshow-carousel
         carousel: 1,
         controlsInside: 1,
         showThumbnails: 1,
@@ -56,7 +56,7 @@
         creditInside: "$slides"
       },
 
-      "portrait": { // aol-photo-gallery-portrait
+      "portrait": { // aol-slideshow-portrait
         captionsAfter: 0,
         showCaptions: 1,
         photoWidth: 325,
@@ -67,7 +67,7 @@
         }
       },
 
-      "launch": { // aol-photo-gallery-launch
+      "launch": { // aol-slideshow-launch
         showControls: 0,
         showCaptions: 0,
         showStatus: 0,
@@ -298,7 +298,7 @@
 
     // Namespace of the widget for event
     // bubbling.
-    namespace: "aol-photo-gallery"
+    namespace: "aol-slideshow"
 
   },
 
@@ -391,11 +391,11 @@
           // Exit the plugin until we get the gallery HTML.
           return;
         }
-        $elem = $elem.closest("div.aol-photo-gallery");
+        $elem = $elem.closest("div.aol-slideshow");
       }
 
       var $aolSlideshow = $elem,
-      // $aolSlideshow = ( elem.nodeName === "A" ) ? $(elem).closest("div.aol-photo-gallery").eq(0) : $(elem),
+      // $aolSlideshow = ( elem.nodeName === "A" ) ? $(elem).closest("div.aol-slideshow").eq(0) : $(elem),
       $aolSlideshowClone = $aolSlideshow.clone(),
       // Offline copy.
       // Options that are passable on the
@@ -948,7 +948,7 @@
 
         buildFullscreen: function () {
 
-          var fullscreenHTML = "<div class=\"aol-photo-gallery-fullscreen\"><div class=\"fullscreen\"><div class=\"close-button\"><b>Close</b></div><div class=\"aside\"><div class=\"contents-in-rr\"><div id=\"aol-share-bar\"></div></div></div></div></div>";
+          var fullscreenHTML = "<div class=\"aol-slideshow-fullscreen\"><div class=\"fullscreen\"><div class=\"close-button\"><b>Close</b></div><div class=\"aside\"><div class=\"contents-in-rr\"><div id=\"aol-share-bar\"></div></div></div></div></div>";
 
           // Create the full screen backdrop <div>
           $fullscreen = ui.$fullscreen = $(fullscreenHTML);
@@ -2129,7 +2129,7 @@
           // TODO: Support AolShare on Embedded mode too.
           if (viewflag === "fullscreen") {
             // Remove necessary elements
-            $(".aol-photo-gallery-fullscreen .aol-share").remove();
+            $(".aol-slideshow-fullscreen .aol-share").remove();
 
             var $activePhoto = $("ul.photos li.active a"),
             pageURL = window.location.pathname,
