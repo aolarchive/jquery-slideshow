@@ -2,6 +2,11 @@
 Minimal styling for core photo gallery features
  */
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\000035}}
+body {
+  -webkit-backface-visibility: hidden;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000311}}
 .aol-slideshow {
   position: relative;
   -webkit-user-select: none;
@@ -11,7 +16,7 @@ Minimal styling for core photo gallery features
   user-select: none;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000314}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000320}}
 .aol-slideshow ul {
   list-style: none;
   margin: 0;
@@ -19,7 +24,7 @@ Minimal styling for core photo gallery features
   border: 0;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000320}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000326}}
 .aol-slideshow li {
   margin: 0;
   padding: 0;
@@ -27,69 +32,69 @@ Minimal styling for core photo gallery features
   height: auto;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000326}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000332}}
 .aol-slideshow h2 a {
   text-decoration: none;
   color: inherit;
   cursor: inherit;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000332}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000338}}
 .aol-slideshow .top-left,
 .aol-slideshow .bottom-left {
   float: left;
   position: relative;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000337}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000343}}
 .aol-slideshow .top-left li,
 .aol-slideshow .bottom-left li {
   display: inline-block;
   cursor: pointer;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000342}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000348}}
 .aol-slideshow .top-center,
 .aol-slideshow .bottom-center {
   text-align: center;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000346}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000352}}
 .aol-slideshow .top-center li,
 .aol-slideshow .bottom-center li {
   display: inline-block;
   cursor: pointer;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000351}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000357}}
 .aol-slideshow .top-right,
 .aol-slideshow .bottom-right {
   float: right;
   position: relative;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000356}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000362}}
 .aol-slideshow .top-right li,
 .aol-slideshow .bottom-right li {
   display: inline-block;
   cursor: pointer;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000360}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000366}}
 .aol-slideshow .gallery {
   position: relative;
   clear: both;
   overflow: hidden;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000365}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000371}}
 .aol-slideshow .gallery .photos {
   position: relative;
   overflow: hidden;
   margin: 0 auto;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000370}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000376}}
 .aol-slideshow .gallery .photos li {
   background: transparent url(../images/aol-loader.gif) no-repeat center center;
   position: absolute;
@@ -98,7 +103,7 @@ Minimal styling for core photo gallery features
   overflow: hidden;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000377}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000383}}
 .aol-slideshow .photos a {
   display: block;
   position: absolute;
@@ -109,32 +114,32 @@ Minimal styling for core photo gallery features
   overflow: hidden;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000386}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000392}}
 .aol-slideshow .captions {
   /*	overflow: hidden; */
   position: relative;
   clear: both;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000391}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000397}}
 .aol-slideshow .captions li {
   position: absolute;
   visibility: hidden;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000395}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003101}}
 .aol-slideshow .thumbnails li {
   float: left;
   cursor: pointer;
   background: transparent url(../images/aol-loader-small.gif) no-repeat center center;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003100}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003106}}
 .aol-slideshow .sponsor {
   float: right;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003103}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003109}}
 .aol-slideshow-fullscreen {
   position: absolute;
   top: 0;
@@ -144,7 +149,7 @@ Minimal styling for core photo gallery features
   background-color: #000;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003111}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003117}}
 .aol-slideshow-fullscreen .fullscreen {
   /*	position: fixed; Artz: Fixed is cool but people can't scroll if it's too big. Consider auto height later. */
   position: absolute;
@@ -154,7 +159,7 @@ Minimal styling for core photo gallery features
   width: 100%;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003119}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003125}}
 .aol-slideshow-fullscreen .close-button {
   height: auto;
   position: absolute;
@@ -162,24 +167,24 @@ Minimal styling for core photo gallery features
   cursor: pointer;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003125}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003131}}
 .aol-slideshow-fullscreen .thumbnail-container {
   overflow: hidden;
   padding: 0 25px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003129}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003135}}
 .aol-slideshow-fullscreen .thumbnail-container-inner {
   overflow: hidden;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003135}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003141}}
 .aol-slideshow-fullscreen .aol-slideshow {
   padding: 0 25px;
   margin-right: 325px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003139}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003145}}
 .aol-slideshow-fullscreen .aside {
   float: none;
   position: absolute;
@@ -190,13 +195,13 @@ Minimal styling for core photo gallery features
 
 /* Portrait Styles */
 /* Width and height left in core styles to preserve functionality... see if we can abstract out later */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003149}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003155}}
 .aol-slideshow-portrait .gallery {
   padding-right: 280px;
   position: relative;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003153}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003159}}
 .aol-slideshow-portrait .captions {
   position: absolute;
   top: 0;
@@ -205,14 +210,14 @@ Minimal styling for core photo gallery features
   height: 500px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003160}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003166}}
 .aol-slideshow-portrait .captions li {
   width: 250px;
   height: 500px;
 }
 
 /* Carousel Styles */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003166}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003172}}
 .aol-slideshow-carousel .gallery .photos {
   position: absolute;
   top: 0;
@@ -220,18 +225,18 @@ Minimal styling for core photo gallery features
   overflow: visible;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003172}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003178}}
 .aol-slideshow-carousel .gallery .photos li {
   position: static;
   float: left;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003177}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003183}}
 .aol-slideshow-carousel .gallery .photos li.active {
   cursor: default;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003181}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003187}}
 .aol-slideshow .gallery .photos li .credit i {
   float: left;
 }
@@ -278,14 +283,14 @@ display: inline;
 display: block;
 }
  */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003227}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003233}}
 .aol-slideshow .wallpaper-button {
   padding-right: 0;
   padding-left: 0;
   position: relative;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003232}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003238}}
 .aol-slideshow .wallpaper-button ul {
   display: none;
   position: absolute;
@@ -293,7 +298,7 @@ display: block;
   z-index: 10;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003238}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003244}}
 .aol-slideshow .wallpaper-button ul li {
   display: block;
 }

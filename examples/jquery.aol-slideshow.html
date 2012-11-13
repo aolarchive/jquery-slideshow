@@ -201,10 +201,23 @@
     (function($){
 
       var $aolSlideshows = $('div.aol-slideshow');
-      //var $aolSlideshows = $("div.aol-slideshow");
 
-      $aolSlideshows.eq(0).aolSlideshow();
-      //$aolSlideshows.eq(0).aolSlideshow();
+      // Standard Fade
+      $aolSlideshows.eq(0).aolSlideshow({
+        template: {
+          "fullscreen-button": "GO BIG"
+        }
+      });
+
+      // Portrait
+      $aolSlideshows.eq(1).aolSlideshow({
+        fullscreenAdMN: 773630,
+        sponsorAdMN: 93302143,
+        photoWidth: 325,
+        template: {
+          "fullscreen-button": "GO BIG"
+        }
+      });
 
       /*
 

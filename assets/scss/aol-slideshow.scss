@@ -5,7 +5,7 @@ Minimal styling for core photo gallery features
 body {
   // Prevent weird text aliasing during animations
   // http://stackoverflow.com/questions/11589985/webkit-text-aliasing-gets-weird-during-css3-animations
-  -webkit-transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
 }
 
 .aol-slideshow {
