@@ -88,9 +88,12 @@
 	position: relative;
 	clear: both;
 }
-.aol-photo-gallery .captions li {
+.aol-photo-gallery .captions li.caption {
 	position: absolute;
 	visibility: hidden;
+}
+.aol-photo-gallery .captions li.caption ul {
+  list-style-type: circle;
 }
 .aol-photo-gallery .thumbnails li {
 	float: left;
@@ -157,7 +160,7 @@
 	width: 250px;
 	height: 500px;
 }
-.aol-photo-gallery-portrait .captions li {
+.aol-photo-gallery-portrait .captions li.caption {
 	width: 250px;
 	height: 500px;
 }
