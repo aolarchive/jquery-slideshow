@@ -315,7 +315,7 @@
         trackingArea = 1024 * 768,
         trackingRatio = 0.5,
 
-        // Flag to differentiate between "embed" and "fullscreen" modes. Added this to enable/disable certain features. 
+        // Flag to differentiate between "embed" and "fullscreen" modes. Added this to enable/disable certain features.
         viewflag = "embed",
 
         // Standard naming convention for deep linked photos.
@@ -1357,7 +1357,7 @@
                         // Build thumbnail HTML.
                         for (i = 0; i < l; i += 1) {
                             photo = photos[i];
-                            captionHTML.push("<li data-index=\"" + i + "\"><h3>" + photo.photoName + "</h3>" + photo.photoDescription + "</li>");
+                            captionHTML.push("<li class=\"caption\" data-index=\"" + i + "\"><h3>" + photo.photoName + "</h3>" + photo.photoDescription + "</li>");
                         }
 
                         captionHTML.push("</ul>");
@@ -1381,7 +1381,7 @@
                             $gallery.prepend($captions);
                         }
 
-                        $captions = ui.$captions = $captions.find("li");
+                        $captions = ui.$captions = $captions.find("li.caption");
 
                         $captions.eq(activeIndex).css({
                             zIndex: 1,

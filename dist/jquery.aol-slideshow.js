@@ -1,4 +1,4 @@
-/*! AOL Slideshow - v2.0 - 2012-11-13
+/*! AOL Slideshow - v2.0 - 2012-11-19
 * https://github.com/aol/jquery-slideshow
 * Copyright (c) 2012 AOL, Inc.; Licensed BSD */
 
@@ -527,6 +527,9 @@
 
           $anchors = ui.$anchors = $aolSlideshowClone.find(ui.anchors);
           $slides = ui.$slides = $aolSlideshowClone.find(ui.slides);
+          //console.log('$aolSlideshowClone', $aolSlideshowClone);
+          //console.log('ui.slides', ui.slides);
+          //console.log('slides', $slides);
           $slideContainer = ui.$slideContainer = $slides.parent();
 
           totalPhotos = $anchors.length;
@@ -561,15 +564,17 @@
             $anchors.each(function (i) {
 
               var anchorElem = this,
-              $anchorElem = $(anchorElem),
+                $anchorElem = $(anchorElem),
 
-              // Save the details of this photo for later.
-              photoName = $anchorElem.text(),
-              photoDescription = $anchorElem.attr("title"),
-              photoSrc = $anchorElem.data("photo-src"),
-              photoCredit = $anchorElem.data("credit"),
-              photoCreditURL = $anchorElem.data("credit-url"),
-              photoId = $anchorElem.data("media-id");
+                // Save the details of this photo for later.
+                photoName = $anchorElem.text(),
+                photoDescription = $anchorElem.attr("title"),
+                photoSrc = $anchorElem.data("photo-src"),
+                photoCredit = $anchorElem.data("credit"),
+                photoCreditURL = $anchorElem.data("credit-url"),
+                photoId = $anchorElem.data("media-id");
+
+              console.log('photoDescription', photoDescription);
 
               // Allows us to set the active index based on the Media ID.
               if (activePhotoId === photoId) {
@@ -764,12 +769,14 @@
         buildCredits: function () {
           // Credits just hang out in one of the other UI containers.
           var creditTemplate = template.credit,
-          $creditParent = ui[options.creditInside],
-          photoCredit,
-          photoCreditURL;
+            $creditParent = ui[options.creditInside],
+            photoCredit,
+            photoCreditURL;
 
+          //console.log($creditParent);
           if ($creditParent) {
             $creditParent.each(function (i) {
+              //console.log(photos[i]);
               photoCredit = photos[i].photoCredit;
               if (photoCredit) {
                 photoCredit = creditTemplate.replace("{{credit}}", photos[i].photoCredit);
@@ -1353,19 +1360,28 @@
 
           var i,
           l = ui.$anchors.length,
-          captionHTML = ["<ul class=\"captions\">"],
+          //captionHTML = ["<ul class=\"captions\">"],
+          captionHTML = [],
           photo,
           $aside;
 
           // Build thumbnail HTML.
           for (i = 0; i < l; i += 1) {
             photo = photos[i];
-            captionHTML.push("<li data-index=\"" + i + "\"><h3>" + photo.photoName + "</h3>" + photo.photoDescription + "</li>");
+            captionHTML.push("<li class=\"caption\" data-index=\"" + i + "\"><h3>" + photo.photoName + "</h3>" + photo.photoDescription + "</li>");
+            //console.log(captionHTML);
           }
 
-          captionHTML.push("</ul>");
+          //captionHTML.push("</ul>");
 
-          $captions = $(captionHTML.join(""));
+          captionHTML = captionHTML.join('');
+          console.log('captionHTML', captionHTML);
+          $captions = $('<ul>', {
+            'class': 'captions',
+            html: captionHTML
+          });
+          //$captions = $(captionHTML.join(""));
+          console.log('captions', $captions.html());
 
           // Need to move this into its own function.
           // Let's tie this with captions for now.
@@ -1384,7 +1400,7 @@
             $gallery.prepend($captions);
           }
 
-          $captions = ui.$captions = $captions.find("li");
+          $captions = ui.$captions = $captions.find("li.caption");
 
           $captions.eq(activeIndex).css({
             zIndex: 1,

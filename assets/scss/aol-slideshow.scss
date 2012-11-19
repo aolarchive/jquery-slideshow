@@ -94,9 +94,14 @@ body {
   position: relative;
   clear: both;
 }
-.aol-slideshow .captions li {
+.aol-slideshow .captions li.caption {
   position: absolute;
   visibility: hidden;
+
+  // Put back list styles for html in captions
+  ul {
+    list-style-type: circle;
+  }
 }
 .aol-slideshow .thumbnails li {
   float: left;
@@ -164,7 +169,7 @@ body {
   width: 250px;
   height: 500px;
 }
-.aol-slideshow-portrait .captions li {
+.aol-slideshow-portrait .captions li.caption {
   width: 250px;
   height: 500px;
 }
