@@ -22,6 +22,11 @@ module.exports = function (grunt) {
       }
     },
     min: {
+      // Support of the old Photo Galleries
+      photoGallery2: {
+        src: ['src/jquery.aolphotogallery-2.0.js'],
+        dest: 'dist/jquery.aolphotogallery-2.0.min.js'
+      },
       slideshow: {
         src: ['<banner:meta.banner>', '<config:concat.dist.dest>'],
         dest: 'dist/<%= pkg.name %>.min.js'

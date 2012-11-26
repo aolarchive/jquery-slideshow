@@ -1,4 +1,4 @@
-/*! AOL Slideshow - v2.0 - 2012-11-19
+/*! AOL Slideshow - v2.0 - 2012-11-26
 * https://github.com/aol/jquery-slideshow
 * Copyright (c) 2012 AOL, Inc.; Licensed BSD */
 
