@@ -1,6 +1,6 @@
-/*! AOL Slideshow - v2.0 - 2012-11-26
+/*! AOL Slideshow - v2.0 - 2013-02-04
 * https://github.com/aol/jquery-slideshow
-* Copyright (c) 2012 AOL, Inc.; Licensed BSD */
+* Copyright (c) 2013 AOL, Inc.; Licensed BSD */
 
 /*
    AOL Photo Gallery Module

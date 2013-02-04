@@ -296,6 +296,9 @@
             galleryPhotos: []
         },
 
+        // Allow a custom omniture host
+        omnitureHost: '',
+
         // Namespace of the widget for event
         // bubbling.
         namespace: "aol-photo-gallery"
@@ -315,7 +318,7 @@
         trackingArea = 1024 * 768,
         trackingRatio = 0.5,
 
-        // Flag to differentiate between "embed" and "fullscreen" modes. Added this to enable/disable certain features. 
+        // Flag to differentiate between "embed" and "fullscreen" modes. Added this to enable/disable certain features.
         viewflag = "embed",
 
         // Standard naming convention for deep linked photos.
@@ -551,9 +554,12 @@
 
                             }
 
+                            console.log('activePhoto?', options.activePhoto);
+                            console.log('activeIndex', activeIndex);
                             if (activeIndex >= totalPhotos) {
                                 activeIndex = totalPhotos - 1;
                             }
+                            console.log('activeIndex', activeIndex);
 
                             $anchors.each(function (i) {
 
@@ -570,8 +576,9 @@
 
                                 // Allows us to set the active index based on the Media ID.
                                 if (activePhotoId === photoId) {
-                                    activeIndex = i;
+                                    //activeIndex = i;
                                 }
+                                console.log('activeIndex', activeIndex);
 
                                 photos.push({
                                     photoName: photoName,
@@ -1357,7 +1364,7 @@
                         // Build thumbnail HTML.
                         for (i = 0; i < l; i += 1) {
                             photo = photos[i];
-                            captionHTML.push("<li data-index=\"" + i + "\"><h3>" + photo.photoName + "</h3>" + photo.photoDescription + "</li>");
+                            captionHTML.push("<li class=\"caption\" data-index=\"" + i + "\"><h3>" + photo.photoName + "</h3>" + photo.photoDescription + "</li>");
                         }
 
                         captionHTML.push("</ul>");
@@ -1381,7 +1388,7 @@
                             $gallery.prepend($captions);
                         }
 
-                        $captions = ui.$captions = $captions.find("li");
+                        $captions = ui.$captions = $captions.find("li.caption");
 
                         $captions.eq(activeIndex).css({
                             zIndex: 1,
@@ -2251,7 +2258,7 @@
 
                     // Whenever there's a status update, let's fire a page view.
                     $aolPhotoGalleryClone.bind("status-update." + namespace, function () {
-                        var updateArea = $aolPhotoGalleryClone.width() * $aolPhotoGalleryClone.height(),
+                        var deslash, updateArea = $aolPhotoGalleryClone.width() * $aolPhotoGalleryClone.height(),
                             omnitureConfig = {
                                 pageName: data.galleryName,
                                 prop1: options.preset || "default",
@@ -2263,6 +2270,21 @@
                                 //  prop11: "" // Ad refresh MN
                                 //  channel: "" // Currently disabled, if needed we can make it a metadata option.
                             };
+
+                        deslash = function (str) {
+                          if (str.substring(str.length-1, str.length) === '/') {
+                            return str.substring(0, str.length - 1);
+                          } else {
+                            return str;
+                          }
+                        };
+
+                        // Allow for a custom omniture host in the case of
+                        // sites that use more than just the host for
+                        // omniture tracking
+                        if (options.omnitureHost) {
+                          omnitureConfig.host = deslash(options.omnitureHost);
+                        }
 
 
                         if (reportAdImpressionInOmniture && options.fullscreenAdMN) {
@@ -2426,7 +2448,7 @@
             mmTrackUrl = [
                 protocol,
                 "//",
-                host,
+                omnitureConfig.host || host,
                 "/mm_track/",
                 omnitureProp1,
                 omnitureProp2,

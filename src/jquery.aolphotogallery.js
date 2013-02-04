@@ -296,6 +296,9 @@
             galleryPhotos: []
         },
 
+        // Allow a custom omniture host
+        omnitureHost: '',
+
         // Namespace of the widget for event
         // bubbling.
         namespace: "aol-photo-gallery"
@@ -2251,7 +2254,7 @@
 
                     // Whenever there's a status update, let's fire a page view.
                     $aolPhotoGalleryClone.bind("status-update." + namespace, function () {
-                        var updateArea = $aolPhotoGalleryClone.width() * $aolPhotoGalleryClone.height(),
+                        var deslash, updateArea = $aolPhotoGalleryClone.width() * $aolPhotoGalleryClone.height(),
                             omnitureConfig = {
                                 pageName: data.galleryName,
                                 prop1: options.preset || "default",
@@ -2264,13 +2267,29 @@
                                 //  channel: "" // Currently disabled, if needed we can make it a metadata option.
                             };
 
+                            deslash = function (str) {
+                              if (str.substring(str.length-1, str.length) === '/') {
+                                return str.substring(0, str.length - 1);
+                              } else {
+                                return str;
+                              }
+                            };
+
+                            // Allow for a custom omniture host in the case of
+                            // sites that use more than just the host for
+                            // omniture tracking
+                            if (options.omnitureHost) {
+                              omnitureConfig.host = deslash(options.omnitureHost);
+                            }
+
 
                         if (reportAdImpressionInOmniture && options.fullscreenAdMN) {
                             omnitureConfig.prop11 = options.fullscreenAdMN;
                         }
 
                         // Check for Comscore page refresh requirements.
-                        if (updateArea > (trackingArea * trackingRatio)) {
+                        if (1 === 1) {
+                        //if (updateArea > (trackingArea * trackingRatio)) {
 
                             // Call our tracking after animations complete.
                             setTimeout(function () {
@@ -2426,7 +2445,7 @@
             mmTrackUrl = [
                 protocol,
                 "//",
-                host,
+                omnitureConfig.host || host,
                 "/mm_track/",
                 omnitureProp1,
                 omnitureProp2,

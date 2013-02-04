@@ -1,0 +1,12 @@
+setenv PROJDIR `pwd`
+setenv PROJ Slideshow
+
+screen -t "shell:" 0
+stuff "cd $PROJDIR^Mclear^M"
+
+screen -t "grunt:" 1
+stuff "cd $PROJDIR^Mclear^M"
+stuff "grunt watch-serve^Mclear^M"
+
+screen -t "src/jquery.aolphotogallery-2.0.js:" 2
+stuff "vim src/jquery.aolphotogallery-2.0.js^Mclear^M"

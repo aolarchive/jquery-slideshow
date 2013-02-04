@@ -74,7 +74,7 @@ body {
   margin: 0 auto;
 }
 .aol-slideshow .gallery .photos li {
-  background: transparent url(../images/aol-loader.gif) no-repeat center center;
+  background: transparent url(http://o.aolcdn.com/os/aol/aol-loader.gif) no-repeat center center;
   position: absolute;
   visibility: hidden;
   cursor: pointer;
@@ -106,7 +106,7 @@ body {
 .aol-slideshow .thumbnails li {
   float: left;
   cursor: pointer;
-  background: transparent url(../images/aol-loader-small.gif) no-repeat center center;
+  background: transparent url(http://o.aolcdn.com/os/aol/aol-loader-small.gif) no-repeat center center;
 }
 .aol-slideshow .sponsor {
   float: right;

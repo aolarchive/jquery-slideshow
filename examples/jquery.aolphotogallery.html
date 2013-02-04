@@ -197,14 +197,17 @@
     <!-- Load required plugins -->
     <script src="http://o.aolcdn.com/os_merge/?file=/aol/jquery.getjs.min.js&amp;file=/aol/jquery.inlinecss.min.js&amp;file=/aol/jquery.openwindow.min.js&amp;file=/aol/jquery.shorturl.min.js&amp;file=/aol/jquery.aolshare.min.js" type="text/javascript"></script>
     <!-- Load AOL Slideshow -->
-    <script src="../src/jquery.aolphotogallery.js"></script>
+    <script src="../src/jquery.aolphotogallery-2.0.js"></script>
     <script>
     (function($){
 
       var $aolPhotoGalleries = $('div.aol-photo-gallery');
 
       // Standard Fade
-      $aolPhotoGalleries.eq(0).aolPhotoGallery();
+      $aolPhotoGalleries.eq(0).aolPhotoGallery({
+        activePhoto: 4,
+        showName: 1
+      });
 
       /*
       // Portrait
@@ -231,10 +234,13 @@
         preset: "carousel",
         refreshDivId: "ad300x250"
       });
+      */
 
       // Thumbnails
+      /*
       $aolPhotoGalleries.eq(4).aolPhotoGallery({
-        showThumbnails: 1
+        showThumbnails: 1,
+        omnitureHost: 'www.mysite.com/test/'
       });
       */
 

@@ -96,7 +96,7 @@ body {
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\0000376}}
 .aol-slideshow .gallery .photos li {
-  background: transparent url(../images/aol-loader.gif) no-repeat center center;
+  background: transparent url(http://o.aolcdn.com/os/aol/aol-loader.gif) no-repeat center center;
   position: absolute;
   visibility: hidden;
   cursor: pointer;
@@ -135,7 +135,7 @@ body {
 .aol-slideshow .thumbnails li {
   float: left;
   cursor: pointer;
-  background: transparent url(../images/aol-loader-small.gif) no-repeat center center;
+  background: transparent url(http://o.aolcdn.com/os/aol/aol-loader-small.gif) no-repeat center center;
 }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nateeagle5\/Projects\/aol\/github\/jquery-slideshow\/assets\/scss\/aol-slideshow\.scss}line{font-family:\00003111}}

@@ -27,6 +27,10 @@ module.exports = function (grunt) {
         src: ['src/jquery.aolphotogallery-2.0.js'],
         dest: 'dist/jquery.aolphotogallery-2.0.min.js'
       },
+      //photogallery: {
+        //src: ['src/jquery.aolphotogallery.js'],
+        //dest: 'dist/jquery.aolphotogallery.min.js'
+      //},
       slideshow: {
         src: ['<banner:meta.banner>', '<config:concat.dist.dest>'],
         dest: 'dist/<%= pkg.name %>.min.js'
@@ -61,7 +65,7 @@ module.exports = function (grunt) {
       }
     },
     watch: {
-      files: ['<config:lint.files>', 'assets/scss/**/*.scss'],
+      files: ['<config:lint.files>', 'src/**/*.js', 'assets/scss/**/*.scss'],
       tasks: 'default'
     },
     jshint: {
