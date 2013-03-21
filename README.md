@@ -3,24 +3,6 @@
 <!-- TODO: Write better description. -->
 Your friendly, neighborhood slideshow.
 
-## Getting Started
-Download the [production version][min] or the [development version][max].
-
-[min]: https://raw.github.com/nateeagle5/grunt-dummy/master/dist/grunt-dummy.min.js
-[max]: https://raw.github.com/nateeagle5/grunt-dummy/master/dist/grunt-dummy.js
-
-In your web page:
-
-```html
-<script src="jquery.js"></script>
-<script src="dist/grunt-dummy.min.js"></script>
-<script>
-jQuery(function($) {
-  $.awesome(); // "awesome"
-});
-</script>
-```
-
 ## Documentation
 
 ### Options
